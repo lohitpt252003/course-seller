@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.database import get_db
@@ -33,31 +34,25 @@ def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id: int = payload.get("sub")
         if user_id is None:
-            raise credentials_exception
+            return None
     except JWTError:
-        raise credentials_exception
+        return None
 
     user = db.query(User).filter(User.id == user_id).first()
     if user is None or not user.is_active:
-        raise credentials_exception
+        return None
     return user
 
 
 def require_role(allowed_roles: list[str]):
     def role_checker(current_user: User = Depends(get_current_user)):
+        if current_user is None:
+            return None
         if current_user.role not in allowed_roles:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You don't have permission to perform this action",
-            )
+            return None
         return current_user
     return role_checker
