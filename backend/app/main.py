@@ -1,11 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import engine, Base
-from app.models import *  # noqa: F401, F403 — imports all models so tables are created
+from app.models import *  # noqa: F401, F403 — imports all models for relationship resolution
 from app.routers import auth, users, courses, lessons, enrollments, payments, reviews, categories, certificates, admin
-
-# Create all tables
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Course Seller API",
