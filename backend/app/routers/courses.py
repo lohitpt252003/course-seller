@@ -7,6 +7,9 @@ from app.database import get_db
 from app.models.user import User
 from app.models.course import Course
 from app.models.payment import Payment
+from app.models.enrollment import Enrollment
+from app.models.review import Review
+from app.models.lesson import Lesson
 from app.schemas.schemas import CourseCreate, CourseUpdate, CourseOut
 from app.utils.auth import get_current_user, require_role
 
@@ -65,54 +68,149 @@ def my_courses(db: Session = Depends(get_db), current_user: User = Depends(get_c
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to get your courses: {str(e)}"})
 
 
-@router.get("/my/revenue")
-def my_revenue(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+@router.get("/my/analytics")
+def my_analytics(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     if current_user is None:
         return JSONResponse(status_code=401, content={"success": False, "message": "Not authenticated"})
     if current_user.role not in ["teacher", "admin"]:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Only teachers can view revenue"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Only teachers can view analytics"})
     try:
-        # Total revenue across all teacher's courses
-        total_revenue = (
-            db.query(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0))
-            .join(Course, Payment.course_id == Course.id)
-            .filter(Course.teacher_id == current_user.id, Payment.status == "completed")
-            .scalar()
-        )
+        teacher_courses = db.query(Course).filter(Course.teacher_id == current_user.id).all()
+        course_ids = [c.id for c in teacher_courses]
 
-        # Per-course revenue breakdown
-        course_stats = (
-            db.query(
-                Course.id,
-                Course.title,
-                Course.price,
-                Course.total_students,
-                sql_func.coalesce(sql_func.sum(Payment.amount), 0.0).label("revenue"),
-                sql_func.count(Payment.id).label("sales"),
+        # Overview stats
+        total_revenue = 0.0
+        total_students = 0
+        total_reviews = 0
+        total_lessons = 0
+        rating_sum = 0.0
+        rating_count = 0
+
+        if course_ids:
+            rev = db.query(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0)).filter(
+                Payment.course_id.in_(course_ids), Payment.status == "completed"
+            ).scalar()
+            total_revenue = float(rev) if rev else 0.0
+
+            total_students = db.query(Enrollment).filter(Enrollment.course_id.in_(course_ids)).count()
+            total_reviews = db.query(Review).filter(Review.course_id.in_(course_ids)).count()
+            total_lessons = db.query(Lesson).filter(Lesson.course_id.in_(course_ids)).count()
+
+            avg_r = db.query(sql_func.avg(Review.rating)).filter(Review.course_id.in_(course_ids)).scalar()
+            if avg_r:
+                rating_sum = float(avg_r)
+                rating_count = 1  # used as flag for avg
+
+        overview = {
+            "total_courses": len(teacher_courses),
+            "published_courses": len([c for c in teacher_courses if c.status == "published"]),
+            "draft_courses": len([c for c in teacher_courses if c.status == "draft"]),
+            "total_students": total_students,
+            "total_revenue": total_revenue,
+            "avg_rating": round(rating_sum, 2) if rating_count else 0.0,
+            "total_reviews": total_reviews,
+            "total_lessons": total_lessons,
+        }
+
+        # Per-course details
+        courses_data = []
+        for course in teacher_courses:
+            # Enrolled students
+            enrollments = (
+                db.query(Enrollment)
+                .options(joinedload(Enrollment.user))
+                .filter(Enrollment.course_id == course.id)
+                .order_by(Enrollment.enrolled_at.desc())
+                .all()
             )
-            .outerjoin(Payment, (Payment.course_id == Course.id) & (Payment.status == "completed"))
-            .filter(Course.teacher_id == current_user.id)
-            .group_by(Course.id, Course.title, Course.price, Course.total_students)
-            .order_by(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0).desc())
-            .all()
-        )
+            students = [
+                {
+                    "id": e.user.id,
+                    "name": e.user.name,
+                    "email": e.user.email,
+                    "avatar_url": e.user.avatar_url,
+                    "enrolled_at": e.enrolled_at.isoformat() if e.enrolled_at else None,
+                    "completed": e.completed,
+                }
+                for e in enrollments
+            ]
+
+            # Reviews
+            reviews = (
+                db.query(Review)
+                .options(joinedload(Review.user))
+                .filter(Review.course_id == course.id)
+                .order_by(Review.created_at.desc())
+                .all()
+            )
+            reviews_data = [
+                {
+                    "id": r.id,
+                    "user_name": r.user.name,
+                    "user_avatar": r.user.avatar_url,
+                    "rating": r.rating,
+                    "comment": r.comment,
+                    "created_at": r.created_at.isoformat() if r.created_at else None,
+                }
+                for r in reviews
+            ]
+
+            # Revenue for this course
+            course_rev = db.query(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0)).filter(
+                Payment.course_id == course.id, Payment.status == "completed"
+            ).scalar()
+            sales_count = db.query(Payment).filter(
+                Payment.course_id == course.id, Payment.status == "completed"
+            ).count()
+
+            lesson_count = db.query(Lesson).filter(Lesson.course_id == course.id).count()
+
+            courses_data.append({
+                "id": course.id,
+                "title": course.title,
+                "description": course.description,
+                "price": course.price,
+                "status": course.status,
+                "avg_rating": course.avg_rating or 0.0,
+                "total_students": len(students),
+                "revenue": float(course_rev) if course_rev else 0.0,
+                "sales": sales_count,
+                "lesson_count": lesson_count,
+                "thumbnail_url": course.thumbnail_url,
+                "category_id": course.category_id,
+                "created_at": course.created_at.isoformat() if course.created_at else None,
+                "students": students,
+                "reviews": reviews_data,
+            })
+
+        # Recent activity (last 10 enrollments)
+        recent_enrollments = []
+        if course_ids:
+            recent = (
+                db.query(Enrollment)
+                .options(joinedload(Enrollment.user), joinedload(Enrollment.course))
+                .filter(Enrollment.course_id.in_(course_ids))
+                .order_by(Enrollment.enrolled_at.desc())
+                .limit(10)
+                .all()
+            )
+            recent_enrollments = [
+                {
+                    "student_name": e.user.name,
+                    "student_avatar": e.user.avatar_url,
+                    "course_title": e.course.title,
+                    "enrolled_at": e.enrolled_at.isoformat() if e.enrolled_at else None,
+                }
+                for e in recent
+            ]
 
         return {
-            "total_revenue": float(total_revenue),
-            "course_revenue": [
-                {
-                    "course_id": row.id,
-                    "title": row.title,
-                    "price": row.price,
-                    "total_students": row.total_students or 0,
-                    "revenue": float(row.revenue),
-                    "sales": row.sales,
-                }
-                for row in course_stats
-            ],
+            "overview": overview,
+            "courses": courses_data,
+            "recent_activity": recent_enrollments,
         }
     except Exception as e:
-        return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to get revenue: {str(e)}"})
+        return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to get analytics: {str(e)}"})
 
 
 @router.post("/", response_model=CourseOut, status_code=201)

@@ -44,7 +44,7 @@ npm run dev
 ## Features
 
 - **Students**: Browse courses, enroll, track progress, leave reviews, earn certificates
-- **Teachers**: Create & manage courses, add lessons (text/video/PDF), view student stats
+- **Teachers**: Create & manage courses, add lessons (text/video/PDF), professional analytics dashboard (revenue, enrolled students, reviews)
 - **Admins**: User management, course approval, analytics dashboard, category management
 - **Payments**: Dummy payment system with auto-enrollment
 - **Themes**: Dark & Light mode with toggle

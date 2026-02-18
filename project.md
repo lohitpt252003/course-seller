@@ -28,7 +28,7 @@
 Course Seller is a platform where:
 
 - **Students** can browse courses, make payments, enroll, track progress, leave reviews, and earn certificates.
-- **Teachers** can create and manage courses, add lessons (text, video, PDF), and view student statistics.
+- **Teachers** can create and manage courses, add lessons (text, video, PDF), and monitor performance via a professional analytics dashboard (revenue, enrolled students, reviews).
 - **Admins** can manage users, approve/reject courses, view analytics, and manage categories.
 
 The application includes a dummy payment system, dark/light theme, responsive design, and full Dockerization.
@@ -359,6 +359,8 @@ All error responses follow this format:
 | ------ | --------------- | --------------- | -------------------------- |
 | GET    | `/`             | ❌              | List published courses     |
 | POST   | `/`             | Teacher/Admin   | Create a course            |
+| GET    | `/my`           | Teacher/Admin   | List teacher's own courses |
+| GET    | `/my/analytics` | Teacher/Admin   | Full teacher analytics (overview stats, per-course students/reviews/revenue, recent activity) |
 | GET    | `/{course_id}`  | ❌              | Get course detail          |
 | PUT    | `/{course_id}`  | Owner/Admin     | Update a course            |
 | DELETE | `/{course_id}`  | Owner/Admin     | Delete a course            |
@@ -455,7 +457,7 @@ All error responses follow this format:
 | Checkout           | `/checkout/:id`    | Any      | Dummy payment flow                |
 | Course Player      | `/learn/:id`       | Any      | Video/text/PDF viewer + progress  |
 | Student Dashboard  | `/dashboard`       | Student  | Enrolled courses, certs, payments |
-| Teacher Dashboard  | `/teacher`         | Teacher  | Course CRUD, add lessons          |
+| Teacher Dashboard  | `/teacher`         | Teacher  | Professional tabbed dashboard: Overview, Courses, Students, Revenue, Reviews |
 | Admin Dashboard    | `/admin`           | Admin    | User mgmt, approvals, analytics   |
 | Profile            | `/profile`         | Any      | Edit name, bio, avatar            |
 
@@ -703,9 +705,11 @@ When `docker-compose up` is run:
 
 ### Teacher Flow
 1. Register as teacher → Login → Go to Teacher Dashboard
-2. Create a new course (title, description, price, category, thumbnail)
-3. Add lessons to course (text, video URL, or PDF URL)
-4. Course starts as "draft" → Admin approves → Published & visible
+2. **Overview tab**: See stat cards (courses, students, revenue, rating), recent activity feed, top performing courses
+3. **Courses tab**: Create/edit/delete courses, add lessons (text, video, PDF). Course starts as "draft" → Admin approves → Published
+4. **Students tab**: View enrolled students per course with name, email, enrollment date, completion status. Filter by course
+5. **Revenue tab**: See total lifetime revenue and per-course revenue breakdown with sales count
+6. **Reviews tab**: Monitor student reviews with star ratings and comments. Filter by course
 
 ### Admin Flow
 1. Login as admin → Go to Admin Dashboard
@@ -716,4 +720,4 @@ When `docker-compose up` is run:
 
 ---
 
-*Last updated: 2026-02-17*
+*Last updated: 2026-02-18*
