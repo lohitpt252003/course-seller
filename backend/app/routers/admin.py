@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func as sql_func
 from app.database import get_db
 from app.models.user import User
@@ -45,6 +45,16 @@ def admin_list_users(db: Session = Depends(get_db), current_user: User = Depends
         return db.query(User).all()
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list users: {str(e)}"})
+
+
+@router.get("/courses", response_model=list[CourseOut])
+def admin_list_courses(db: Session = Depends(get_db), current_user: User = Depends(require_role(["admin"]))):
+    if current_user is None:
+        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+    try:
+        return db.query(Course).options(joinedload(Course.teacher), joinedload(Course.category)).order_by(Course.created_at.desc()).all()
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list courses: {str(e)}"})
 
 
 @router.patch("/users/{user_id}/toggle-active")

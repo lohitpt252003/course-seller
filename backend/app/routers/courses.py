@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func as sql_func
 from typing import Optional
 from app.database import get_db
 from app.models.user import User
 from app.models.course import Course
+from app.models.payment import Payment
 from app.schemas.schemas import CourseCreate, CourseUpdate, CourseOut
 from app.utils.auth import get_current_user, require_role
 
@@ -45,6 +47,72 @@ def list_courses(
         return query.all()
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list courses: {str(e)}"})
+
+
+@router.get("/my", response_model=list[CourseOut])
+def my_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user is None:
+        return JSONResponse(status_code=401, content={"success": False, "message": "Not authenticated"})
+    try:
+        return (
+            db.query(Course)
+            .options(joinedload(Course.teacher), joinedload(Course.category))
+            .filter(Course.teacher_id == current_user.id)
+            .order_by(Course.created_at.desc())
+            .all()
+        )
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to get your courses: {str(e)}"})
+
+
+@router.get("/my/revenue")
+def my_revenue(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user is None:
+        return JSONResponse(status_code=401, content={"success": False, "message": "Not authenticated"})
+    if current_user.role not in ["teacher", "admin"]:
+        return JSONResponse(status_code=403, content={"success": False, "message": "Only teachers can view revenue"})
+    try:
+        # Total revenue across all teacher's courses
+        total_revenue = (
+            db.query(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0))
+            .join(Course, Payment.course_id == Course.id)
+            .filter(Course.teacher_id == current_user.id, Payment.status == "completed")
+            .scalar()
+        )
+
+        # Per-course revenue breakdown
+        course_stats = (
+            db.query(
+                Course.id,
+                Course.title,
+                Course.price,
+                Course.total_students,
+                sql_func.coalesce(sql_func.sum(Payment.amount), 0.0).label("revenue"),
+                sql_func.count(Payment.id).label("sales"),
+            )
+            .outerjoin(Payment, (Payment.course_id == Course.id) & (Payment.status == "completed"))
+            .filter(Course.teacher_id == current_user.id)
+            .group_by(Course.id, Course.title, Course.price, Course.total_students)
+            .order_by(sql_func.coalesce(sql_func.sum(Payment.amount), 0.0).desc())
+            .all()
+        )
+
+        return {
+            "total_revenue": float(total_revenue),
+            "course_revenue": [
+                {
+                    "course_id": row.id,
+                    "title": row.title,
+                    "price": row.price,
+                    "total_students": row.total_students or 0,
+                    "revenue": float(row.revenue),
+                    "sales": row.sales,
+                }
+                for row in course_stats
+            ],
+        }
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to get revenue: {str(e)}"})
 
 
 @router.post("/", response_model=CourseOut, status_code=201)

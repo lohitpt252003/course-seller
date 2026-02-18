@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     const fetchData = () => {
         api.get('/admin/stats').then(r => setStats(r.data)).catch(() => { });
         api.get('/admin/users').then(r => setUsers(r.data)).catch(() => { });
-        api.get('/courses/').then(r => setCourses(r.data)).catch(() => { });
+        api.get('/admin/courses').then(r => setCourses(r.data)).catch(() => { });
     };
 
     useEffect(() => { fetchData(); }, []);
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
             setCategoryName('');
             alert('Category added!');
         } catch (err) {
-            alert(err.response?.data?.detail || 'Failed');
+            alert(err.response?.data?.message || 'Failed');
         }
     };
 

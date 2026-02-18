@@ -43,7 +43,7 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
         if not user.is_active:
             return JSONResponse(status_code=403, content={"success": False, "message": "Account is deactivated"})
 
-        token = create_access_token(data={"sub": user.id, "role": user.role})
+        token = create_access_token(data={"sub": str(user.id), "role": user.role})
         return {"access_token": token}
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Login failed: {str(e)}"})

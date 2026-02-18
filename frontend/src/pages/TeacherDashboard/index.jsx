@@ -13,15 +13,23 @@ export default function TeacherDashboard() {
     const [editingId, setEditingId] = useState(null);
     const [lessonForm, setLessonForm] = useState({ title: '', content_type: 'text', content: '', video_url: '', pdf_url: '', order_index: 0 });
     const [showLessonForm, setShowLessonForm] = useState(null);
+    const [revenue, setRevenue] = useState({ total_revenue: 0, course_revenue: [] });
 
     const fetchCourses = () => {
-        api.get('/courses/').then(r => {
-            setCourses(r.data.filter(c => c.teacher_id === user.id));
+        api.get('/courses/my').then(r => {
+            setCourses(r.data);
         });
+    };
+
+    const fetchRevenue = () => {
+        api.get('/courses/my/revenue').then(r => {
+            setRevenue(r.data);
+        }).catch(() => { });
     };
 
     useEffect(() => {
         fetchCourses();
+        fetchRevenue();
         api.get('/categories/').then(r => setCategories(r.data)).catch(() => { });
     }, []);
 
@@ -39,7 +47,7 @@ export default function TeacherDashboard() {
             setForm({ title: '', description: '', price: 0, category_id: '', thumbnail_url: '' });
             fetchCourses();
         } catch (err) {
-            alert(err.response?.data?.detail || 'Failed');
+            alert(err.response?.data?.message || 'Failed');
         }
     };
 
@@ -63,7 +71,7 @@ export default function TeacherDashboard() {
             setLessonForm({ title: '', content_type: 'text', content: '', video_url: '', pdf_url: '', order_index: 0 });
             alert('Lesson added!');
         } catch (err) {
-            alert(err.response?.data?.detail || 'Failed');
+            alert(err.response?.data?.message || 'Failed');
         }
     };
 
@@ -77,7 +85,42 @@ export default function TeacherDashboard() {
                 <div className="dash-stat-card"><span className="dash-stat-num">{courses.length}</span><span className="dash-stat-label">Total Courses</span></div>
                 <div className="dash-stat-card"><span className="dash-stat-num">{courses.filter(c => c.status === 'published').length}</span><span className="dash-stat-label">Published</span></div>
                 <div className="dash-stat-card"><span className="dash-stat-num">{courses.reduce((s, c) => s + (c.total_students || 0), 0)}</span><span className="dash-stat-label">Total Students</span></div>
+                <div className="dash-stat-card" style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: '#fff' }}>
+                    <span className="dash-stat-num">${revenue.total_revenue.toFixed(2)}</span>
+                    <span className="dash-stat-label" style={{ color: 'rgba(255,255,255,0.85)' }}>💰 Total Revenue</span>
+                </div>
             </div>
+
+            {/* Revenue Breakdown */}
+            {revenue.course_revenue.length > 0 && (
+                <div className="dash-section">
+                    <h2>💰 Revenue Breakdown</h2>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '0.75rem', fontSize: '0.9rem' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid var(--border)', textAlign: 'left' }}>
+                                    <th style={{ padding: '0.6rem 0.75rem' }}>Course</th>
+                                    <th style={{ padding: '0.6rem 0.75rem' }}>Price</th>
+                                    <th style={{ padding: '0.6rem 0.75rem' }}>Sales</th>
+                                    <th style={{ padding: '0.6rem 0.75rem' }}>Students</th>
+                                    <th style={{ padding: '0.6rem 0.75rem' }}>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {revenue.course_revenue.map(cr => (
+                                    <tr key={cr.course_id} style={{ borderBottom: '1px solid var(--border)' }}>
+                                        <td style={{ padding: '0.6rem 0.75rem', fontWeight: 500 }}>{cr.title}</td>
+                                        <td style={{ padding: '0.6rem 0.75rem' }}>${cr.price.toFixed(2)}</td>
+                                        <td style={{ padding: '0.6rem 0.75rem' }}>{cr.sales}</td>
+                                        <td style={{ padding: '0.6rem 0.75rem' }}>{cr.total_students}</td>
+                                        <td style={{ padding: '0.6rem 0.75rem', fontWeight: 600, color: '#10b981' }}>${cr.revenue.toFixed(2)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
 
             <div className="dash-section">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>

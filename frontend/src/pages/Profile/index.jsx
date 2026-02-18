@@ -20,7 +20,7 @@ export default function Profile() {
             setMsg('Profile updated! ✅');
             setTimeout(() => setMsg(''), 3000);
         } catch (err) {
-            setMsg(err.response?.data?.detail || 'Failed to update');
+            setMsg(err.response?.data?.message || 'Failed to update');
         } finally {
             setSaving(false);
         }

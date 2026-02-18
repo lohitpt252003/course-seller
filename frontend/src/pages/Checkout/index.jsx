@@ -21,7 +21,7 @@ export default function Checkout() {
             setSuccess(true);
             setTimeout(() => navigate(`/learn/${courseId}`), 2000);
         } catch (err) {
-            alert(err.response?.data?.detail || 'Payment failed');
+            alert(err.response?.data?.message || 'Payment failed');
         } finally {
             setProcessing(false);
         }

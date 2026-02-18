@@ -48,7 +48,7 @@ export default function CourseDetail() {
             const c = await api.get(`/courses/${id}`);
             setCourse(c.data);
         } catch (err) {
-            alert(err.response?.data?.detail || 'Failed to submit review');
+            alert(err.response?.data?.message || 'Failed to submit review');
         }
     };
 

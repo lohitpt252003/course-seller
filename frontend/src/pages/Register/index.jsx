@@ -21,7 +21,7 @@ export default function Register() {
             await register(name, email, password, role);
             navigate(role === 'teacher' ? '/teacher' : '/dashboard');
         } catch (err) {
-            setError(err.response?.data?.detail || 'Registration failed');
+            setError(err.response?.data?.message || 'Registration failed');
         } finally {
             setLoading(false);
         }
