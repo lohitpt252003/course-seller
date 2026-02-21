@@ -1,40 +1,89 @@
-import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import '../StudentDashboard/index.css';
 
+const TABS = [
+    { id: 'overview', label: '📊 Overview' },
+    { id: 'users', label: '👥 Users' },
+    { id: 'courses', label: '📚 Courses' },
+    { id: 'categories', label: '🏷️ Categories' },
+];
+
 export default function AdminDashboard() {
+    const [tab, setTab] = useState('overview');
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
-    const [tab, setTab] = useState('overview');
+    const [categories, setCategories] = useState([]);
+
+    // Filters & Pagination
+    const [userSearch, setUserSearch] = useState('');
+    const [userRole, setUserRole] = useState('');
+    const [courseSearch, setCourseSearch] = useState('');
+    const [courseStatus, setCourseStatus] = useState('');
     const [categoryName, setCategoryName] = useState('');
 
-    const fetchData = () => {
-        api.get('/admin/stats').then(r => setStats(r.data)).catch(() => { });
-        api.get('/admin/users').then(r => setUsers(r.data)).catch(() => { });
-        api.get('/admin/courses').then(r => setCourses(r.data)).catch(() => { });
+    const [loading, setLoading] = useState(false);
+
+    const fetchStats = () => api.get('/admin/stats').then(r => setStats(r.data)).catch(console.error);
+    const fetchCategories = () => api.get('/categories/').then(r => setCategories(r.data)).catch(console.error);
+
+    const fetchUsers = () => {
+        setLoading(true);
+        let url = `/admin/users?limit=50`;
+        if (userSearch) url += `&search=${userSearch}`;
+        if (userRole) url += `&role=${userRole}`;
+        api.get(url).then(r => {
+            setUsers(r.data);
+            setLoading(false);
+        }).catch(() => setLoading(false));
     };
 
-    useEffect(() => { fetchData(); }, []);
+    const fetchCourses = () => {
+        setLoading(true);
+        let url = `/admin/courses?limit=50`;
+        if (courseSearch) url += `&search=${courseSearch}`;
+        if (courseStatus) url += `&status=${courseStatus}`;
+        api.get(url).then(r => {
+            setCourses(r.data);
+            setLoading(false);
+        }).catch(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        if (tab === 'overview') fetchStats();
+        if (tab === 'users') fetchUsers();
+        if (tab === 'courses') fetchCourses();
+        if (tab === 'categories') fetchCategories();
+    }, [tab, userSearch, userRole, courseSearch, courseStatus]);
 
     const toggleActive = async (userId) => {
         await api.patch(`/admin/users/${userId}/toggle-active`);
-        fetchData();
+        fetchUsers();
     };
 
     const changeRole = async (userId, role) => {
+        if (!window.confirm(`Change role to ${role}?`)) return;
         await api.patch(`/admin/users/${userId}/role?role=${role}`);
-        fetchData();
+        fetchUsers();
     };
 
     const approveCourse = async (courseId) => {
+        if (!window.confirm('Approve and publish this course?')) return;
         await api.patch(`/admin/courses/${courseId}/approve`);
-        fetchData();
+        fetchCourses();
     };
 
     const rejectCourse = async (courseId) => {
+        if (!window.confirm('Reject and archive this course?')) return;
         await api.patch(`/admin/courses/${courseId}/reject`);
-        fetchData();
+        fetchCourses();
+    };
+
+    const deleteCourse = async (courseId) => {
+        if (!window.confirm('Permanently delete this course?')) return;
+        await api.delete(`/admin/courses/${courseId}`);
+        fetchCourses();
     };
 
     const addCategory = async (e) => {
@@ -43,105 +92,253 @@ export default function AdminDashboard() {
         try {
             await api.post('/categories/', { name: categoryName });
             setCategoryName('');
+            fetchCategories();
             alert('Category added!');
         } catch (err) {
             alert(err.response?.data?.message || 'Failed');
         }
     };
 
-    return (
-        <div className="dashboard">
-            <div className="dashboard-header">
-                <h1>Admin Dashboard 🛡️</h1>
-                <p>Manage your platform</p>
-            </div>
+    const deleteCategory = async (id) => {
+        if (!window.confirm('Delete this category?')) return;
+        try {
+            await api.delete(`/categories/${id}`);
+            fetchCategories();
+        } catch (err) {
+            alert('Failed to delete');
+        }
+    };
 
-            {stats && (
-                <div className="dash-stats">
-                    <div className="dash-stat-card"><span className="dash-stat-num">{stats.total_users}</span><span className="dash-stat-label">Total Users</span></div>
-                    <div className="dash-stat-card"><span className="dash-stat-num">{stats.total_courses}</span><span className="dash-stat-label">Total Courses</span></div>
-                    <div className="dash-stat-card"><span className="dash-stat-num">{stats.total_enrollments}</span><span className="dash-stat-label">Enrollments</span></div>
-                    <div className="dash-stat-card"><span className="dash-stat-num">${stats.total_revenue.toFixed(2)}</span><span className="dash-stat-label">Revenue</span></div>
-                    <div className="dash-stat-card"><span className="dash-stat-num">{stats.total_teachers}</span><span className="dash-stat-label">Teachers</span></div>
-                    <div className="dash-stat-card"><span className="dash-stat-num">{stats.total_students}</span><span className="dash-stat-label">Students</span></div>
+    return (
+        <div className="dashboard fade-in">
+            <div className="dashboard-header">
+                <div>
+                    <h1>Admin Dashboard 🛡️</h1>
+                    <p className="subtitle">Manage users, courses, and platform settings</p>
                 </div>
-            )}
+                <div className="user-badge admin">Admin</div>
+            </div>
 
             <div className="dash-tabs">
-                <button className={`dash-tab ${tab === 'overview' ? 'active' : ''}`} onClick={() => setTab('overview')}>📊 Overview</button>
-                <button className={`dash-tab ${tab === 'users' ? 'active' : ''}`} onClick={() => setTab('users')}>👥 Users</button>
-                <button className={`dash-tab ${tab === 'courses' ? 'active' : ''}`} onClick={() => setTab('courses')}>📚 Courses</button>
-                <button className={`dash-tab ${tab === 'categories' ? 'active' : ''}`} onClick={() => setTab('categories')}>🏷️ Categories</button>
+                {TABS.map(t => (
+                    <button
+                        key={t.id}
+                        className={`dash-tab ${tab === t.id ? 'active' : ''}`}
+                        onClick={() => setTab(t.id)}
+                    >
+                        {t.label}
+                    </button>
+                ))}
             </div>
 
-            {tab === 'users' && (
-                <div className="dash-section">
-                    <h2>All Users</h2>
-                    <table className="dash-table">
-                        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody>
-                            {users.map(u => (
-                                <tr key={u.id}>
-                                    <td>{u.name}</td>
-                                    <td>{u.email}</td>
-                                    <td>
-                                        <select value={u.role} onChange={e => changeRole(u.id, e.target.value)} style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: '6px', padding: '0.25rem' }}>
-                                            <option value="student">Student</option>
-                                            <option value="teacher">Teacher</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </td>
-                                    <td><span className={`dash-badge ${u.is_active ? 'completed' : 'pending'}`}>{u.is_active ? 'Active' : 'Inactive'}</span></td>
-                                    <td><button className={`action-btn ${u.is_active ? 'danger' : 'success'}`} onClick={() => toggleActive(u.id)}>{u.is_active ? 'Deactivate' : 'Activate'}</button></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+            <div className="dash-content">
+                {tab === 'overview' && stats && (
+                    <>
+                        <div className="dash-stats">
+                            <div className="dash-stat-card gradient-blue">
+                                <span className="dash-stat-num">{stats.total_users}</span>
+                                <span className="dash-stat-label">Total Users</span>
+                            </div>
+                            <div className="dash-stat-card gradient-green">
+                                <span className="dash-stat-num">${stats.total_revenue.toFixed(2)}</span>
+                                <span className="dash-stat-label">Total Revenue</span>
+                            </div>
+                            <div className="dash-stat-card gradient-amber">
+                                <span className="dash-stat-num">{stats.total_courses}</span>
+                                <span className="dash-stat-label">Total Courses</span>
+                            </div>
+                            <div className="dash-stat-card gradient-rose">
+                                <span className="dash-stat-num">{stats.total_enrollments}</span>
+                                <span className="dash-stat-label">Enrollments</span>
+                            </div>
+                        </div>
 
-            {tab === 'courses' && (
-                <div className="dash-section">
-                    <h2>All Courses</h2>
-                    <table className="dash-table">
-                        <thead><tr><th>Title</th><th>Teacher</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody>
-                            {courses.map(c => (
-                                <tr key={c.id}>
-                                    <td>{c.title}</td>
-                                    <td>{c.teacher?.name}</td>
-                                    <td>${c.price}</td>
-                                    <td><span className={`dash-badge ${c.status}`}>{c.status}</span></td>
-                                    <td>
-                                        {c.status === 'draft' && <button className="action-btn success" onClick={() => approveCourse(c.id)}>✅ Approve</button>}
-                                        {c.status !== 'archived' && <button className="action-btn danger" onClick={() => rejectCourse(c.id)}>❌ Reject</button>}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                        <div className="dash-grid-2">
+                            <div className="dash-section">
+                                <h3>User Distribution</h3>
+                                <div className="stat-row">
+                                    <span>Students</span>
+                                    <span className="badge-pill">{stats.total_students}</span>
+                                </div>
+                                <div className="stat-row">
+                                    <span>Teachers</span>
+                                    <span className="badge-pill">{stats.total_teachers}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
 
-            {tab === 'categories' && (
-                <div className="dash-section">
-                    <h2>Add Category</h2>
-                    <form onSubmit={addCategory} style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                        <input type="text" value={categoryName} onChange={e => setCategoryName(e.target.value)} placeholder="Category name" className="search-input" style={{ flex: 1 }} />
-                        <button type="submit" className="btn-primary">Add</button>
-                    </form>
-                </div>
-            )}
+                {tab === 'users' && (
+                    <div className="dash-section">
+                        <div className="table-header-actions">
+                            <input
+                                type="text"
+                                placeholder="Search users..."
+                                className="search-input"
+                                value={userSearch}
+                                onChange={e => setUserSearch(e.target.value)}
+                            />
+                            <select
+                                className="filter-select"
+                                value={userRole}
+                                onChange={e => setUserRole(e.target.value)}
+                            >
+                                <option value="">All Roles</option>
+                                <option value="student">Student</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
 
-            {tab === 'overview' && (
-                <div className="dash-section">
-                    <div className="empty-state">
-                        <span className="empty-icon">📊</span>
-                        <h3>Platform Overview</h3>
-                        <p>Use the tabs above to manage users, courses, and categories.</p>
+                        <div className="table-container">
+                            <table className="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map(u => (
+                                        <tr key={u.id}>
+                                            <td>
+                                                <div className="user-cell">
+                                                    <div className="avatar-placeholder">{u.name[0]}</div>
+                                                    <div>
+                                                        <div className="font-medium">{u.name}</div>
+                                                        <div className="text-sm text-muted">{u.email}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <select
+                                                    value={u.role}
+                                                    onChange={e => changeRole(u.id, e.target.value)}
+                                                    className="role-select"
+                                                >
+                                                    <option value="student">Student</option>
+                                                    <option value="teacher">Teacher</option>
+                                                    <option value="admin">Admin</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <span className={`status-dot ${u.is_active ? 'online' : 'offline'}`}></span>
+                                                {u.is_active ? 'Active' : 'Inactive'}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    className={`btn-sm ${u.is_active ? 'btn-danger-outline' : 'btn-success-outline'}`}
+                                                    onClick={() => toggleActive(u.id)}
+                                                >
+                                                    {u.is_active ? 'Deactivate' : 'Activate'}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {users.length === 0 && !loading && (
+                                        <tr><td colSpan="4" className="text-center">No users found</td></tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+
+                {tab === 'courses' && (
+                    <div className="dash-section">
+                        <div className="table-header-actions">
+                            <input
+                                type="text"
+                                placeholder="Search courses..."
+                                className="search-input"
+                                value={courseSearch}
+                                onChange={e => setCourseSearch(e.target.value)}
+                            />
+                            <select
+                                className="filter-select"
+                                value={courseStatus}
+                                onChange={e => setCourseStatus(e.target.value)}
+                            >
+                                <option value="">All Status</option>
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+
+                        <div className="table-container">
+                            <table className="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Teacher</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {courses.map(c => (
+                                        <tr key={c.id}>
+                                            <td>
+                                                <Link to={`/courses/${c.id}`} className="font-medium hover-link" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {c.title}
+                                                </Link>
+                                                <div className="text-sm text-muted">{c.category?.name || 'Uncategorized'}</div>
+                                            </td>
+                                            <td>{c.teacher?.name}</td>
+                                            <td>${c.price}</td>
+                                            <td>
+                                                <span className={`status-badge ${c.status}`}>{c.status}</span>
+                                            </td>
+                                            <td className="actions-cell">
+                                                {c.status === 'draft' && (
+                                                    <button className="btn-icon success" title="Approve" onClick={() => approveCourse(c.id)}>✓</button>
+                                                )}
+                                                {c.status !== 'archived' && (
+                                                    <button className="btn-icon danger" title="Reject/Archive" onClick={() => rejectCourse(c.id)}>✕</button>
+                                                )}
+                                                <button className="btn-icon danger" title="Delete" onClick={() => deleteCourse(c.id)}>🗑️</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {courses.length === 0 && !loading && (
+                                        <tr><td colSpan="5" className="text-center">No courses found</td></tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
+                {tab === 'categories' && (
+                    <div className="dash-section">
+                        <form onSubmit={addCategory} className="add-category-form">
+                            <input
+                                type="text"
+                                value={categoryName}
+                                onChange={e => setCategoryName(e.target.value)}
+                                placeholder="New category name..."
+                                className="search-input"
+                            />
+                            <button type="submit" className="btn-primary">Add Category</button>
+                        </form>
+
+                        <div className="category-list">
+                            {categories.map(c => (
+                                <div key={c.id} className="category-item">
+                                    <span>{c.name}</span>
+                                    <button className="btn-icon danger" onClick={() => deleteCategory(c.id)}>🗑️</button>
+                                </div>
+                            ))}
+                            {categories.length === 0 && <p className="text-muted">No categories yet.</p>}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

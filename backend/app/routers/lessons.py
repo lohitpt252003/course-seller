@@ -1,23 +1,55 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
+from typing import Optional
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 from app.models.course import Course
 from app.models.lesson import Lesson
+from app.models.enrollment import Enrollment
 from app.schemas.schemas import LessonCreate, LessonUpdate, LessonOut
-from app.utils.auth import get_current_user
+from app.utils.auth import get_current_user, get_current_user_optional
 
 router = APIRouter(prefix="/api", tags=["Lessons"])
 
 
 @router.get("/courses/{course_id}/lessons", response_model=list[LessonOut])
-def list_lessons(course_id: int, db: Session = Depends(get_db)):
+def list_lessons(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user_optional)
+):
     try:
         course = db.query(Course).filter(Course.id == course_id).first()
         if not course:
             return JSONResponse(status_code=404, content={"success": False, "message": "Course not found"})
-        return db.query(Lesson).filter(Lesson.course_id == course_id).order_by(Lesson.order_index).all()
+
+        lessons = db.query(Lesson).filter(Lesson.course_id == course_id).order_by(Lesson.order_index).all()
+
+        # Check access rights
+        has_access = False
+        if current_user:
+            if current_user.role == "admin":
+                has_access = True
+            elif course.teacher_id == current_user.id:
+                has_access = True
+            else:
+                # Check enrollment
+                enrollment = db.query(Enrollment).filter(
+                    Enrollment.user_id == current_user.id,
+                    Enrollment.course_id == course_id
+                ).first()
+                if enrollment:
+                    has_access = True
+
+        if not has_access:
+            # Redact content for unauthorized users
+            for lesson in lessons:
+                lesson.video_url = None
+                lesson.pdf_url = None
+                lesson.content = None
+
+        return lessons
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list lessons: {str(e)}"})
 

@@ -38,21 +38,48 @@ def get_stats(db: Session = Depends(get_db), current_user: User = Depends(requir
 
 
 @router.get("/users", response_model=list[UserOut])
-def admin_list_users(db: Session = Depends(get_db), current_user: User = Depends(require_role(["admin"]))):
+def admin_list_users(
+    search: str = None,
+    role: str = None,
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"]))
+):
     if current_user is None:
         return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
     try:
-        return db.query(User).all()
+        query = db.query(User)
+        if search:
+            query = query.filter(User.email.ilike(f"%{search}%") | User.name.ilike(f"%{search}%"))
+        if role:
+            query = query.filter(User.role == role)
+        
+        return query.offset(skip).limit(limit).all()
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list users: {str(e)}"})
 
 
 @router.get("/courses", response_model=list[CourseOut])
-def admin_list_courses(db: Session = Depends(get_db), current_user: User = Depends(require_role(["admin"]))):
+def admin_list_courses(
+    search: str = None,
+    status: str = None,
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"]))
+):
     if current_user is None:
         return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
     try:
-        return db.query(Course).options(joinedload(Course.teacher), joinedload(Course.category)).order_by(Course.created_at.desc()).all()
+        query = db.query(Course).options(joinedload(Course.teacher), joinedload(Course.category))
+        
+        if search:
+            query = query.filter(Course.title.ilike(f"%{search}%"))
+        if status:
+            query = query.filter(Course.status == status)
+            
+        return query.order_by(Course.created_at.desc()).offset(skip).limit(limit).all()
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to list courses: {str(e)}"})
 

@@ -1,0 +1,374 @@
+.course-landing-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.landing-hero {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .landing-hero {
+        flex-direction: column;
+    }
+}
+
+.landing-info {
+    flex: 1;
+}
+
+.landing-category-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.landing-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0.5rem 0 1rem;
+    line-height: 1.2;
+}
+
+.landing-desc {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+.landing-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.landing-teacher {
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
+.landing-sidebar {
+    width: 380px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .landing-sidebar {
+        width: 100%;
+    }
+}
+
+.landing-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: sticky;
+    top: 90px;
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+.landing-img-container {
+    width: 100%;
+    height: 220px;
+    background: var(--hover-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.landing-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.landing-img-placeholder {
+    font-size: 4rem;
+}
+
+.landing-card-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.landing-price {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.landing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.landing-btn {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.landing-content {
+    max-width: 800px;
+}
+
+.landing-section {
+    margin-bottom: 4rem;
+}
+
+.landing-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.lesson-item:hover {
+    border-color: var(--primary);
+    transform: translateX(4px);
+}
+
+.lesson-num {
+    background: var(--hover-bg);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.lesson-title {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.lesson-type {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.reviews-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.review-card {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.review-author {
+    font-weight: 600;
+}
+
+.review-msg {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.role-badge.admin {
+    background: var(--danger);
+    color: white;
+}
+
+.role-badge.teacher {
+    background: var(--primary);
+    color: white;
+}
+
+/* Accordion & Preview Styles */
+.lesson-item-container {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.lesson-item-container.expanded {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    transition: all 0.2s;
+    border-bottom: 1px solid transparent;
+}
+
+.lesson-item.clickable {
+    cursor: pointer;
+}
+
+.lesson-item.clickable:hover {
+    background: var(--hover-bg);
+}
+
+.lesson-item-container.expanded .lesson-item {
+    border-bottom-color: var(--border);
+    background: var(--hover-bg);
+}
+
+.lesson-toggle {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+}
+
+.lesson-preview-content {
+    padding: 1.5rem;
+    background: var(--bg);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: black;
+    margin-bottom: 1rem;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.pdf-container {
+    height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.pdf-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.text-content {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: var(--text);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

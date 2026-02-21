@@ -8,6 +8,14 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
 
+    # MinIO
+    MINIO_ENDPOINT: str = "minio:9000"
+    MINIO_EXTERNAL_ENDPOINT: str = "localhost:9000"
+    MINIO_ACCESS_KEY: str = "minioadmin"
+    MINIO_SECRET_KEY: str = "minioadmin"
+    MINIO_BUCKET_NAME: str = "course-seller"
+    MINIO_SECURE: bool = False
+
     class Config:
         env_file = ".env"
 

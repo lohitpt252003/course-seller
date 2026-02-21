@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import { useAuth } from '../../context/AuthContext';
 import './index.css';
 
 export default function CoursePlayer() {
     const { courseId } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);
     const [currentLesson, setCurrentLesson] = useState(null);
     const [progress, setProgress] = useState({});
     const [enrollmentId, setEnrollmentId] = useState(null);
+    const isAdmin = user?.role === 'admin';
 
     useEffect(() => {
         api.get(`/courses/${courseId}`).then(r => setCourse(r.data)).catch(() => navigate('/courses'));
@@ -18,6 +21,10 @@ export default function CoursePlayer() {
             setLessons(r.data);
             if (r.data.length > 0) setCurrentLesson(r.data[0]);
         });
+
+        // Skip enrollment check for admins
+        if (isAdmin) return;
+
         api.get('/enrollments/my').then(r => {
             const enr = r.data.find(e => e.course_id === parseInt(courseId));
             if (!enr) { navigate(`/courses/${courseId}`); return; }
@@ -28,9 +35,12 @@ export default function CoursePlayer() {
                 setProgress(map);
             });
         });
-    }, [courseId]);
+    }, [courseId, isAdmin, navigate]);
 
     const markComplete = async (lessonId) => {
+        // Admins can't track progress (or maybe they can, but let's disable strictly marking for now to avoid errors if no enrollment exists)
+        if (isAdmin) return;
+
         try {
             await api.patch('/enrollments/progress', { lesson_id: lessonId, completed: true });
             setProgress(prev => ({ ...prev, [lessonId]: true }));
@@ -48,10 +58,15 @@ export default function CoursePlayer() {
             <div className="player-sidebar">
                 <div className="sidebar-top">
                     <h3>{course.title}</h3>
-                    <div className="progress-bar-container">
-                        <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
-                    </div>
-                    <span className="progress-text">{progressPercent}% complete</span>
+                    {!isAdmin && (
+                        <>
+                            <div className="progress-bar-container">
+                                <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
+                            </div>
+                            <span className="progress-text">{progressPercent}% complete</span>
+                        </>
+                    )}
+                    {isAdmin && <span className="admin-badge">Admin Access</span>}
                 </div>
                 <div className="lessons-nav">
                     {lessons.map((lesson, i) => (
@@ -82,10 +97,13 @@ export default function CoursePlayer() {
                             <div className="text-content">{currentLesson.content}</div>
                         )}
                         <div className="lesson-actions">
-                            {!progress[currentLesson.id] && (
+                            {!progress[currentLesson.id] && !isAdmin && (
                                 <button className="btn-primary" onClick={() => markComplete(currentLesson.id)}>
                                     ✅ Mark as Complete
                                 </button>
+                            )}
+                            {isAdmin && (
+                                <span className="text-muted">Admin View Mode</span>
                             )}
                             {progress[currentLesson.id] && (
                                 <span className="completed-badge">✅ Completed</span>

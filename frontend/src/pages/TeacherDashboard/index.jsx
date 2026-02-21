@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../api/axios';
+import { uploadFile } from '../../api/upload';
 import { useAuth } from '../../context/AuthContext';
 import '../StudentDashboard/index.css';
 
@@ -38,11 +40,26 @@ export default function TeacherDashboard() {
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({ title: '', description: '', price: 0, category_id: '', thumbnail_url: '' });
     const [editingId, setEditingId] = useState(null);
-    const [lessonForm, setLessonForm] = useState({ title: '', content_type: 'text', content: '', video_url: '', pdf_url: '', order_index: 0 });
+    const [lessonForm, setLessonForm] = useState({ title: '', content: '', file_url: '', order_index: 0 });
     const [showLessonForm, setShowLessonForm] = useState(null);
+    const [uploading, setUploading] = useState(false);
 
     // Student & review filters
     const [selectedCourseId, setSelectedCourseId] = useState('all');
+
+    // File upload handler
+    const handleFileUpload = async (file, folder, onSuccess) => {
+        if (!file) return;
+        setUploading(true);
+        try {
+            const result = await uploadFile(file, folder);
+            onSuccess(result.url);
+        } catch (err) {
+            alert(err.response?.data?.message || 'File upload failed');
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const fetchAnalytics = () => {
         setLoading(true);
@@ -91,9 +108,31 @@ export default function TeacherDashboard() {
     const handleLessonSubmit = async (e, courseId) => {
         e.preventDefault();
         try {
-            await api.post(`/courses/${courseId}/lessons`, { ...lessonForm, order_index: parseInt(lessonForm.order_index) || 0 });
+            // Auto-detect content_type from what's provided
+            let content_type = 'text';
+            let video_url = null;
+            let pdf_url = null;
+            if (lessonForm.file_url) {
+                const url = lessonForm.file_url.toLowerCase();
+                if (url.match(/\.(mp4|mkv|avi|mov|webm)$/)) {
+                    content_type = 'video';
+                    video_url = lessonForm.file_url;
+                } else {
+                    content_type = 'pdf';
+                    pdf_url = lessonForm.file_url;
+                }
+            }
+            const data = {
+                title: lessonForm.title,
+                content_type,
+                content: lessonForm.content || null,
+                video_url,
+                pdf_url,
+                order_index: parseInt(lessonForm.order_index) || 0,
+            };
+            await api.post(`/courses/${courseId}/lessons`, data);
             setShowLessonForm(null);
-            setLessonForm({ title: '', content_type: 'text', content: '', video_url: '', pdf_url: '', order_index: 0 });
+            setLessonForm({ title: '', content: '', file_url: '', order_index: 0 });
             fetchAnalytics();
         } catch (err) {
             alert(err.response?.data?.message || 'Failed');
@@ -242,7 +281,14 @@ export default function TeacherDashboard() {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group"><label>Thumbnail URL</label><input type="text" value={form.thumbnail_url} onChange={e => setForm({ ...form, thumbnail_url: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>
+                            <div className="form-group"><label>📷 Thumbnail</label>
+                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input type="file" onChange={e => handleFileUpload(e.target.files[0], 'thumbnails', url => setForm({ ...form, thumbnail_url: url }))} disabled={uploading} style={{ flex: 1, padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
+                                    {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
+                                </div>
+                                <input type="text" placeholder="Or paste URL manually" value={form.thumbnail_url} onChange={e => setForm({ ...form, thumbnail_url: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', marginTop: '0.4rem', fontSize: '0.85rem' }} />
+                                {form.thumbnail_url && <img src={form.thumbnail_url} alt="preview" style={{ width: 80, height: 50, objectFit: 'cover', borderRadius: 6, marginTop: '0.4rem', border: '1px solid var(--border)' }} />}
+                            </div>
                             <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>{editingId ? '✅ Update' : '🚀 Create'} Course</button>
                         </form>
                     )}
@@ -258,7 +304,9 @@ export default function TeacherDashboard() {
                         <div key={course.id} className="teacher-course-card" style={{ marginBottom: '0.75rem' }}>
                             <div className="teacher-course-header">
                                 <div>
-                                    <span className="teacher-course-title">{course.title}</span>
+                                    <Link to={`/courses/${course.id}`} className="teacher-course-title" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        {course.title}
+                                    </Link>
                                     <span className={`dash-badge ${course.status}`} style={{ marginLeft: '0.75rem' }}>{course.status}</span>
                                 </div>
                             </div>
@@ -285,171 +333,172 @@ export default function TeacherDashboard() {
                             {showLessonForm === course.id && (
                                 <form onSubmit={(e) => handleLessonSubmit(e, course.id)} style={{ marginTop: '0.5rem', padding: '1rem', background: 'var(--hover-bg)', borderRadius: '10px' }}>
                                     <div className="form-group"><label>Lesson Title</label><input type="text" value={lessonForm.title} onChange={e => setLessonForm({ ...lessonForm, title: e.target.value })} required style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                        <div className="form-group"><label>Content Type</label>
-                                            <select value={lessonForm.content_type} onChange={e => setLessonForm({ ...lessonForm, content_type: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}>
-                                                <option value="text">Text</option>
-                                                <option value="video">Video</option>
-                                                <option value="pdf">PDF</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group"><label>Order</label><input type="number" value={lessonForm.order_index} onChange={e => setLessonForm({ ...lessonForm, order_index: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>
+                                    <div className="form-group"><label>Order</label><input type="number" value={lessonForm.order_index} onChange={e => setLessonForm({ ...lessonForm, order_index: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>
+                                    <div className="form-group"><label>📝 Text Content</label><textarea value={lessonForm.content} onChange={e => setLessonForm({ ...lessonForm, content: e.target.value })} placeholder="Write lesson content here (optional)" style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', minHeight: '80px' }} /></div>
+                                    <div className="form-group"><label>📎 Upload File</label>
+                                        <input type="file" onChange={e => handleFileUpload(e.target.files[0], 'materials', url => setLessonForm({ ...lessonForm, file_url: url }))} disabled={uploading} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
+                                        <input type="text" placeholder="Or paste file URL" value={lessonForm.file_url} onChange={e => setLessonForm({ ...lessonForm, file_url: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', marginTop: '0.4rem', fontSize: '0.85rem' }} />
+                                        {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
                                     </div>
-                                    {lessonForm.content_type === 'text' && <div className="form-group"><label>Content</label><textarea value={lessonForm.content} onChange={e => setLessonForm({ ...lessonForm, content: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', minHeight: '80px' }} /></div>}
-                                    {lessonForm.content_type === 'video' && <div className="form-group"><label>Video URL</label><input type="text" value={lessonForm.video_url} onChange={e => setLessonForm({ ...lessonForm, video_url: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>}
-                                    {lessonForm.content_type === 'pdf' && <div className="form-group"><label>PDF URL</label><input type="text" value={lessonForm.pdf_url} onChange={e => setLessonForm({ ...lessonForm, pdf_url: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} /></div>}
                                     <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>✅ Add Lesson</button>
                                 </form>
                             )}
                         </div>
                     ))}
                 </div>
-            )}
+            )
+            }
 
             {/* ===== STUDENTS TAB ===== */}
-            {tab === 'students' && (
-                <div className="dash-section">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-                        <h2>👥 Enrolled Students</h2>
-                        <select className="course-select" value={selectedCourseId} onChange={e => setSelectedCourseId(e.target.value)}>
-                            <option value="all">All Courses</option>
-                            {courses.map(c => <option key={c.id} value={c.id}>{c.title} ({c.total_students})</option>)}
-                        </select>
-                    </div>
+            {
+                tab === 'students' && (
+                    <div className="dash-section">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                            <h2>👥 Enrolled Students</h2>
+                            <select className="course-select" value={selectedCourseId} onChange={e => setSelectedCourseId(e.target.value)}>
+                                <option value="all">All Courses</option>
+                                {courses.map(c => <option key={c.id} value={c.id}>{c.title} ({c.total_students})</option>)}
+                            </select>
+                        </div>
 
-                    {allStudents.length === 0 ? (
-                        <div className="empty-state">
-                            <span className="empty-state-icon">👥</span>
-                            No students enrolled yet.
-                        </div>
-                    ) : (
-                        <div className="students-table-container">
-                            <table className="dash-table">
-                                <thead>
-                                    <tr>
-                                        <th>Student</th>
-                                        <th>Email</th>
-                                        <th>Course</th>
-                                        <th>Enrolled</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {allStudents.map((s, i) => (
-                                        <tr key={`${s.id}-${s.course_id}-${i}`}>
-                                            <td>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                    <div className="activity-avatar" style={{ width: 30, height: 30, fontSize: '0.75rem' }}>{s.name?.[0] || '?'}</div>
-                                                    <span style={{ fontWeight: 500 }}>{s.name}</span>
-                                                </div>
-                                            </td>
-                                            <td style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>{s.email}</td>
-                                            <td style={{ fontSize: '0.88rem' }}>{s.course_title}</td>
-                                            <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{s.enrolled_at ? new Date(s.enrolled_at).toLocaleDateString() : '—'}</td>
-                                            <td>
-                                                <span className={`dash-badge ${s.completed ? 'completed' : 'in-progress'}`}>
-                                                    {s.completed ? '✅ Completed' : '🔄 In Progress'}
-                                                </span>
-                                            </td>
+                        {allStudents.length === 0 ? (
+                            <div className="empty-state">
+                                <span className="empty-state-icon">👥</span>
+                                No students enrolled yet.
+                            </div>
+                        ) : (
+                            <div className="students-table-container">
+                                <table className="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Email</th>
+                                            <th>Course</th>
+                                            <th>Enrolled</th>
+                                            <th>Status</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                    <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Showing {allStudents.length} student{allStudents.length !== 1 ? 's' : ''} across {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''}
-                    </p>
-                </div>
-            )}
+                                    </thead>
+                                    <tbody>
+                                        {allStudents.map((s, i) => (
+                                            <tr key={`${s.id}-${s.course_id}-${i}`}>
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <div className="activity-avatar" style={{ width: 30, height: 30, fontSize: '0.75rem' }}>{s.name?.[0] || '?'}</div>
+                                                        <span style={{ fontWeight: 500 }}>{s.name}</span>
+                                                    </div>
+                                                </td>
+                                                <td style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>{s.email}</td>
+                                                <td style={{ fontSize: '0.88rem' }}>{s.course_title}</td>
+                                                <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{s.enrolled_at ? new Date(s.enrolled_at).toLocaleDateString() : '—'}</td>
+                                                <td>
+                                                    <span className={`dash-badge ${s.completed ? 'completed' : 'in-progress'}`}>
+                                                        {s.completed ? '✅ Completed' : '🔄 In Progress'}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                            Showing {allStudents.length} student{allStudents.length !== 1 ? 's' : ''} across {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''}
+                        </p>
+                    </div>
+                )
+            }
 
             {/* ===== REVENUE TAB ===== */}
-            {tab === 'revenue' && (
-                <div className="dash-section">
-                    <h2>💰 Revenue</h2>
-                    <div className="revenue-total">${overview.total_revenue.toFixed(2)}</div>
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Total lifetime revenue</p>
+            {
+                tab === 'revenue' && (
+                    <div className="dash-section">
+                        <h2>💰 Revenue</h2>
+                        <div className="revenue-total">${overview.total_revenue.toFixed(2)}</div>
+                        <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Total lifetime revenue</p>
 
-                    {courses.length === 0 ? (
-                        <div className="empty-state">
-                            <span className="empty-state-icon">💰</span>
-                            No revenue data yet. Create and publish courses to start earning!
-                        </div>
-                    ) : (
-                        <div className="students-table-container">
-                            <table className="dash-table">
-                                <thead>
-                                    <tr>
-                                        <th>Course</th>
-                                        <th>Price</th>
-                                        <th>Sales</th>
-                                        <th>Students</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[...courses].sort((a, b) => b.revenue - a.revenue).map(c => (
-                                        <tr key={c.id}>
-                                            <td>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                    <span style={{ fontWeight: 600 }}>{c.title}</span>
-                                                    <span className={`dash-badge ${c.status}`}>{c.status}</span>
-                                                </div>
-                                            </td>
-                                            <td>${c.price.toFixed(2)}</td>
-                                            <td>{c.sales}</td>
-                                            <td>{c.total_students}</td>
-                                            <td style={{ fontWeight: 700, color: 'var(--success)' }}>${c.revenue.toFixed(2)}</td>
+                        {courses.length === 0 ? (
+                            <div className="empty-state">
+                                <span className="empty-state-icon">💰</span>
+                                No revenue data yet. Create and publish courses to start earning!
+                            </div>
+                        ) : (
+                            <div className="students-table-container">
+                                <table className="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Price</th>
+                                            <th>Sales</th>
+                                            <th>Students</th>
+                                            <th>Revenue</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
-            )}
+                                    </thead>
+                                    <tbody>
+                                        {[...courses].sort((a, b) => b.revenue - a.revenue).map(c => (
+                                            <tr key={c.id}>
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <span style={{ fontWeight: 600 }}>{c.title}</span>
+                                                        <span className={`dash-badge ${c.status}`}>{c.status}</span>
+                                                    </div>
+                                                </td>
+                                                <td>${c.price.toFixed(2)}</td>
+                                                <td>{c.sales}</td>
+                                                <td>{c.total_students}</td>
+                                                <td style={{ fontWeight: 700, color: 'var(--success)' }}>${c.revenue.toFixed(2)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                )
+            }
 
             {/* ===== REVIEWS TAB ===== */}
-            {tab === 'reviews' && (
-                <div className="dash-section">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-                        <h2>⭐ Student Reviews</h2>
-                        <select className="course-select" value={selectedCourseId} onChange={e => setSelectedCourseId(e.target.value)}>
-                            <option value="all">All Courses</option>
-                            {courses.map(c => <option key={c.id} value={c.id}>{c.title} ({c.reviews.length} reviews)</option>)}
-                        </select>
-                    </div>
-
-                    {allReviews.length === 0 ? (
-                        <div className="empty-state">
-                            <span className="empty-state-icon">⭐</span>
-                            No reviews yet. Reviews will appear here when students rate your courses.
+            {
+                tab === 'reviews' && (
+                    <div className="dash-section">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                            <h2>⭐ Student Reviews</h2>
+                            <select className="course-select" value={selectedCourseId} onChange={e => setSelectedCourseId(e.target.value)}>
+                                <option value="all">All Courses</option>
+                                {courses.map(c => <option key={c.id} value={c.id}>{c.title} ({c.reviews.length} reviews)</option>)}
+                            </select>
                         </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            {allReviews.map((r, i) => (
-                                <div key={`${r.id}-${i}`} className="review-card">
-                                    <div className="review-header">
-                                        <div className="activity-avatar" style={{ width: 34, height: 34, fontSize: '0.8rem' }}>{r.user_name?.[0] || '?'}</div>
-                                        <div>
-                                            <strong style={{ fontSize: '0.95rem' }}>{r.user_name}</strong>
-                                            <div><Stars rating={r.rating} /></div>
+
+                        {allReviews.length === 0 ? (
+                            <div className="empty-state">
+                                <span className="empty-state-icon">⭐</span>
+                                No reviews yet. Reviews will appear here when students rate your courses.
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {allReviews.map((r, i) => (
+                                    <div key={`${r.id}-${i}`} className="review-card">
+                                        <div className="review-header">
+                                            <div className="activity-avatar" style={{ width: 34, height: 34, fontSize: '0.8rem' }}>{r.user_name?.[0] || '?'}</div>
+                                            <div>
+                                                <strong style={{ fontSize: '0.95rem' }}>{r.user_name}</strong>
+                                                <div><Stars rating={r.rating} /></div>
+                                            </div>
+                                        </div>
+                                        {r.comment && <p className="review-comment">{r.comment}</p>}
+                                        <div className="review-meta">
+                                            <span>📚 {r.course_title}</span>
+                                            <span>{r.created_at ? new Date(r.created_at).toLocaleDateString() : ''}</span>
                                         </div>
                                     </div>
-                                    {r.comment && <p className="review-comment">{r.comment}</p>}
-                                    <div className="review-meta">
-                                        <span>📚 {r.course_title}</span>
-                                        <span>{r.created_at ? new Date(r.created_at).toLocaleDateString() : ''}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Showing {allReviews.length} review{allReviews.length !== 1 ? 's' : ''}
-                    </p>
-                </div>
-            )}
-        </div>
+                                ))}
+                            </div>
+                        )}
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                            Showing {allReviews.length} review{allReviews.length !== 1 ? 's' : ''}
+                        </p>
+                    </div>
+                )
+            }
+        </div >
     );
 }

@@ -1,13 +1,21 @@
-# Build stage
-FROM node:20-alpine AS build
+# Base stage
+FROM node:20-alpine AS base
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+
+# Development stage
+FROM base AS development
+COPY . .
+CMD ["npm", "run", "dev", "--", "--host"]
+
+# Build stage
+FROM base AS build
 COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM nginx:alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Nginx config for SPA routing
