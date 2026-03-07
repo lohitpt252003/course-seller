@@ -1,0 +1,112 @@
+/* CoursePlayer — Light Theme */
+
+[data-theme="light"] .courseplayer-sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseplayer-sidebartop {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseplayer-sidebartop h3 {
+    color: var(--text);
+}
+
+[data-theme="light"] .courseplayer-pbcontainer {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .courseplayer-progress {
+    background: var(--success);
+}
+
+[data-theme="light"] .courseplayer-progresstext {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .courseplayer-adminbadge {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+[data-theme="light"] .courseplayer-navitem {
+    color: var(--text);
+}
+
+[data-theme="light"] .courseplayer-navitem:hover {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .courseplayer-navitem.active {
+    background: rgba(99, 102, 241, 0.1);
+    border-right: 3px solid var(--primary);
+}
+
+[data-theme="light"] .courseplayer-navitem.active .courseplayer-navtitle {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+[data-theme="light"] .courseplayer-check {
+    border: 2px solid var(--border);
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .courseplayer-check.done {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+[data-theme="light"] .courseplayer-content {
+    background: var(--bg);
+}
+
+[data-theme="light"] .courseplayer-content h2 {
+    color: var(--text);
+}
+
+[data-theme="light"] .courseplayer-videocontainer {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: #000;
+}
+
+[data-theme="light"] .courseplayer-pdfcontainer {
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .courseplayer-textcontent {
+    color: var(--text);
+}
+
+[data-theme="light"] .courseplayer-actions {
+    border-top: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseplayer-btn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .courseplayer-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+[data-theme="light"] .courseplayer-completedbadge {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .courseplayer-textmuted {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .courseplayer-emptystate {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    color: var(--text-muted);
+}

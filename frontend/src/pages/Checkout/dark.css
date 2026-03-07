@@ -1,0 +1,179 @@
+/* Checkout — Dark Theme */
+
+[data-theme="dark"] .checkout-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .checkout-dummybanner {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .checkout-couponsec {
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .checkout-couponinput {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .checkout-couponinput:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="dark"] .checkout-couponbtn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .checkout-couponbtn[disabled] {
+    opacity: 0.5;
+    background: var(--text-muted);
+    cursor: not-allowed;
+}
+
+[data-theme="dark"] .checkout-couponremove {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+[data-theme="dark"] .checkout-couponsuccess {
+    color: var(--success);
+}
+
+[data-theme="dark"] .checkout-couponhint {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-methodbtn {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-methodbtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .checkout-methodbtn.active {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .checkout-payform {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .checkout-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="dark"] .checkout-formgroup input,
+[data-theme="dark"] .checkout-formgroup select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .checkout-formgroup input:focus,
+[data-theme="dark"] .checkout-formgroup select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="dark"] .checkout-cardbrand {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-payinfo {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-upiapp {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .checkout-qrcode {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .checkout-qrlabel {
+    color: var(--text);
+}
+
+[data-theme="dark"] .checkout-mainbtn {
+    background: var(--success);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="dark"] .checkout-mainbtn:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+[data-theme="dark"] .checkout-mainbtn:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .checkout-securelabel {
+    color: var(--success);
+}
+
+[data-theme="dark"] .checkout-textmuted {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-orderline.discount {
+    color: var(--success);
+}
+
+[data-theme="dark"] .checkout-orderdivider {
+    background: var(--border);
+}
+
+[data-theme="dark"] .checkout-guaranteeitem {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-successcircle {
+    background: var(--success);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="dark"] .checkout-successamount {
+    color: var(--success);
+}
+
+[data-theme="dark"] .checkout-successcourse {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-successredirect {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .checkout-successbar {
+    background: var(--hover-bg);
+}
+
+[data-theme="dark"] .checkout-successfill {
+    background: var(--success);
+}

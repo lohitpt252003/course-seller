@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import { uploadFile } from '../../api/upload';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function CourseEditor({ course, onSave, onCancel }) {
     const [form, setForm] = useState({
@@ -136,22 +140,22 @@ export default function CourseEditor({ course, onSave, onCancel }) {
     };
 
     return (
-        <div className="course-editor fade-in">
-            <div className="editor-header">
+        <div className="courseeditor-root fade-in">
+            <div className="courseeditor-header">
                 <h2>✏️ Edit Course</h2>
-                <div className="editor-actions">
-                    <button className="landing-btn btn-secondary" onClick={onCancel} style={{ width: 'auto', padding: '0.5rem 1rem' }}>
+                <div className="courseeditor-actions">
+                    <button className="btn-secondary" onClick={onCancel} style={{ padding: '0.5rem 1rem', borderRadius: '8px' }}>
                         Cancel
                     </button>
-                    <button className="landing-btn btn-primary" onClick={handleCourseSubmit} style={{ width: 'auto', padding: '0.5rem 1rem' }} disabled={loading}>
+                    <button className="btn-primary" onClick={handleCourseSubmit} style={{ padding: '0.5rem 1rem', borderRadius: '8px' }} disabled={loading}>
                         {loading ? 'Saving...' : '💾 Save Changes'}
                     </button>
                 </div>
             </div>
 
-            <form className="dash-form" onSubmit={handleCourseSubmit}>
-                <div className="form-group">
-                    <label>Course Title</label>
+            <form onSubmit={handleCourseSubmit}>
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Course Title</label>
                     <input
                         type="text"
                         value={form.title}
@@ -161,8 +165,8 @@ export default function CourseEditor({ course, onSave, onCancel }) {
                     />
                 </div>
 
-                <div className="form-group">
-                    <label>Description</label>
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Description</label>
                     <textarea
                         value={form.description}
                         onChange={e => setForm({ ...form, description: e.target.value })}
@@ -170,9 +174,9 @@ export default function CourseEditor({ course, onSave, onCancel }) {
                     />
                 </div>
 
-                <div className="form-row">
+                <div className="courseeditor-formrow" style={{ marginBottom: '1rem' }}>
                     <div className="form-group">
-                        <label>Price ($)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Price ($)</label>
                         <input
                             type="number" step="0.01" min="0"
                             value={form.price}
@@ -181,7 +185,7 @@ export default function CourseEditor({ course, onSave, onCancel }) {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Category</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Category</label>
                         <select
                             value={form.category_id}
                             onChange={e => setForm({ ...form, category_id: e.target.value })}
@@ -193,8 +197,8 @@ export default function CourseEditor({ course, onSave, onCancel }) {
                     </div>
                 </div>
 
-                <div className="form-group">
-                    <label>📷 Thumbnail</label>
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>📷 Thumbnail</label>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <input type="file" onChange={e => handleFileUpload(e.target.files[0], 'thumbnails', url => setForm({ ...form, thumbnail_url: url }))} disabled={uploading} style={{ flex: 1, padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
                         {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
@@ -206,7 +210,7 @@ export default function CourseEditor({ course, onSave, onCancel }) {
 
             <hr style={{ margin: '2rem 0', borderColor: 'var(--border)' }} />
 
-            <div className="form-section">
+            <div className="courseeditor-formsection">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3>📚 Lessons</h3>
                     <button
@@ -216,54 +220,54 @@ export default function CourseEditor({ course, onSave, onCancel }) {
                             setEditingLessonId(null);
                             setLessonForm({ title: '', content: '', file_url: '', order_index: lessons.length + 1 });
                         }}
-                        style={{ fontSize: '0.9rem', padding: '0.4rem 0.8rem' }}
+                        style={{ fontSize: '0.9rem', padding: '0.4rem 0.8rem', borderRadius: '6px' }}
                     >
                         {showLessonForm ? '✕ Close Form' : '+ Add Lesson'}
                     </button>
                 </div>
 
                 {showLessonForm && (
-                    <form onSubmit={handleLessonSubmit} className="add-lesson-form fade-in">
+                    <form onSubmit={handleLessonSubmit} className="courseeditor-addform fade-in">
                         <h4 style={{ marginBottom: '1rem' }}>{editingLessonId ? 'Edit Lesson' : 'New Lesson'}</h4>
-                        <div className="form-group">
-                            <label>Lesson Title</label>
+                        <div className="form-group" style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Lesson Title</label>
                             <input type="text" value={lessonForm.title} onChange={e => setLessonForm({ ...lessonForm, title: e.target.value })} required style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
                         </div>
-                        <div className="form-row">
+                        <div className="courseeditor-formrow" style={{ marginBottom: '1rem' }}>
                             <div className="form-group">
-                                <label>Order</label>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>Order</label>
                                 <input type="number" value={lessonForm.order_index} onChange={e => setLessonForm({ ...lessonForm, order_index: e.target.value })} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
                             </div>
                         </div>
 
-                        <div className="form-group">
-                            <label>📝 Text Content</label>
+                        <div className="form-group" style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>📝 Text Content</label>
                             <textarea value={lessonForm.content} onChange={e => setLessonForm({ ...lessonForm, content: e.target.value })} placeholder="Write lesson content here (optional)" style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', minHeight: '150px' }} />
                         </div>
-                        <div className="form-group">
-                            <label>📎 Upload File</label>
+                        <div className="form-group" style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text)' }}>📎 Upload File</label>
                             <input type="file" onChange={e => handleFileUpload(e.target.files[0], 'materials', url => setLessonForm({ ...lessonForm, file_url: url }))} disabled={uploading} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }} />
                             <input type="text" placeholder="Or paste file URL" value={lessonForm.file_url} onChange={e => setLessonForm({ ...lessonForm, file_url: e.target.value })} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', marginTop: '0.4rem', fontSize: '0.85rem' }} />
                             {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
                         </div>
 
-                        <button type="submit" className="landing-btn btn-success" style={{ width: 'auto', marginTop: '1rem' }}>
+                        <button type="submit" className="btn-success" style={{ padding: '0.6rem 1.2rem', borderRadius: '8px', border: 'none', color: 'white', background: 'var(--success)', marginTop: '1rem', cursor: 'pointer' }}>
                             {editingLessonId ? 'Update Lesson' : 'Add Lesson'}
                         </button>
                     </form>
                 )}
 
-                <div className="editor-lessons-list">
+                <div className="courseeditor-lessonslist">
                     {lessons.map((l, i) => (
-                        <div key={l.id} className="editor-lesson-item">
-                            <div className="lesson-meta">
+                        <div key={l.id} className="courseeditor-lessonitem">
+                            <div className="courseeditor-lessonmeta">
                                 <span style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>{l.order_index}</span>
                                 <span>{l.title}</span>
-                                <span className="dash-badge" style={{ fontSize: '0.75rem' }}>{l.content_type}</span>
+                                <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', background: 'var(--hover-bg)', borderRadius: '4px', border: '1px solid var(--border)' }}>{l.content_type}</span>
                             </div>
-                            <div className="lesson-actions">
-                                <button className="btn-sm btn-secondary" onClick={() => startEditLesson(l)}>✏️</button>
-                                <button className="btn-sm btn-danger-outline" onClick={() => deleteLesson(l.id)}>🗑️</button>
+                            <div className="courseeditor-lessonactions">
+                                <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }} onClick={() => startEditLesson(l)}>✏️</button>
+                                <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }} onClick={() => deleteLesson(l.id)}>🗑️</button>
                             </div>
                         </div>
                     ))}

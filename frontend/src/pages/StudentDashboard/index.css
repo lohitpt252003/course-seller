@@ -1,67 +1,75 @@
-.dashboard {
+/* StudentDashboard — Common/Layout Styles (theme-agnostic) */
+
+.studentdash-root {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
 }
 
-.dashboard-header {
+.studentdash-header {
     margin-bottom: 2rem;
 }
 
-.dashboard-header h1 {
+.studentdash-header h1 {
     font-size: 2rem;
     font-weight: 800;
 }
 
-.dashboard-header p {
-    color: var(--text-muted);
+.studentdash-header p {
     margin-top: 0.3rem;
 }
 
-.dash-stats {
+.studentdash-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.studentdash-banner h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.studentdash-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
-.dash-stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+.studentdash-statcard {
     border-radius: 16px;
     padding: 1.5rem;
     text-align: center;
 }
 
-.dash-stat-num {
+.studentdash-statnum {
     display: block;
     font-size: 2rem;
     font-weight: 800;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.3rem;
 }
 
-.dash-stat-label {
-    color: var(--text-muted);
+.studentdash-statlabel {
     font-size: 0.85rem;
-    margin-top: 0.3rem;
     display: block;
 }
 
-.dash-tabs {
+.studentdash-tabs {
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
     padding-bottom: 0.5rem;
 }
 
-.dash-tab {
+.studentdash-tab {
     background: transparent;
     border: none;
-    color: var(--text-muted);
     padding: 0.6rem 1.2rem;
     cursor: pointer;
     font-weight: 600;
@@ -70,44 +78,28 @@
     font-size: 0.95rem;
 }
 
-.dash-tab.active {
-    color: var(--primary);
-    border-bottom: 2px solid var(--primary);
-}
-
-.dash-tab:hover {
-    color: var(--text);
-}
-
-.dash-grid {
+.studentdash-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
 }
 
-.dash-course-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+.studentdash-coursecard {
     border-radius: 12px;
     padding: 1.5rem;
     text-decoration: none;
-    color: var(--text);
     transition: all 0.2s;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
 
-.dash-course-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-}
-
-.dash-course-card h4 {
+.studentdash-coursecard h4 {
     font-size: 1.05rem;
+    margin-bottom: 0.5rem;
 }
 
-.dash-badge {
+.studentdash-badge {
     padding: 0.25rem 0.6rem;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -115,30 +107,13 @@
     width: fit-content;
 }
 
-.dash-badge.completed {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success);
-}
-
-.dash-badge.in-progress {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--primary);
-}
-
-.dash-badge.pending {
-    background: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
-}
-
-.dash-list {
+.studentdash-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.dash-list-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
+.studentdash-listitem {
     border-radius: 10px;
     padding: 1rem 1.5rem;
     display: flex;
@@ -147,509 +122,21 @@
     gap: 1rem;
 }
 
-.dash-date {
-    color: var(--text-muted);
+.studentdash-date {
     font-size: 0.85rem;
 }
 
-.dash-form {
-    max-width: 600px;
+.studentdash-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    font-size: 0.95rem;
 }
 
-.dash-form .form-group {
-    margin-bottom: 1rem;
-}
-
-.dash-form textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.dash-section {
-    margin-bottom: 2rem;
-}
-
-.dash-section h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.dash-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.dash-table th,
-.dash-table td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-}
-
-.dash-table th {
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-.dash-table tr:hover {
-    background: var(--hover-bg);
-}
-
-.action-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.35rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin-right: 0.3rem;
-    transition: all 0.2s;
-}
-
-.action-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-.action-btn.danger {
-    border-color: var(--danger);
-    color: var(--danger);
-}
-
-.action-btn.danger:hover {
-    background: var(--danger);
-    color: white;
-}
-
-.action-btn.success {
-    border-color: var(--success);
-    color: var(--success);
-}
-
-.action-btn.success:hover {
-    background: var(--success);
-    color: white;
-}
-
-/* ===== Teacher Dashboard Enhancements ===== */
-.dash-stat-card.gradient-green {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: #fff;
-    border: none;
-}
-
-.dash-stat-card.gradient-green .dash-stat-num {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: #fff;
-}
-
-.dash-stat-card.gradient-green .dash-stat-label {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.dash-stat-card.gradient-blue {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: #fff;
-    border: none;
-}
-
-.dash-stat-card.gradient-blue .dash-stat-num {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: #fff;
-}
-
-.dash-stat-card.gradient-blue .dash-stat-label {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.dash-stat-card.gradient-amber {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: #fff;
-    border: none;
-}
-
-.dash-stat-card.gradient-amber .dash-stat-num {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: #fff;
-}
-
-.dash-stat-card.gradient-amber .dash-stat-label {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.dash-stat-card.gradient-rose {
-    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-    color: #fff;
-    border: none;
-}
-
-.dash-stat-card.gradient-rose .dash-stat-num {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: #fff;
-}
-
-.dash-stat-card.gradient-rose .dash-stat-label {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-/* Activity Feed */
-.activity-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.activity-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    transition: all 0.2s;
-}
-
-.activity-item:hover {
-    border-color: var(--primary);
-    transform: translateX(4px);
-}
-
-.activity-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--gradient-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #fff;
-    flex-shrink: 0;
-}
-
-.activity-text {
-    flex: 1;
-    font-size: 0.9rem;
-}
-
-.activity-text strong {
-    color: var(--primary);
-}
-
-.activity-time {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-}
-
-/* Review Cards */
-.review-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.25rem;
-    transition: all 0.2s;
-}
-
-.review-card:hover {
-    border-color: var(--primary);
-}
-
-.review-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.studentdash-empty h3 {
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
-.review-stars {
-    color: #f59e0b;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-}
-
-.review-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.75rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.review-comment {
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: var(--text);
-}
-
-/* Course Cards for Teacher */
-.teacher-course-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    transition: all 0.25s;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.teacher-course-card:hover {
-    border-color: var(--primary);
-    box-shadow: 0 4px 20px var(--shadow);
-    transform: translateY(-2px);
-}
-
-.teacher-course-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.teacher-course-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.teacher-course-stats {
-    display: flex;
-    gap: 1.25rem;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    flex-wrap: wrap;
-}
-
-.teacher-course-stats span {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-
-.teacher-course-actions {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--border);
-}
-
-/* Status badges */
-.dash-badge.published {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success);
-}
-
-.dash-badge.draft {
-    background: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
-}
-
-.dash-badge.archived {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--danger);
-}
-
-/* Students table */
-.students-table-container {
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-}
-
-.students-table-container .dash-table {
-    margin: 0;
-}
-
-.students-table-container .dash-table tr:last-child td {
-    border-bottom: none;
-}
-
-/* Course selector */
-.course-select {
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 0.9rem;
-    cursor: pointer;
-    min-width: 200px;
-}
-
-.course-select:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-/* Empty state */
-.empty-state {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
-
-.empty-state-icon {
-    font-size: 3rem;
-    margin-bottom: 0.75rem;
-    display: block;
-}
-
-/* Revenue highlight */
-.revenue-total {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--success);
-    text-align: center;
-    padding: 1.5rem;
-}
-
-/* ===== Admin Dashboard Enhancements ===== */
-.user-badge.admin {
-    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.table-header-actions {
-    display: flex;
-    gap: 1rem;
+.studentdash-empty p {
     margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.table-header-actions .search-input {
-    flex: 1;
-    min-width: 200px;
-}
-
-.filter-select {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    cursor: pointer;
-}
-
-.user-cell {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.avatar-placeholder {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.role-select {
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-
-.status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 0.5rem;
-}
-
-.status-dot.online {
-    background: var(--success);
-}
-
-.status-dot.offline {
-    background: var(--text-muted);
-}
-
-.btn-sm {
-    padding: 0.25rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-danger-outline {
-    border: 1px solid var(--danger);
-    color: var(--danger);
-    background: transparent;
-}
-
-.btn-danger-outline:hover {
-    background: var(--danger);
-    color: white;
-}
-
-.btn-success-outline {
-    border: 1px solid var(--success);
-    color: var(--success);
-    background: transparent;
-}
-
-.btn-success-outline:hover {
-    background: var(--success);
-    color: white;
-}
-
-.category-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-}
-
-.category-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-}
-
-.add-category-form {
-    display: flex;
-    gap: 1rem;
-}
-
-.hover-link:hover {
-    color: var(--primary) !important;
-    text-decoration: underline !important;
 }

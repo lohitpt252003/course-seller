@@ -1,0 +1,121 @@
+/* Home — Light Theme */
+
+[data-theme="light"] .home-hero {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #3b82f6 100%);
+    color: white;
+}
+
+[data-theme="light"] .home-herosubtitle {
+    opacity: 0.9;
+}
+
+[data-theme="light"] .home-herofeature {
+    opacity: 0.9;
+}
+
+[data-theme="light"] .home-logosbar {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .home-statcard {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .home-coursessection {
+    background: var(--bg);
+}
+
+[data-theme="light"] .home-seeall {
+    color: var(--primary);
+}
+
+[data-theme="light"] .home-sectionsubtitle {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .home-categorychip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .home-categorychip:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.04);
+}
+
+[data-theme="light"] .home-whysection {
+    background: var(--bg);
+}
+
+[data-theme="light"] .home-whycard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .home-whycard:hover {
+    border-color: var(--primary);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .home-whydesc {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .home-ctabanner {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+    color: white;
+}
+
+[data-theme="light"] .home-ctavisualcard {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .home-teachercard {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: white;
+}
+
+[data-theme="light"] .home-emojigrid span {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .home-faqitem {
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .home-faqitem.open {
+    border-color: var(--primary);
+}
+
+[data-theme="light"] .home-faqquestion {
+    background: var(--surface);
+    color: var(--text);
+}
+
+[data-theme="light"] .home-faqquestion:hover {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .home-faqtoggle {
+    color: var(--primary);
+}
+
+[data-theme="light"] .home-faqanswer {
+    color: var(--text-muted);
+    background: var(--surface);
+}
+
+[data-theme="light"] .home-finalcta {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+[data-theme="light"] .home-finalcta p {
+    color: var(--text-muted);
+}

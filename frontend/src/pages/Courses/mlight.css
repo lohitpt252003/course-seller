@@ -1,0 +1,19 @@
+/* Courses — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .courses-page {
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .courses-header h1 {
+        font-size: 1.8rem;
+    }
+
+    [data-theme="light"] .courses-filters {
+        flex-direction: column;
+    }
+
+    [data-theme="light"] .courses-grid {
+        grid-template-columns: 1fr;
+    }
+}

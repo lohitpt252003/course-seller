@@ -1,0 +1,96 @@
+/* StudentDashboard — Light Theme */
+
+[data-theme="light"] .studentdash-header p {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .studentdash-banner {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    border: 1px solid #a5b4fc;
+    color: var(--text);
+}
+
+[data-theme="light"] .studentdash-stats {}
+
+[data-theme="light"] .studentdash-statcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .studentdash-statnum {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .studentdash-statlabel {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .studentdash-tabs {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .studentdash-tab {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .studentdash-tab:hover {
+    color: var(--text);
+}
+
+[data-theme="light"] .studentdash-tab.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+[data-theme="light"] .studentdash-coursecard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .studentdash-coursecard:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+[data-theme="light"] .studentdash-badge.completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .studentdash-badge.in-progress {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+[data-theme="light"] .studentdash-badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+[data-theme="light"] .studentdash-badge.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .studentdash-badge.failed {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+[data-theme="light"] .studentdash-listitem {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .studentdash-date {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .studentdash-empty {
+    color: var(--text-muted);
+}

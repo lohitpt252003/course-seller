@@ -1,0 +1,19 @@
+/* CourseLanding — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .courselanding-wrapper {
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .courselanding-hero {
+        flex-direction: column;
+    }
+
+    [data-theme="light"] .courselanding-sidebar {
+        width: 100%;
+    }
+
+    [data-theme="light"] .courselanding-card {
+        position: static;
+    }
+}

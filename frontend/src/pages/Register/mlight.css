@@ -1,0 +1,16 @@
+/* Register — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .register-page {
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .register-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    [data-theme="light"] .register-header h1 {
+        font-size: 1.4rem;
+    }
+}

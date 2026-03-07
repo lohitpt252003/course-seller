@@ -1,0 +1,7 @@
+/* CourseCard — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .coursecard-thumbnail {
+        height: 160px;
+    }
+}

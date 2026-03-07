@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import './index.css';
-import '../TeacherApply/index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function StudentDashboard() {
     const { user } = useAuth();
@@ -19,39 +22,39 @@ export default function StudentDashboard() {
     }, []);
 
     return (
-        <div className="dashboard">
-            <div className="dashboard-header">
+        <div className="studentdash-root">
+            <div className="studentdash-header">
                 <h1>Welcome back, {user?.name} 👋</h1>
                 <p>Track your learning progress</p>
             </div>
 
-            <div className="become-teacher-banner">
-                <div className="become-teacher-text">
+            <div className="studentdash-banner">
+                <div>
                     <h3>🎓 Want to share your knowledge?</h3>
                     <p>Apply to become a teacher and create courses on CourseHub</p>
                 </div>
-                <Link to="/apply-teacher" className="btn-primary become-teacher-btn">
+                <Link to="/apply-teacher" className="btn-primary" style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', textDecoration: 'none' }}>
                     Apply to Teach →
                 </Link>
             </div>
-            <div className="dash-stats">
-                <div className="dash-stat-card"><span className="dash-stat-num">{enrollments.length}</span><span className="dash-stat-label">Enrolled Courses</span></div>
-                <div className="dash-stat-card"><span className="dash-stat-num">{enrollments.filter(e => e.completed).length}</span><span className="dash-stat-label">Completed</span></div>
-                <div className="dash-stat-card"><span className="dash-stat-num">{certificates.length}</span><span className="dash-stat-label">Certificates</span></div>
+            <div className="studentdash-stats">
+                <div className="studentdash-statcard"><span className="studentdash-statnum">{enrollments.length}</span><span className="studentdash-statlabel">Enrolled Courses</span></div>
+                <div className="studentdash-statcard"><span className="studentdash-statnum">{enrollments.filter(e => e.completed).length}</span><span className="studentdash-statlabel">Completed</span></div>
+                <div className="studentdash-statcard"><span className="studentdash-statnum">{certificates.length}</span><span className="studentdash-statlabel">Certificates</span></div>
             </div>
-            <div className="dash-tabs">
-                <button className={`dash-tab ${tab === 'courses' ? 'active' : ''}`} onClick={() => setTab('courses')}>📚 My Courses</button>
-                <button className={`dash-tab ${tab === 'certificates' ? 'active' : ''}`} onClick={() => setTab('certificates')}>🏆 Certificates</button>
-                <button className={`dash-tab ${tab === 'payments' ? 'active' : ''}`} onClick={() => setTab('payments')}>💳 Payments</button>
+            <div className="studentdash-tabs">
+                <button className={`studentdash-tab ${tab === 'courses' ? 'active' : ''}`} onClick={() => setTab('courses')}>📚 My Courses</button>
+                <button className={`studentdash-tab ${tab === 'certificates' ? 'active' : ''}`} onClick={() => setTab('certificates')}>🏆 Certificates</button>
+                <button className={`studentdash-tab ${tab === 'payments' ? 'active' : ''}`} onClick={() => setTab('payments')}>💳 Payments</button>
             </div>
             {tab === 'courses' && (
-                <div className="dash-grid">
+                <div className="studentdash-grid">
                     {enrollments.length === 0 ? (
-                        <div className="empty-state"><h3>No courses yet</h3><p>Start learning today!</p><Link to="/courses" className="btn-primary">Browse Courses</Link></div>
+                        <div className="studentdash-empty"><h3>No courses yet</h3><p>Start learning today!</p><Link to="/courses" className="btn-primary" style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', textDecoration: 'none' }}>Browse Courses</Link></div>
                     ) : enrollments.map(enr => (
-                        <Link key={enr.id} to={`/learn/${enr.course_id}`} className="dash-course-card">
+                        <Link key={enr.id} to={`/learn/${enr.course_id}`} className="studentdash-coursecard">
                             <h4>{enr.course?.title || `Course #${enr.course_id}`}</h4>
-                            <span className={`dash-badge ${enr.completed ? 'completed' : 'in-progress'}`}>
+                            <span className={`studentdash-badge ${enr.completed ? 'completed' : 'in-progress'}`}>
                                 {enr.completed ? '✅ Completed' : '📖 In Progress'}
                             </span>
                         </Link>
@@ -59,25 +62,25 @@ export default function StudentDashboard() {
                 </div>
             )}
             {tab === 'certificates' && (
-                <div className="dash-list">
-                    {certificates.length === 0 ? <p className="empty-text">No certificates yet. Complete a course to earn one!</p> :
+                <div className="studentdash-list">
+                    {certificates.length === 0 ? <p className="studentdash-empty">No certificates yet. Complete a course to earn one!</p> :
                         certificates.map(cert => (
-                            <div key={cert.id} className="dash-list-item">
+                            <div key={cert.id} className="studentdash-listitem">
                                 <span>🏆 Course #{cert.course_id}</span>
-                                <span className="dash-date">{new Date(cert.issued_at).toLocaleDateString()}</span>
+                                <span className="studentdash-date">{new Date(cert.issued_at).toLocaleDateString()}</span>
                             </div>
                         ))
                     }
                 </div>
             )}
             {tab === 'payments' && (
-                <div className="dash-list">
-                    {payments.length === 0 ? <p className="empty-text">No payments yet</p> :
+                <div className="studentdash-list">
+                    {payments.length === 0 ? <p className="studentdash-empty">No payments yet</p> :
                         payments.map(p => (
-                            <div key={p.id} className="dash-list-item">
+                            <div key={p.id} className="studentdash-listitem">
                                 <span>💳 {p.transaction_id}</span>
                                 <span>${p.amount}</span>
-                                <span className={`dash-badge ${p.status}`}>{p.status}</span>
+                                <span className={`studentdash-badge ${p.status}`}>{p.status}</span>
                             </div>
                         ))
                     }

@@ -3,6 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import api from '../../api/axios';
 import CourseCard from '../../components/CourseCard';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function Courses() {
     const [courses, setCourses] = useState([]);
@@ -17,7 +21,7 @@ export default function Courses() {
         const cat = searchParams.get('category');
         if (cat) setCategoryId(cat);
         api.get('/categories/').then(r => setCategories(r.data)).catch(() => { });
-    }, []);
+    }, [searchParams]);
 
     useEffect(() => {
         setLoading(true);
@@ -38,14 +42,14 @@ export default function Courses() {
                 <p>Discover courses taught by industry experts</p>
             </div>
             <div className="courses-filters">
-                <input type="text" className="search-input" placeholder="🔍 Search courses..." value={search} onChange={e => setSearch(e.target.value)} />
-                <select className="filter-select" value={categoryId} onChange={e => setCategoryId(e.target.value)}>
+                <input type="text" className="courses-search" placeholder="🔍 Search courses..." value={search} onChange={e => setSearch(e.target.value)} />
+                <select className="courses-select" value={categoryId} onChange={e => setCategoryId(e.target.value)}>
                     <option value="">All Categories</option>
                     {categories.map(cat => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                 </select>
-                <select className="filter-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                <select className="courses-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
                     <option value="newest">Newest</option>
                     <option value="price">Price: Low to High</option>
                     <option value="rating">Top Rated</option>
@@ -53,15 +57,15 @@ export default function Courses() {
                 </select>
             </div>
             {loading ? (
-                <div className="loading-spinner">Loading...</div>
+                <div className="courses-loading">Loading...</div>
             ) : courses.length === 0 ? (
-                <div className="empty-state">
-                    <span className="empty-icon">🔍</span>
+                <div className="courses-empty">
+                    <span className="courses-emptyicon">🔍</span>
                     <h3>No courses found</h3>
                     <p>Try adjusting your filters</p>
                 </div>
             ) : (
-                <div className="course-grid">
+                <div className="courses-grid">
                     {courses.map(course => (
                         <CourseCard key={course.id} course={course} />
                     ))}

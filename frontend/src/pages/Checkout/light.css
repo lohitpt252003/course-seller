@@ -1,0 +1,179 @@
+/* Checkout — Light Theme */
+
+[data-theme="light"] .checkout-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .checkout-dummybanner {
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+[data-theme="light"] .checkout-couponsec {
+    border-color: var(--border);
+}
+
+[data-theme="light"] .checkout-couponinput {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .checkout-couponinput:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="light"] .checkout-couponbtn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .checkout-couponbtn[disabled] {
+    opacity: 0.5;
+    background: var(--text-muted);
+    cursor: not-allowed;
+}
+
+[data-theme="light"] .checkout-couponremove {
+    background: #fee2e2;
+    color: var(--danger);
+}
+
+[data-theme="light"] .checkout-couponsuccess {
+    color: var(--success);
+}
+
+[data-theme="light"] .checkout-couponhint {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-methodbtn {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-methodbtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="light"] .checkout-methodbtn.active {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="light"] .checkout-payform {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .checkout-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="light"] .checkout-formgroup input,
+[data-theme="light"] .checkout-formgroup select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .checkout-formgroup input:focus,
+[data-theme="light"] .checkout-formgroup select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="light"] .checkout-cardbrand {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-payinfo {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-upiapp {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .checkout-qrcode {
+    background: white;
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .checkout-qrlabel {
+    color: var(--text);
+}
+
+[data-theme="light"] .checkout-mainbtn {
+    background: var(--success);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="light"] .checkout-mainbtn:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+[data-theme="light"] .checkout-mainbtn:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+[data-theme="light"] .checkout-securelabel {
+    color: var(--success);
+}
+
+[data-theme="light"] .checkout-textmuted {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-orderline.discount {
+    color: var(--success);
+}
+
+[data-theme="light"] .checkout-orderdivider {
+    background: var(--border);
+}
+
+[data-theme="light"] .checkout-guaranteeitem {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-successcircle {
+    background: var(--success);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+[data-theme="light"] .checkout-successamount {
+    color: var(--success);
+}
+
+[data-theme="light"] .checkout-successcourse {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-successredirect {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .checkout-successbar {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .checkout-successfill {
+    background: var(--success);
+}

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.models import *  # noqa: F401, F403 — imports all models for relationship resolution
-from app.routers import auth, users, courses, lessons, enrollments, payments, reviews, categories, certificates, admin, uploads, land, teacher_applications
+from app.routers import auth, users, courses, lessons, enrollments, payments, reviews, categories, certificates, admin, uploads, land, teacher_applications, coupons
 
 app = FastAPI(
     title="Course Seller API",
@@ -11,15 +11,10 @@ app = FastAPI(
 )
 
 # CORS
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://course-selling.frontend.test:3000",
-        "http://course-selling.frontend.test:5173",
-        "http://course-selling.frontend.test:3000"
-    ],
+    allow_origin_regex=".*", # Permits dynamic local network IPs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -58,6 +53,7 @@ def init_minio():
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(courses.router)
+app.include_router(coupons.router)
 app.include_router(lessons.router)
 app.include_router(enrollments.router)
 app.include_router(payments.router)

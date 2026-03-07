@@ -1,0 +1,7 @@
+/* CourseDetail — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .coursedetail-submit {
+        width: 100%;
+    }
+}

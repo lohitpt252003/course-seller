@@ -1,0 +1,203 @@
+/* AdminDashboard — Light Theme */
+
+[data-theme="light"] .admindash-header .admindash-subtitle {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .admindash-userbadge.admin {
+    background: rgba(139, 92, 246, 0.15);
+    color: #7c3aed;
+}
+
+[data-theme="light"] .admindash-tabs {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-tab {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .admindash-tab:hover {
+    color: var(--text);
+}
+
+[data-theme="light"] .admindash-tab.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+[data-theme="light"] .admindash-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-section h3,
+[data-theme="light"] .admindash-section h2 {
+    color: var(--text);
+}
+
+[data-theme="light"] .admindash-input,
+[data-theme="light"] .admindash-select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .admindash-input:focus,
+[data-theme="light"] .admindash-select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="light"] .admindash-btn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .admindash-btn:hover {
+    background: var(--primary-hover);
+}
+
+[data-theme="light"] .admindash-tablecontainer {
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-table th {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .admindash-table td {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-table tr:last-child td {
+    border-bottom: none;
+}
+
+[data-theme="light"] .admindash-table tr:hover {
+    background: var(--bg);
+}
+
+[data-theme="light"] .admindash-textmuted {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .admindash-badgepill {
+    background: var(--hover-bg);
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .admindash-statrow {
+    border-bottom: 1px solid var(--hover-bg);
+}
+
+[data-theme="light"] .admindash-statrow:last-child {
+    border-bottom: none;
+}
+
+[data-theme="light"] .admindash-avatar {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .admindash-statusdot.online {
+    background: var(--success);
+}
+
+[data-theme="light"] .admindash-statusdot.offline {
+    background: var(--danger);
+}
+
+[data-theme="light"] .admindash-categoryitem {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-appcard {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .admindash-demolink {
+    color: var(--primary);
+}
+
+[data-theme="light"] .admindash-expandbtn {
+    color: var(--primary);
+}
+
+[data-theme="light"] .admindash-appdetails {
+    border-color: var(--border);
+}
+
+[data-theme="light"] .admindash-emptystate {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .admindash-btnsm {
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: transparent;
+}
+
+[data-theme="light"] .admindash-btnsm.success-outline {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+[data-theme="light"] .admindash-btnsm.success-outline:hover {
+    background: var(--success);
+    color: white;
+}
+
+[data-theme="light"] .admindash-btnsm.danger-outline {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+[data-theme="light"] .admindash-btnsm.danger-outline:hover {
+    background: var(--danger);
+    color: white;
+}
+
+[data-theme="light"] .admindash-statusbadge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+[data-theme="light"] .admindash-statusbadge.published {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .admindash-statusbadge.draft {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+[data-theme="light"] .admindash-statusbadge.archived {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+[data-theme="light"] .admindash-statusbadge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+[data-theme="light"] .admindash-statusbadge.approved {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .admindash-statusbadge.rejected {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}

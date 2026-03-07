@@ -1,0 +1,33 @@
+/* Checkout — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .checkout-root {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    [data-theme="dark"] .checkout-card {
+        padding: 1.5rem;
+    }
+
+    [data-theme="dark"] .checkout-sidebar {
+        order: -1;
+    }
+
+    /* Order summary on top for mobile */
+    [data-theme="dark"] .checkout-couponrow {
+        flex-direction: column;
+    }
+
+    [data-theme="dark"] .checkout-paymethods {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    [data-theme="dark"] .checkout-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

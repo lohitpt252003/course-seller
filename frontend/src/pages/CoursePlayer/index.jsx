@@ -3,6 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function CoursePlayer() {
     const { courseId } = useParams();
@@ -51,67 +55,67 @@ export default function CoursePlayer() {
     const totalLessons = lessons.length;
     const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-    if (!course) return <div className="loading-spinner">Loading...</div>;
+    if (!course) return <div className="checkout-spinner">Loading...</div>; // reusing checkout spinner logic
 
     return (
-        <div className="player-page">
-            <div className="player-sidebar">
-                <div className="sidebar-top">
+        <div className="courseplayer-root fade-in">
+            <div className="courseplayer-sidebar">
+                <div className="courseplayer-sidebartop">
                     <h3>{course.title}</h3>
                     {!isAdmin && (
                         <>
-                            <div className="progress-bar-container">
-                                <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
+                            <div className="courseplayer-pbcontainer">
+                                <div className="courseplayer-progress" style={{ width: `${progressPercent}%` }} />
                             </div>
-                            <span className="progress-text">{progressPercent}% complete</span>
+                            <span className="courseplayer-progresstext">{progressPercent}% complete</span>
                         </>
                     )}
-                    {isAdmin && <span className="admin-badge">Admin Access</span>}
+                    {isAdmin && <span className="courseplayer-adminbadge">Admin Access</span>}
                 </div>
-                <div className="lessons-nav">
+                <div className="courseplayer-nav">
                     {lessons.map((lesson, i) => (
-                        <button key={lesson.id} className={`lesson-nav-item ${currentLesson?.id === lesson.id ? 'active' : ''}`} onClick={() => setCurrentLesson(lesson)}>
-                            <span className={`lesson-check ${progress[lesson.id] ? 'done' : ''}`}>
+                        <button key={lesson.id} className={`courseplayer-navitem ${currentLesson?.id === lesson.id ? 'active' : ''}`} onClick={() => setCurrentLesson(lesson)}>
+                            <span className={`courseplayer-check ${progress[lesson.id] ? 'done' : ''}`}>
                                 {progress[lesson.id] ? '✓' : i + 1}
                             </span>
-                            <span className="lesson-nav-title">{lesson.title}</span>
+                            <span className="courseplayer-navtitle">{lesson.title}</span>
                         </button>
                     ))}
                 </div>
             </div>
-            <div className="player-content">
+            <div className="courseplayer-content">
                 {currentLesson ? (
                     <>
                         <h2>{currentLesson.title}</h2>
                         {currentLesson.content_type === 'video' && currentLesson.video_url && (
-                            <div className="video-container">
+                            <div className="courseplayer-videocontainer">
                                 <iframe src={currentLesson.video_url} title={currentLesson.title} allowFullScreen />
                             </div>
                         )}
                         {currentLesson.content_type === 'pdf' && currentLesson.pdf_url && (
-                            <div className="pdf-container">
+                            <div className="courseplayer-pdfcontainer">
                                 <iframe src={currentLesson.pdf_url} title={currentLesson.title} />
                             </div>
                         )}
                         {currentLesson.content && (
-                            <div className="text-content">{currentLesson.content}</div>
+                            <div className="courseplayer-textcontent">{currentLesson.content}</div>
                         )}
-                        <div className="lesson-actions">
+                        <div className="courseplayer-actions">
                             {!progress[currentLesson.id] && !isAdmin && (
-                                <button className="btn-primary" onClick={() => markComplete(currentLesson.id)}>
+                                <button className="courseplayer-btn" onClick={() => markComplete(currentLesson.id)}>
                                     ✅ Mark as Complete
                                 </button>
                             )}
                             {isAdmin && (
-                                <span className="text-muted">Admin View Mode</span>
+                                <span className="courseplayer-textmuted">Admin View Mode</span>
                             )}
                             {progress[currentLesson.id] && (
-                                <span className="completed-badge">✅ Completed</span>
+                                <span className="courseplayer-completedbadge">✅ Completed</span>
                             )}
                         </div>
                     </>
                 ) : (
-                    <div className="empty-state">
+                    <div className="courseplayer-emptystate">
                         <h3>No lessons available</h3>
                     </div>
                 )}

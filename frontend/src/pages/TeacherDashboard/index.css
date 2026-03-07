@@ -1,0 +1,323 @@
+/* TeacherDashboard — Common/Layout Styles (theme-agnostic) */
+
+.teacherdash-root {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.teacherdash-header {
+    margin-bottom: 2rem;
+}
+
+.teacherdash-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.teacherdash-header p {
+    margin-top: 0.3rem;
+}
+
+.teacherdash-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.teacherdash-statcard {
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    border: none;
+    color: #fff;
+}
+
+.teacherdash-statcard.blue {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.teacherdash-statcard.rose {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+}
+
+.teacherdash-statcard.green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.teacherdash-statcard.amber {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.teacherdash-statnum {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.teacherdash-statlabel {
+    font-size: 0.85rem;
+    display: block;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.teacherdash-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.teacherdash-tab {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.teacherdash-section {
+    margin-bottom: 2rem;
+}
+
+.teacherdash-section h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.teacherdash-listitem {
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.teacherdash-activityfeed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.teacherdash-activityitem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.teacherdash-activityitem:hover {
+    transform: translateX(4px);
+}
+
+.teacherdash-activityavatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.teacherdash-activitytext {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.teacherdash-activitytime {
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.teacherdash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.teacherdash-coursecard {
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.teacherdash-coursecard:hover {
+    transform: translateY(-2px);
+}
+
+.teacherdash-courseheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.teacherdash-coursetitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.teacherdash-coursestats {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.teacherdash-coursestats span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.teacherdash-courseactions {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.teacherdash-actionbtn {
+    background: transparent;
+    padding: 0.35rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 0.3rem;
+    transition: all 0.2s;
+}
+
+.teacherdash-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.teacherdash-form {
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.teacherdash-formgroup {
+    margin-bottom: 1rem;
+}
+
+.teacherdash-formgroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.teacherdash-formgroup input,
+.teacherdash-formgroup select,
+.teacherdash-formgroup textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.teacherdash-formgroup textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.teacherdash-select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.teacherdash-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    font-size: 0.95rem;
+}
+
+.teacherdash-emptyicon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.teacherdash-tablecontainer {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+.teacherdash-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.teacherdash-table th,
+.teacherdash-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.teacherdash-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.teacherdash-revenuetotal {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.teacherdash-reviewcard {
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+}
+
+.teacherdash-reviewheader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.teacherdash-reviewstars {
+    color: #f59e0b;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.teacherdash-reviewmeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.teacherdash-reviewcomment {
+    font-size: 0.92rem;
+    line-height: 1.5;
+}

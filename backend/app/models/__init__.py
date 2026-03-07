@@ -8,3 +8,4 @@ from app.models.payment import Payment
 from app.models.review import Review
 from app.models.certificate import Certificate
 from app.models.teacher_application import TeacherApplication
+from app.models.coupon import Coupon

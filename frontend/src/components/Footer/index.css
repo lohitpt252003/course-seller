@@ -1,6 +1,6 @@
-.footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
+/* Footer — Common/Layout Styles (theme-agnostic) */
+
+.footer-root {
     padding: 3rem 2rem 1.5rem;
     margin-top: auto;
 }
@@ -20,7 +20,6 @@
 }
 
 .footer-tagline {
-    color: var(--text-muted);
     margin-top: 0.5rem;
 }
 
@@ -32,28 +31,20 @@
 }
 
 .footer-col h4 {
-    color: var(--text);
     margin-bottom: 1rem;
     font-size: 0.95rem;
 }
 
 .footer-col a {
     display: block;
-    color: var(--text-muted);
     text-decoration: none;
     padding: 0.3rem 0;
     transition: color 0.2s;
     font-size: 0.9rem;
 }
 
-.footer-col a:hover {
-    color: var(--primary);
-}
-
 .footer-bottom {
-    border-top: 1px solid var(--border);
     padding-top: 1.5rem;
     text-align: center;
-    color: var(--text-muted);
     font-size: 0.85rem;
 }

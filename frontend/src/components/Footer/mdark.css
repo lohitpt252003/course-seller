@@ -1,0 +1,12 @@
+/* Footer — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .footer-root {
+        padding: 2rem 1rem 1rem;
+    }
+
+    [data-theme="dark"] .footer-links {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

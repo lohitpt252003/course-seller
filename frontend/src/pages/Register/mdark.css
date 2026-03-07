@@ -1,0 +1,16 @@
+/* Register — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .register-page {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .register-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    [data-theme="dark"] .register-header h1 {
+        font-size: 1.4rem;
+    }
+}

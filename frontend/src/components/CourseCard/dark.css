@@ -1,0 +1,41 @@
+/* CourseCard — Dark Theme */
+
+[data-theme="dark"] .coursecard-root {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .coursecard-root:hover {
+    box-shadow: 0 12px 40px var(--shadow);
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .coursecard-thumbnail {
+    background: var(--hover-bg);
+}
+
+[data-theme="dark"] .coursecard-placeholder {
+    background: var(--gradient-primary);
+}
+
+[data-theme="dark"] .coursecard-badge.free {
+    background: var(--success);
+}
+
+[data-theme="dark"] .coursecard-badge.price {
+    background: var(--primary);
+}
+
+[data-theme="dark"] .coursecard-teacher {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .coursecard-meta {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .coursecard-category {
+    background: var(--hover-bg);
+    color: var(--primary);
+}

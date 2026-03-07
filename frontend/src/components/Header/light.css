@@ -1,0 +1,65 @@
+/* Header — Light Theme */
+
+[data-theme="light"] .header-root {
+    background: rgba(248, 249, 252, 0.85);
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .header-logo {
+    color: var(--text);
+}
+
+[data-theme="light"] .header-navlink {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .header-navlink:hover {
+    color: var(--text);
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .header-themetoggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .header-themetoggle:hover {
+    border-color: var(--primary);
+}
+
+[data-theme="light"] .header-username {
+    color: var(--primary) !important;
+}
+
+[data-theme="light"] .header-btnlogout {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+[data-theme="light"] .header-btnlogout:hover {
+    background: var(--danger);
+    color: white;
+}
+
+[data-theme="light"] .header-btnlogin {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="light"] .header-btnlogin:hover {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .header-btnregister {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+}
+
+[data-theme="light"] .header-btnregister:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}

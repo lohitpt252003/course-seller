@@ -1,0 +1,27 @@
+/* Footer — Light Theme */
+
+[data-theme="light"] .footer-root {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+[data-theme="light"] .footer-tagline {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .footer-col h4 {
+    color: var(--text);
+}
+
+[data-theme="light"] .footer-col a {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .footer-col a:hover {
+    color: var(--primary);
+}
+
+[data-theme="light"] .footer-bottom {
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+}

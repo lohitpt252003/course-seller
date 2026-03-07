@@ -1,0 +1,24 @@
+/* CourseEditor — Dark Theme */
+
+[data-theme="dark"] .courseeditor-root {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .courseeditor-header {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="dark"] .courseeditor-formsection h3 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .courseeditor-lessonitem {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .courseeditor-addform {
+    background: var(--hover-bg);
+    border: 1px dashed var(--border);
+}

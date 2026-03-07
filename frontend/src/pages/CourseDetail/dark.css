@@ -1,0 +1,32 @@
+/* CourseDetail — Dark Theme */
+
+[data-theme="dark"] .coursedetail-reviewcontainer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .coursedetail-formgroup label {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .coursedetail-formgroup select,
+[data-theme="dark"] .coursedetail-formgroup textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .coursedetail-formgroup select:focus,
+[data-theme="dark"] .coursedetail-formgroup textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+[data-theme="dark"] .coursedetail-submit {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .coursedetail-submit:hover {
+    filter: brightness(1.1);
+}

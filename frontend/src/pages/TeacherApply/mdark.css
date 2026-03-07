@@ -1,0 +1,25 @@
+/* TeacherApply — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .teacherapply-root {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .teacherapply-card {
+        padding: 2rem 1.5rem;
+    }
+
+    [data-theme="dark"] .teacherapply-benefits {
+        grid-template-columns: 1fr;
+    }
+
+    [data-theme="dark"] .teacherapply-form {
+        padding: 1.5rem;
+    }
+
+    [data-theme="dark"] .teacherapply-statusrow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}

@@ -2,6 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function Header() {
     const { user, logout } = useAuth();
@@ -14,42 +18,42 @@ export default function Header() {
     };
 
     return (
-        <header className="header">
+        <header className="header-root">
             <div className="header-container">
                 <Link to="/" className="header-logo">
-                    <span className="logo-icon">🎓</span>
-                    <span className="logo-text">CourseHub</span>
+                    <span className="header-logoicon">🎓</span>
+                    <span className="header-logotext">CourseHub</span>
                 </Link>
 
                 <nav className="header-nav">
-                    <Link to="/courses" className="nav-link">Courses</Link>
+                    <Link to="/courses" className="header-navlink">Courses</Link>
                     {user && user.role === 'student' && (
-                        <Link to="/dashboard" className="nav-link">My Learning</Link>
+                        <Link to="/dashboard" className="header-navlink">My Learning</Link>
                     )}
                     {user && user.role === 'teacher' && (
-                        <Link to="/teacher" className="nav-link">Teacher Panel</Link>
+                        <Link to="/teacher" className="header-navlink">Teacher Panel</Link>
                     )}
                     {user && user.role === 'admin' && (
-                        <Link to="/admin" className="nav-link">Admin Panel</Link>
+                        <Link to="/admin" className="header-navlink">Admin Panel</Link>
                     )}
                 </nav>
 
                 <div className="header-actions">
-                    <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
+                    <button className="header-themetoggle" onClick={toggleTheme} title="Toggle theme">
                         {theme === 'dark' ? '☀️' : '🌙'}
                     </button>
 
                     {user ? (
-                        <div className="user-menu">
-                            <Link to="/profile" className="nav-link user-name">
+                        <div className="header-usermenu">
+                            <Link to="/profile" className="header-navlink header-username">
                                 {user.name}
                             </Link>
-                            <button className="btn-logout" onClick={handleLogout}>Logout</button>
+                            <button className="header-btnlogout" onClick={handleLogout}>Logout</button>
                         </div>
                     ) : (
-                        <div className="auth-buttons">
-                            <Link to="/login" className="btn-login">Login</Link>
-                            <Link to="/register" className="btn-register">Register</Link>
+                        <div className="header-authbuttons">
+                            <Link to="/login" className="header-btnlogin">Login</Link>
+                            <Link to="/register" className="header-btnregister">Register</Link>
                         </div>
                     )}
                 </div>

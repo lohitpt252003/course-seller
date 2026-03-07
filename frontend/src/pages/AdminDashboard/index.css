@@ -1,102 +1,349 @@
-/* ===== Teacher Application Cards ===== */
-.app-cards {
+/* AdminDashboard — Common/Layout Styles (theme-agnostic) */
+
+.admindash-root {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admindash-header {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
 }
 
-.app-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
+.admindash-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.admindash-header .admindash-subtitle {
+    margin-top: 0.3rem;
+}
+
+.admindash-userbadge {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admindash-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    overflow-x: auto;
+}
+
+.admindash-tab {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
     transition: all 0.2s;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
-.app-card:hover {
-    border-color: var(--primary);
-    box-shadow: 0 4px 20px var(--shadow);
+.admindash-content {}
+
+.admindash-section {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    padding: 1.5rem;
 }
 
-.app-card-header {
+.admindash-section h3,
+.admindash-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.admindash-categoryheader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1rem;
 }
 
-.app-card-summary {
+.admindash-addform {
     display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: var(--bg);
-    border-radius: 10px;
-}
-
-.app-info-row {
-    display: flex;
-    align-items: center;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    align-items: center;
 }
 
-.app-demo-link {
-    color: var(--primary);
-    text-decoration: none;
+.admindash-input,
+.admindash-select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.admindash-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
     font-weight: 600;
-}
-
-.app-demo-link:hover {
-    text-decoration: underline;
-}
-
-.app-expand-btn {
-    background: none;
-    border: none;
-    color: var(--primary);
     cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.4rem 0;
+    border: none;
     transition: all 0.2s;
 }
 
-.app-expand-btn:hover {
-    color: var(--primary-hover);
+.admindash-tablecontainer {
+    overflow-x: auto;
+    border-radius: 8px;
 }
 
-.app-card-details {
-    margin-top: 1rem;
+.admindash-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admindash-table th,
+.admindash-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.admindash-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.admindash-fontbold {
+    font-weight: 700;
+}
+
+.admindash-fontmedium {
+    font-weight: 600;
+}
+
+.admindash-textsm {
+    font-size: 0.85rem;
+}
+
+.admindash-textcenter {
+    text-align: center;
+}
+
+.admindash-badgepill {
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.admindash-actionscell {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.admindash-btnicon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.2rem;
+    transition: transform 0.2s;
+}
+
+.admindash-btnicon:hover {
+    transform: scale(1.1);
+}
+
+.admindash-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.admindash-statcard {
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+}
+
+.admindash-statcard.blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.admindash-statcard.green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.admindash-statcard.amber {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.admindash-statcard.rose {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+}
+
+.admindash-statnum {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.admindash-statlabel {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.admindash-grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.admindash-statrow {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+}
+
+.admindash-tableactions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admindash-usercell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admindash-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.admindash-statusdot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.admindash-categorylist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admindash-categoryitem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.admindash-appcards {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
 }
 
-.app-detail-section h4 {
+.admindash-appcard {
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+}
+
+.admindash-appheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admindash-appsummary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.admindash-inforow {
+    display: flex;
+    gap: 0.5rem;
     font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-    color: var(--text);
 }
 
-.app-detail-section p {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    white-space: pre-wrap;
+.admindash-demolink {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admindash-expandbtn {
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+.admindash-appdetails {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admindash-detailsection h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.admindash-detailsection p {
+    font-size: 0.9rem;
+    line-height: 1.5;
     margin: 0;
 }
 
-.app-card-actions {
+.admindash-appactions {
     display: flex;
     gap: 0.5rem;
     margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
+}
+
+.admindash-emptystate {
+    text-align: center;
+    padding: 3rem;
+}
+
+.admindash-emptyicon {
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }

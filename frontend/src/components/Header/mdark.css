@@ -1,0 +1,36 @@
+/* Header — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .header-root {
+        padding: 0 1rem;
+    }
+
+    [data-theme="dark"] .header-container {
+        height: 60px;
+    }
+
+    [data-theme="dark"] .header-nav {
+        display: none;
+    }
+
+    [data-theme="dark"] .header-logo {
+        font-size: 1.2rem;
+    }
+
+    [data-theme="dark"] .header-logoicon {
+        font-size: 1.4rem;
+    }
+
+    [data-theme="dark"] .header-themetoggle {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    [data-theme="dark"] .header-btnlogout,
+    [data-theme="dark"] .header-btnlogin,
+    [data-theme="dark"] .header-btnregister {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}

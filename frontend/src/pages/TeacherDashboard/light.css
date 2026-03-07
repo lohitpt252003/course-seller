@@ -1,0 +1,205 @@
+/* TeacherDashboard — Light Theme */
+
+[data-theme="light"] .teacherdash-header p {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-tabs {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-tab {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-tab:hover {
+    color: var(--text);
+}
+
+[data-theme="light"] .teacherdash-tab.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+[data-theme="light"] .teacherdash-listitem {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-activityitem {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-activityitem:hover {
+    border-color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-activityavatar {
+    background: var(--primary);
+    color: #fff;
+}
+
+[data-theme="light"] .teacherdash-activitytext strong {
+    color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-activitytime {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-coursecard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-coursecard:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+[data-theme="light"] .teacherdash-coursetitle {
+    color: inherit;
+}
+
+[data-theme="light"] .teacherdash-coursestats {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-courseactions {
+    border-top: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-actionbtn {
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .teacherdash-actionbtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-actionbtn.danger {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+[data-theme="light"] .teacherdash-actionbtn.danger:hover {
+    background: var(--danger);
+    color: white;
+}
+
+[data-theme="light"] .teacherdash-badge.published {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .teacherdash-badge.draft {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+[data-theme="light"] .teacherdash-badge.archived {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+[data-theme="light"] .teacherdash-badge.completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .teacherdash-badge.in-progress {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-badge.video {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-badge.pdf {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+[data-theme="light"] .teacherdash-badge.text {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .teacherdash-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="light"] .teacherdash-formgroup input,
+[data-theme="light"] .teacherdash-formgroup select,
+[data-theme="light"] .teacherdash-formgroup textarea {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+}
+
+[data-theme="light"] .teacherdash-select {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+}
+
+[data-theme="light"] .teacherdash-select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="light"] .teacherdash-empty {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-tablecontainer {
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-table th {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-table td {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-table tr:last-child td {
+    border-bottom: none;
+}
+
+[data-theme="light"] .teacherdash-table tr:hover {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .teacherdash-revenuetotal {
+    color: var(--success);
+}
+
+[data-theme="light"] .teacherdash-reviewcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .teacherdash-reviewcard:hover {
+    border-color: var(--primary);
+}
+
+[data-theme="light"] .teacherdash-reviewmeta {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .teacherdash-reviewcomment {
+    color: var(--text);
+}

@@ -1,0 +1,24 @@
+/* CourseEditor — Light Theme */
+
+[data-theme="light"] .courseeditor-root {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseeditor-header {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseeditor-formsection h3 {
+    color: var(--text);
+}
+
+[data-theme="light"] .courseeditor-lessonitem {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .courseeditor-addform {
+    background: var(--hover-bg);
+    border: 1px dashed var(--border);
+}

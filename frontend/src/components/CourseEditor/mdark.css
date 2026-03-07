@@ -1,0 +1,7 @@
+/* CourseEditor — Mobile Dark */
+
+@media (max-width: 600px) {
+    [data-theme="dark"] .courseeditor-formrow {
+        flex-direction: column;
+    }
+}

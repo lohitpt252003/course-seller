@@ -1,0 +1,16 @@
+/* Profile — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .profiledash-root {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .profiledash-header h1 {
+        font-size: 1.8rem;
+    }
+
+    [data-theme="dark"] .profiledash-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}

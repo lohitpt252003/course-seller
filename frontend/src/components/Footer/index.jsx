@@ -1,8 +1,12 @@
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function Footer() {
     return (
-        <footer className="footer">
+        <footer className="footer-root">
             <div className="footer-container">
                 <div className="footer-brand">
                     <span className="footer-logo">🎓 CourseHub</span>

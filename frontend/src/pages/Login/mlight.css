@@ -1,0 +1,16 @@
+/* Login — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .login-page {
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .login-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    [data-theme="light"] .login-header h1 {
+        font-size: 1.4rem;
+    }
+}

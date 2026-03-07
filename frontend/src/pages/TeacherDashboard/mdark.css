@@ -1,0 +1,26 @@
+/* TeacherDashboard — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .teacherdash-root {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .teacherdash-header h1 {
+        font-size: 1.8rem;
+    }
+
+    [data-theme="dark"] .teacherdash-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    [data-theme="dark"] .teacherdash-tab {
+        padding: 0.6rem 1rem;
+    }
+
+    [data-theme="dark"] .teacherdash-courseheader {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

@@ -1,0 +1,29 @@
+/* Courses — Dark Theme */
+
+[data-theme="dark"] .courses-header p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courses-search {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+}
+
+[data-theme="dark"] .courses-search:focus {
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .courses-select {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+}
+
+[data-theme="dark"] .courses-loading {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courses-empty p {
+    color: var(--text-muted);
+}

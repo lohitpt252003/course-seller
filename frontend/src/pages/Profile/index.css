@@ -1,0 +1,112 @@
+/* Profile — Common/Layout Styles (theme-agnostic) */
+
+.profiledash-root {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.profiledash-header {
+    margin-bottom: 2rem;
+}
+
+.profiledash-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.profiledash-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    flex-wrap: wrap;
+}
+
+.profiledash-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.profiledash-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profiledash-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.profiledash-email {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.profiledash-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: fit-content;
+    text-transform: capitalize;
+}
+
+.profiledash-form {
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 600px;
+}
+
+.profiledash-formgroup {
+    margin-bottom: 1rem;
+}
+
+.profiledash-formgroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.profiledash-formgroup input,
+.profiledash-formgroup textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.profiledash-formgroup textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.profiledash-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.profiledash-msg {
+    padding: 0.75rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+    max-width: 600px;
+}

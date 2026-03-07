@@ -1,0 +1,12 @@
+/* Footer — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .footer-root {
+        padding: 2rem 1rem 1rem;
+    }
+
+    [data-theme="light"] .footer-links {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

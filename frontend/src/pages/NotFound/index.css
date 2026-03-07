@@ -1,0 +1,44 @@
+/* NotFound — Common/Layout Styles (theme-agnostic) */
+
+.notfound-root {
+    min-height: calc(100vh - 140px);
+    /* Adjust based on header/footer height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.notfound-content {
+    max-width: 500px;
+    width: 100%;
+}
+
+.notfound-icon {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.notfound-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+}
+
+.notfound-text {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.notfound-btn {
+    display: inline-block;
+    padding: 0.85rem 2.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}

@@ -1,0 +1,87 @@
+/* Register — Common/Layout Styles (theme-agnostic) */
+
+.register-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.register-card {
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 440px;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.register-header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.register-error {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.register-formgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.register-formgroup label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.register-formgroup input {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border 0.2s;
+    outline: none;
+}
+
+.register-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.register-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.register-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.register-switch a {
+    text-decoration: none;
+    font-weight: 600;
+}

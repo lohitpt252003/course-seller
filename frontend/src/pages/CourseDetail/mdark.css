@@ -1,0 +1,7 @@
+/* CourseDetail — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .coursedetail-submit {
+        width: 100%;
+    }
+}

@@ -1,0 +1,171 @@
+/* TeacherApply — Dark Theme */
+
+[data-theme="dark"] .teacherapply-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .teacherapply-loading p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-card h2 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-statustext {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-statusdetails {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .teacherapply-statusrow {
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-statusrow:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+[data-theme="dark"] .teacherapply-statusrow a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .teacherapply-btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .teacherapply-btn.primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+[data-theme="dark"] .teacherapply-btn.outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .teacherapply-btn.outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .teacherapply-hero p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-benefitcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .teacherapply-benefitcard h3 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-benefitcard p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .teacherapply-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .teacherapply-secheader {
+    border-bottom: 1px solid var(--border);
+}
+
+[data-theme="dark"] .teacherapply-secnum {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+}
+
+[data-theme="dark"] .teacherapply-secheader h3 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-secheader p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-formgroup input,
+[data-theme="dark"] .teacherapply-formgroup textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-formgroup input:focus,
+[data-theme="dark"] .teacherapply-formgroup textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="dark"] .teacherapply-formhint {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-cvupload {
+    border-color: var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .teacherapply-cvupload:hover {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+[data-theme="dark"] .teacherapply-cvupload.drag-over {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.15);
+    border-style: solid;
+}
+
+[data-theme="dark"] .teacherapply-cvupload.uploaded {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+    border-style: solid;
+}
+
+[data-theme="dark"] .teacherapply-cvname {
+    color: var(--text);
+}
+
+[data-theme="dark"] .teacherapply-cvchange {
+    color: var(--primary);
+}
+
+[data-theme="dark"] .teacherapply-submit {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .teacherapply-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}

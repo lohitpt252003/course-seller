@@ -1,0 +1,16 @@
+/* Login — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .login-page {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .login-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    [data-theme="dark"] .login-header h1 {
+        font-size: 1.4rem;
+    }
+}

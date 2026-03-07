@@ -1,0 +1,7 @@
+/* CourseCard — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .coursecard-thumbnail {
+        height: 160px;
+    }
+}

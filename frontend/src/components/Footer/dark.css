@@ -1,0 +1,27 @@
+/* Footer — Dark Theme */
+
+[data-theme="dark"] .footer-root {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+[data-theme="dark"] .footer-tagline {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .footer-col h4 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .footer-col a {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .footer-col a:hover {
+    color: var(--primary);
+}
+
+[data-theme="dark"] .footer-bottom {
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+}

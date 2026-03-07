@@ -251,3 +251,20 @@ class TeacherApplicationOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+# --- Coupon ---
+class CouponCreate(BaseModel):
+    code: str
+    discount_percentage: int
+    is_active: bool = True
+
+class CouponOut(BaseModel):
+    id: int
+    code: str
+    discount_percentage: int
+    is_active: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+

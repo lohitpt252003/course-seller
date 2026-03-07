@@ -1,0 +1,7 @@
+/* CourseEditor — Mobile Light */
+
+@media (max-width: 600px) {
+    [data-theme="light"] .courseeditor-formrow {
+        flex-direction: column;
+    }
+}

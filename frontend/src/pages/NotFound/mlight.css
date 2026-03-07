@@ -1,0 +1,15 @@
+/* NotFound — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .notfound-root {
+        padding: 1.5rem;
+    }
+
+    [data-theme="light"] .notfound-title {
+        font-size: 3rem;
+    }
+
+    [data-theme="light"] .notfound-text {
+        font-size: 1.1rem;
+    }
+}

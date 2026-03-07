@@ -1,0 +1,70 @@
+/* Profile — Dark Theme */
+
+[data-theme="dark"] .profiledash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .profiledash-avatar {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+[data-theme="dark"] .profiledash-info h3 {
+    color: var(--text);
+}
+
+[data-theme="dark"] .profiledash-email {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .profiledash-badge.completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+[data-theme="dark"] .profiledash-badge.in-progress {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+}
+
+[data-theme="dark"] .profiledash-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .profiledash-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="dark"] .profiledash-formgroup input,
+[data-theme="dark"] .profiledash-formgroup textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .profiledash-formgroup input:focus,
+[data-theme="dark"] .profiledash-formgroup textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="dark"] .profiledash-btn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .profiledash-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+[data-theme="dark"] .profiledash-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+[data-theme="dark"] .profiledash-msg {
+    background: var(--hover-bg);
+    color: var(--text);
+}

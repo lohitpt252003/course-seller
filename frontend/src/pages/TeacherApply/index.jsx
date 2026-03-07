@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
-import '../Login/index.css';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function TeacherApply() {
     const { user } = useAuth();
@@ -109,10 +112,10 @@ export default function TeacherApply() {
 
     if (checkingStatus) {
         return (
-            <div className="auth-page">
-                <div className="auth-card apply-card">
-                    <div className="apply-loading">
-                        <div className="apply-spinner"></div>
+            <div className="teacherapply-root">
+                <div className="teacherapply-card">
+                    <div className="teacherapply-loading">
+                        <div className="teacherapply-spinner"></div>
                         <p>Checking application status...</p>
                     </div>
                 </div>
@@ -123,14 +126,14 @@ export default function TeacherApply() {
     // Already a teacher
     if (user?.role === 'teacher') {
         return (
-            <div className="auth-page">
-                <div className="auth-card apply-status-card">
-                    <div className="apply-status-icon">🎓</div>
+            <div className="teacherapply-root">
+                <div className="teacherapply-card">
+                    <div className="teacherapply-statusicon">🎓</div>
                     <h2>You're Already a Teacher!</h2>
-                    <p className="apply-status-text">
+                    <p className="teacherapply-statustext">
                         You already have teacher access. Head over to your Teacher Panel to manage your courses.
                     </p>
-                    <Link to="/teacher" className="btn-primary apply-btn">Go to Teacher Panel →</Link>
+                    <Link to="/teacher" className="teacherapply-btn primary">Go to Teacher Panel →</Link>
                 </div>
             </div>
         );
@@ -163,39 +166,39 @@ export default function TeacherApply() {
         const config = statusConfig[existingApp.status] || statusConfig.pending;
 
         return (
-            <div className="auth-page">
-                <div className="auth-card apply-status-card">
-                    <div className="apply-status-icon">{config.icon}</div>
+            <div className="teacherapply-root">
+                <div className="teacherapply-card">
+                    <div className="teacherapply-statusicon">{config.icon}</div>
                     <h2>{config.title}</h2>
-                    <div className="apply-status-badge" style={{ background: config.color }}>
+                    <div className="teacherapply-statusbadge" style={{ background: config.color }}>
                         {existingApp.status.toUpperCase()}
                     </div>
-                    <p className="apply-status-text">{config.description}</p>
+                    <p className="teacherapply-statustext">{config.description}</p>
 
-                    <div className="apply-status-details">
-                        <div className="apply-status-row">
+                    <div className="teacherapply-statusdetails">
+                        <div className="teacherapply-statusrow">
                             <span>📅 Submitted</span>
                             <span>{new Date(existingApp.created_at).toLocaleDateString()}</span>
                         </div>
                         {existingApp.reviewed_at && (
-                            <div className="apply-status-row">
+                            <div className="teacherapply-statusrow">
                                 <span>✅ Reviewed</span>
                                 <span>{new Date(existingApp.reviewed_at).toLocaleDateString()}</span>
                             </div>
                         )}
-                        <div className="apply-status-row">
+                        <div className="teacherapply-statusrow">
                             <span>🎬 Expected Lectures</span>
                             <span>{existingApp.expected_lectures}</span>
                         </div>
                         {existingApp.cv_url && (
-                            <div className="apply-status-row">
+                            <div className="teacherapply-statusrow">
                                 <span>📄 CV/Resume</span>
                                 <a href={existingApp.cv_url} target="_blank" rel="noopener noreferrer">
                                     View PDF ↗
                                 </a>
                             </div>
                         )}
-                        <div className="apply-status-row">
+                        <div className="teacherapply-statusrow">
                             <span>🔗 Demo Video</span>
                             <a href={existingApp.demo_video_url} target="_blank" rel="noopener noreferrer">
                                 View ↗
@@ -203,9 +206,9 @@ export default function TeacherApply() {
                         </div>
                     </div>
 
-                    <div className="apply-status-actions">
-                        <Link to="/dashboard" className="btn-primary apply-btn">Back to Dashboard</Link>
-                        <Link to="/courses" className="btn-outline apply-btn">Browse Courses</Link>
+                    <div className="teacherapply-actions">
+                        <Link to="/dashboard" className="teacherapply-btn primary">Back to Dashboard</Link>
+                        <Link to="/courses" className="teacherapply-btn outline">Browse Courses</Link>
                     </div>
                 </div>
             </div>
@@ -215,17 +218,17 @@ export default function TeacherApply() {
     // Success state after submission
     if (success) {
         return (
-            <div className="auth-page">
-                <div className="auth-card apply-status-card">
-                    <div className="apply-status-icon">🎉</div>
+            <div className="teacherapply-root">
+                <div className="teacherapply-card">
+                    <div className="teacherapply-statusicon">🎉</div>
                     <h2>Application Submitted!</h2>
-                    <p className="apply-status-text">
+                    <p className="teacherapply-statustext">
                         Your teacher application has been submitted successfully.
                         Our admin team will review it and get back to you soon.
                     </p>
-                    <div className="apply-status-actions">
-                        <Link to="/dashboard" className="btn-primary apply-btn">Go to Dashboard</Link>
-                        <Link to="/courses" className="btn-outline apply-btn">Browse Courses</Link>
+                    <div className="teacherapply-actions">
+                        <Link to="/dashboard" className="teacherapply-btn primary">Go to Dashboard</Link>
+                        <Link to="/courses" className="teacherapply-btn outline">Browse Courses</Link>
                     </div>
                 </div>
             </div>
@@ -234,48 +237,48 @@ export default function TeacherApply() {
 
     // Application form
     return (
-        <div className="apply-page">
-            <div className="apply-container">
-                <div className="apply-hero">
+        <div className="teacherapply-root">
+            <div className="teacherapply-container">
+                <div className="teacherapply-hero">
                     <h1>Become a Teacher 🎓</h1>
                     <p>Share your knowledge with thousands of learners worldwide</p>
                 </div>
 
-                <div className="apply-benefits">
-                    <div className="benefit-card">
-                        <span className="benefit-icon">💰</span>
+                <div className="teacherapply-benefits">
+                    <div className="teacherapply-benefitcard">
+                        <span className="teacherapply-benefiticon">💰</span>
                         <h3>Earn Revenue</h3>
                         <p>Set your own prices and earn from every enrollment</p>
                     </div>
-                    <div className="benefit-card">
-                        <span className="benefit-icon">🌍</span>
+                    <div className="teacherapply-benefitcard">
+                        <span className="teacherapply-benefiticon">🌍</span>
                         <h3>Global Reach</h3>
                         <p>Reach students from all around the world</p>
                     </div>
-                    <div className="benefit-card">
-                        <span className="benefit-icon">📊</span>
+                    <div className="teacherapply-benefitcard">
+                        <span className="teacherapply-benefiticon">📊</span>
                         <h3>Track Progress</h3>
                         <p>Detailed analytics and student insights</p>
                     </div>
-                    <div className="benefit-card">
-                        <span className="benefit-icon">🛠️</span>
+                    <div className="teacherapply-benefitcard">
+                        <span className="teacherapply-benefiticon">🛠️</span>
                         <h3>Easy Tools</h3>
                         <p>Intuitive course builder and content management</p>
                     </div>
                 </div>
 
-                {error && <div className="auth-error" style={{ maxWidth: 700, margin: '0 auto 1.5rem' }}>{error}</div>}
+                {error && <div className="teacherapply-error" style={{ maxWidth: 700, margin: '0 auto 1.5rem' }}>{error}</div>}
 
-                <form onSubmit={handleSubmit} className="apply-form">
-                    <div className="apply-form-section">
-                        <div className="apply-section-header">
-                            <span className="apply-section-num">1</span>
+                <form onSubmit={handleSubmit} className="teacherapply-form">
+                    <div className="teacherapply-formsec">
+                        <div className="teacherapply-secheader">
+                            <span className="teacherapply-secnum">1</span>
                             <div>
                                 <h3>About You</h3>
                                 <p>Tell us why you want to teach</p>
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>📋 Why do you want to teach on CourseHub? *</label>
                             <textarea
                                 value={form.requirements}
@@ -285,7 +288,7 @@ export default function TeacherApply() {
                                 rows={4}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>📄 Your Qualifications & Experience *</label>
                             <textarea
                                 value={form.cv}
@@ -295,10 +298,10 @@ export default function TeacherApply() {
                                 rows={4}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>📎 Upload CV / Resume (PDF only, max 10MB) *</label>
                             <div
-                                className={`cv-upload-zone ${cvFile ? 'uploaded' : ''} ${uploading ? 'uploading' : ''}`}
+                                className={`teacherapply-cvupload ${cvFile ? 'uploaded' : ''} ${uploading ? 'uploading' : ''}`}
                                 onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }}
                                 onDragLeave={e => { e.currentTarget.classList.remove('drag-over'); }}
                                 onDrop={e => {
@@ -318,35 +321,35 @@ export default function TeacherApply() {
                                 />
                                 {uploading ? (
                                     <>
-                                        <div className="apply-spinner" style={{ margin: '0 auto' }}></div>
+                                        <div className="teacherapply-spinner" style={{ margin: '0 auto' }}></div>
                                         <span>Uploading...</span>
                                     </>
                                 ) : cvFile ? (
                                     <>
-                                        <span className="cv-upload-icon">✅</span>
-                                        <span className="cv-upload-name">{cvFile.name}</span>
-                                        <span className="cv-upload-change">Click to change file</span>
+                                        <span className="teacherapply-cvicon">✅</span>
+                                        <span className="teacherapply-cvname">{cvFile.name}</span>
+                                        <span className="teacherapply-cvchange">Click to change file</span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="cv-upload-icon">📄</span>
+                                        <span className="teacherapply-cvicon">📄</span>
                                         <span>Drag & drop your PDF here, or click to browse</span>
-                                        <span className="form-hint">PDF format only, max 10 MB</span>
+                                        <span className="teacherapply-formhint">PDF format only, max 10 MB</span>
                                     </>
                                 )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="apply-form-section">
-                        <div className="apply-section-header">
-                            <span className="apply-section-num">2</span>
+                    <div className="teacherapply-formsec">
+                        <div className="teacherapply-secheader">
+                            <span className="teacherapply-secnum">2</span>
                             <div>
                                 <h3>Course Plan</h3>
                                 <p>Describe what you plan to teach</p>
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>📚 Course Description *</label>
                             <textarea
                                 value={form.course_description}
@@ -356,7 +359,7 @@ export default function TeacherApply() {
                                 rows={3}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>🗂️ Course Overview & Structure *</label>
                             <textarea
                                 value={form.course_overview}
@@ -366,7 +369,7 @@ export default function TeacherApply() {
                                 rows={3}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>🎬 Expected Number of Lectures *</label>
                             <input
                                 type="number"
@@ -379,15 +382,15 @@ export default function TeacherApply() {
                         </div>
                     </div>
 
-                    <div className="apply-form-section">
-                        <div className="apply-section-header">
-                            <span className="apply-section-num">3</span>
+                    <div className="teacherapply-formsec">
+                        <div className="teacherapply-secheader">
+                            <span className="teacherapply-secnum">3</span>
                             <div>
                                 <h3>Demo Video</h3>
                                 <p>Show us your teaching style</p>
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="teacherapply-formgroup">
                             <label>🔗 Demo Video Link (External URL) *</label>
                             <input
                                 type="url"
@@ -396,13 +399,13 @@ export default function TeacherApply() {
                                 placeholder="https://youtube.com/watch?v=..."
                                 required
                             />
-                            <span className="form-hint">
+                            <span className="teacherapply-formhint">
                                 Upload a short teaching demo (5-10 min) to YouTube, Vimeo, or similar and paste the link here
                             </span>
                         </div>
                     </div>
 
-                    <button type="submit" className="btn-primary apply-submit" disabled={loading}>
+                    <button type="submit" className="teacherapply-submit" disabled={loading}>
                         {loading ? 'Submitting Application...' : '🚀 Submit Application'}
                     </button>
                 </form>

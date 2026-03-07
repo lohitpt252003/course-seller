@@ -1,0 +1,36 @@
+/* Header — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .header-root {
+        padding: 0 1rem;
+    }
+
+    [data-theme="light"] .header-container {
+        height: 60px;
+    }
+
+    [data-theme="light"] .header-nav {
+        display: none;
+    }
+
+    [data-theme="light"] .header-logo {
+        font-size: 1.2rem;
+    }
+
+    [data-theme="light"] .header-logoicon {
+        font-size: 1.4rem;
+    }
+
+    [data-theme="light"] .header-themetoggle {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    [data-theme="light"] .header-btnlogout,
+    [data-theme="light"] .header-btnlogin,
+    [data-theme="light"] .header-btnregister {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}

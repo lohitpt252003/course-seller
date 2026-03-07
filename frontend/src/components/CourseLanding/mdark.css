@@ -1,0 +1,19 @@
+/* CourseLanding — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .courselanding-wrapper {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .courselanding-hero {
+        flex-direction: column;
+    }
+
+    [data-theme="dark"] .courselanding-sidebar {
+        width: 100%;
+    }
+
+    [data-theme="dark"] .courselanding-card {
+        position: static;
+    }
+}

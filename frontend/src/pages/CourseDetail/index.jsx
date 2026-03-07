@@ -5,6 +5,10 @@ import { useAuth } from '../../context/AuthContext';
 import CourseLanding from '../../components/CourseLanding';
 import CourseEditor from '../../components/CourseEditor';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function CourseDetail() {
     const { id } = useParams();
@@ -126,8 +130,8 @@ export default function CourseDetail() {
         fetchCourseData(); // Refresh everything including lessons
     };
 
-    if (authLoading || loading) return <div className="loading-screen">Loading course...</div>;
-    if (!course) return <div className="loading-screen">Course not found.</div>;
+    if (authLoading || loading) return <div className="loading-screen" style={{ padding: '4rem', textAlign: 'center' }}>Loading course...</div>;
+    if (!course) return <div className="loading-screen" style={{ padding: '4rem', textAlign: 'center' }}>Course not found.</div>;
 
     const isAdmin = user?.role === 'admin';
     const isOwner = user?.id === course.teacher_id;
@@ -136,7 +140,7 @@ export default function CourseDetail() {
     // Render Editor if in edit mode
     if (isEditing) {
         return (
-            <div className="course-detail-page">
+            <div className="coursedetail-page">
                 <CourseEditor
                     course={course}
                     onSave={handleEditSave}
@@ -148,7 +152,7 @@ export default function CourseDetail() {
 
     // Render Landing Page
     return (
-        <div className="course-detail-page">
+        <div className="coursedetail-page">
             <CourseLanding
                 course={course}
                 lessons={lessons}
@@ -166,10 +170,10 @@ export default function CourseDetail() {
                 onEdit={() => setIsEditing(true)}
                 reviewForm={
                     isEnrolled && !isOwner && !isAdmin ? (
-                        <div className="review-form-container">
+                        <div className="coursedetail-reviewcontainer">
                             <h3>Write a Review</h3>
-                            <form onSubmit={submitReview}>
-                                <div className="form-group">
+                            <form onSubmit={submitReview} className="coursedetail-form">
+                                <div className="coursedetail-formgroup">
                                     <label>Rating</label>
                                     <select value={reviewForm.rating} onChange={e => setReviewForm({ ...reviewForm, rating: parseInt(e.target.value) })}>
                                         <option value="5">⭐⭐⭐⭐⭐ (5)</option>
@@ -179,7 +183,7 @@ export default function CourseDetail() {
                                         <option value="1">⭐ (1)</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
+                                <div className="coursedetail-formgroup">
                                     <textarea
                                         placeholder="Share your experience..."
                                         value={reviewForm.comment}
@@ -187,7 +191,7 @@ export default function CourseDetail() {
                                         required
                                     />
                                 </div>
-                                <button className="btn-primary" type="submit">Submit Review</button>
+                                <button className="coursedetail-submit" type="submit">Submit Review</button>
                             </form>
                         </div>
                     ) : null

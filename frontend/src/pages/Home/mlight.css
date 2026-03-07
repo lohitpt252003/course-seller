@@ -1,0 +1,78 @@
+/* Home — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .home-heroinner {
+        flex-direction: column;
+        padding: 3rem 1rem 2rem;
+    }
+
+    [data-theme="light"] .home-herotitle {
+        font-size: 2rem;
+    }
+
+    [data-theme="light"] .home-herofeatures {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    [data-theme="light"] .home-logosbar {
+        flex-direction: column;
+        text-align: center;
+        border-radius: 16px;
+    }
+
+    [data-theme="light"] .home-statssidebar {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+    }
+
+    [data-theme="light"] .home-statcard {
+        flex: 1;
+        min-width: 100px;
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .home-whygrid {
+        grid-template-columns: 1fr;
+    }
+
+    [data-theme="light"] .home-sectionheader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    [data-theme="light"] .home-coursegrid {
+        grid-template-columns: 1fr;
+    }
+
+    [data-theme="light"] .home-ctabannerinner {
+        flex-direction: column;
+        text-align: center;
+        padding: 3rem 1rem;
+    }
+
+    [data-theme="light"] .home-ctapoints {
+        justify-content: center;
+    }
+
+    [data-theme="light"] .home-teachercard {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    [data-theme="light"] .home-teacherperks {
+        grid-template-columns: 1fr;
+    }
+
+    [data-theme="light"] .home-emojigrid span {
+        font-size: 2rem;
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .home-section {
+        padding: 2.5rem 1rem;
+    }
+}

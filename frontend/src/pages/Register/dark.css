@@ -1,0 +1,50 @@
+/* Register — Dark Theme */
+
+[data-theme="dark"] .register-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px var(--shadow);
+}
+
+[data-theme="dark"] .register-header p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .register-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--danger);
+}
+
+[data-theme="dark"] .register-formgroup label {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .register-formgroup input {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+}
+
+[data-theme="dark"] .register-formgroup input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+[data-theme="dark"] .register-submit {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+[data-theme="dark"] .register-submit:hover {
+    transform: translateY(-2px);
+}
+
+[data-theme="dark"] .register-switch {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .register-switch a {
+    color: var(--primary);
+}

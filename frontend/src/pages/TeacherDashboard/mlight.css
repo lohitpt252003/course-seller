@@ -1,0 +1,26 @@
+/* TeacherDashboard — Mobile Light */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .teacherdash-root {
+        padding: 1rem;
+    }
+
+    [data-theme="light"] .teacherdash-header h1 {
+        font-size: 1.8rem;
+    }
+
+    [data-theme="light"] .teacherdash-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    [data-theme="light"] .teacherdash-tab {
+        padding: 0.6rem 1rem;
+    }
+
+    [data-theme="light"] .teacherdash-courseheader {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

@@ -1,0 +1,70 @@
+/* Profile — Light Theme */
+
+[data-theme="light"] .profiledash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .profiledash-avatar {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+[data-theme="light"] .profiledash-info h3 {
+    color: var(--text);
+}
+
+[data-theme="light"] .profiledash-email {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .profiledash-badge.completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+[data-theme="light"] .profiledash-badge.in-progress {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+[data-theme="light"] .profiledash-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .profiledash-formgroup label {
+    color: var(--text);
+}
+
+[data-theme="light"] .profiledash-formgroup input,
+[data-theme="light"] .profiledash-formgroup textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="light"] .profiledash-formgroup input:focus,
+[data-theme="light"] .profiledash-formgroup textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+[data-theme="light"] .profiledash-btn {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .profiledash-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+[data-theme="light"] .profiledash-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+[data-theme="light"] .profiledash-msg {
+    background: var(--hover-bg);
+    color: var(--text);
+}

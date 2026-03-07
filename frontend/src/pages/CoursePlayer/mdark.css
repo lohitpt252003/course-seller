@@ -1,0 +1,23 @@
+/* CoursePlayer — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .courseplayer-root {
+        flex-direction: column;
+    }
+
+    [data-theme="dark"] .courseplayer-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    [data-theme="dark"] .courseplayer-nav {
+        max-height: 250px;
+    }
+
+    [data-theme="dark"] .courseplayer-content {
+        padding: 1rem;
+    }
+}

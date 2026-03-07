@@ -1,0 +1,26 @@
+/* StudentDashboard — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .studentdash-root {
+        padding: 1rem;
+    }
+
+    [data-theme="dark"] .studentdash-header h1 {
+        font-size: 1.8rem;
+    }
+
+    [data-theme="dark"] .studentdash-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    [data-theme="dark"] .studentdash-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    [data-theme="dark"] .studentdash-tab {
+        padding: 0.6rem 1rem;
+    }
+}

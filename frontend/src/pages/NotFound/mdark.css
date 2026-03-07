@@ -1,0 +1,15 @@
+/* NotFound — Mobile Dark */
+
+@media (max-width: 768px) {
+    [data-theme="dark"] .notfound-root {
+        padding: 1.5rem;
+    }
+
+    [data-theme="dark"] .notfound-title {
+        font-size: 3rem;
+    }
+
+    [data-theme="dark"] .notfound-text {
+        font-size: 1.1rem;
+    }
+}

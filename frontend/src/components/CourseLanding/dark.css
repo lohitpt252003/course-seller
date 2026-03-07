@@ -1,0 +1,135 @@
+/* CourseLanding — Dark Theme */
+
+[data-theme="dark"] .courselanding-categorybadge {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .courselanding-desc {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-meta {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-teacher {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+[data-theme="dark"] .courselanding-imgcontainer {
+    background: var(--hover-bg);
+}
+
+[data-theme="dark"] .courselanding-price {
+    color: var(--text);
+}
+
+[data-theme="dark"] .courselanding-btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .courselanding-btn.primary:hover {
+    filter: brightness(1.1);
+}
+
+[data-theme="dark"] .courselanding-btn.secondary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .courselanding-btn.secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .courselanding-btn.success {
+    background: var(--success);
+    color: white;
+}
+
+[data-theme="dark"] .courselanding-btn.danger {
+    background: var(--danger);
+    color: white;
+}
+
+[data-theme="dark"] .courselanding-lessonitemcontainer {
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+[data-theme="dark"] .courselanding-lessonitemcontainer.expanded {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .courselanding-lessonitem {
+    background: var(--surface);
+}
+
+[data-theme="dark"] .courselanding-lessonitem.clickable:hover {
+    background: var(--hover-bg);
+}
+
+[data-theme="dark"] .courselanding-lessonitemcontainer.expanded .courselanding-lessonitem {
+    border-bottom-color: var(--border);
+    background: var(--hover-bg);
+}
+
+[data-theme="dark"] .courselanding-lessonnum {
+    background: var(--hover-bg);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-lessontitle {
+    color: var(--text);
+}
+
+[data-theme="dark"] .courselanding-lessontype {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-lessontoggle {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-lessonpreview {
+    background: var(--bg);
+}
+
+[data-theme="dark"] .courselanding-pdfcontainer {
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .courselanding-textcontent {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .courselanding-reviewcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .courselanding-reviewmsg {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .courselanding-rolebadge.admin {
+    background: var(--danger);
+    color: white;
+}
+
+[data-theme="dark"] .courselanding-rolebadge.teacher {
+    background: var(--primary);
+    color: white;
+}

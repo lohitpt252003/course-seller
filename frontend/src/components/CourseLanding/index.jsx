@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import './index.css';
+import './light.css';
+import './dark.css';
+import './mlight.css';
+import './mdark.css';
 
 export default function CourseLanding({
     course,
@@ -32,22 +36,22 @@ export default function CourseLanding({
         // Admin Actions
         if (isAdmin) {
             return (
-                <div className="landing-actions">
-                    <div className="role-badge admin">Admin Controls</div>
+                <div className="courselanding-actions">
+                    <div className="courselanding-rolebadge admin">Admin Controls</div>
                     {course.status === 'draft' && (
-                        <button className="landing-btn btn-success" onClick={onApprove}>
+                        <button className="courselanding-btn success" onClick={onApprove}>
                             ✅ Approve & Publish
                         </button>
                     )}
                     {course.status !== 'archived' && (
-                        <button className="landing-btn btn-danger" onClick={onReject}>
+                        <button className="courselanding-btn danger" onClick={onReject}>
                             🚫 Reject / Archive
                         </button>
                     )}
-                    <button className="landing-btn btn-danger" onClick={onDelete} style={{ marginTop: '0.5rem' }}>
+                    <button className="courselanding-btn danger" onClick={onDelete} style={{ marginTop: '0.5rem' }}>
                         🗑️ Delete Course
                     </button>
-                    <button className="landing-btn btn-primary" onClick={onLearn} style={{ marginTop: '0.5rem' }}>
+                    <button className="courselanding-btn primary" onClick={onLearn} style={{ marginTop: '0.5rem' }}>
                         👁️ Preview Content
                     </button>
                 </div>
@@ -57,12 +61,12 @@ export default function CourseLanding({
         // Teacher (Owner) Actions
         if (isOwner) {
             return (
-                <div className="landing-actions">
-                    <div className="role-badge teacher">Owner Controls</div>
-                    <button className="landing-btn btn-secondary" onClick={onEdit}>
+                <div className="courselanding-actions">
+                    <div className="courselanding-rolebadge teacher">Owner Controls</div>
+                    <button className="courselanding-btn secondary" onClick={onEdit}>
                         ✏️ Edit Course
                     </button>
-                    <button className="landing-btn btn-primary" onClick={onLearn} style={{ marginTop: '0.5rem' }}>
+                    <button className="courselanding-btn primary" onClick={onLearn} style={{ marginTop: '0.5rem' }}>
                         👁️ View Content
                     </button>
                     <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
@@ -75,8 +79,8 @@ export default function CourseLanding({
         // Student Enrolled
         if (enrolled) {
             return (
-                <div className="landing-actions">
-                    <button className="landing-btn btn-success" onClick={onLearn}>
+                <div className="courselanding-actions">
+                    <button className="courselanding-btn success" onClick={onLearn}>
                         ▶ Continue Learning
                     </button>
                 </div>
@@ -85,16 +89,16 @@ export default function CourseLanding({
 
         // Guest / Not Enrolled
         return (
-            <div className="landing-actions">
-                <div className="landing-price">
+            <div className="courselanding-actions">
+                <div className="courselanding-price">
                     {course.price === 0 ? 'Free' : `$${course.price}`}
                 </div>
                 {course.price === 0 ? (
-                    <button className="landing-btn btn-primary" onClick={onEnrollFree}>
+                    <button className="courselanding-btn primary" onClick={onEnrollFree}>
                         Enroll for Free
                     </button>
                 ) : (
-                    <button className="landing-btn btn-primary" onClick={onBuy}>
+                    <button className="courselanding-btn primary" onClick={onBuy}>
                         Buy Now
                     </button>
                 )}
@@ -108,81 +112,81 @@ export default function CourseLanding({
     };
 
     return (
-        <div className="course-landing-wrapper fade-in">
-            <div className="landing-hero">
-                <div className="landing-info">
+        <div className="courselanding-wrapper fade-in">
+            <div className="courselanding-hero">
+                <div className="courselanding-info">
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
                         {course.category && (
-                            <span className="landing-category-badge">{course.category.name}</span>
+                            <span className="courselanding-categorybadge">{course.category.name}</span>
                         )}
                         <span className={`dash-badge ${course.status}`} style={{ textTransform: 'capitalize' }}>{course.status}</span>
                     </div>
 
-                    <h1 className="landing-title">{course.title}</h1>
-                    <p className="landing-desc">{course.description}</p>
+                    <h1 className="courselanding-title">{course.title}</h1>
+                    <p className="courselanding-desc">{course.description}</p>
 
-                    <div className="landing-meta">
+                    <div className="courselanding-meta">
                         <span>⭐ {course.avg_rating?.toFixed(1) || '0.0'} ({reviews.length} reviews)</span>
                         <span>👥 {course.total_students} students</span>
                         <span>📚 {lessons.length} lessons</span>
                     </div>
 
-                    <p className="landing-teacher">
+                    <p className="courselanding-teacher">
                         Created by <strong>{course.teacher?.name || 'Unknown Teacher'}</strong>
                     </p>
                 </div>
 
-                <div className="landing-sidebar">
-                    <div className="landing-card">
-                        <div className="landing-img-container">
+                <div className="courselanding-sidebar">
+                    <div className="courselanding-card">
+                        <div className="courselanding-imgcontainer">
                             {course.thumbnail_url ? (
-                                <img src={course.thumbnail_url} alt={course.title} className="landing-img" />
+                                <img src={course.thumbnail_url} alt={course.title} className="courselanding-img" />
                             ) : (
-                                <span className="landing-img-placeholder">📚</span>
+                                <span className="courselanding-imgplaceholder">📚</span>
                             )}
                         </div>
-                        <div className="landing-card-body">
+                        <div className="courselanding-cardbody">
                             {renderActionButtons()}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="landing-content">
-                <section className="landing-section">
+            <div className="courselanding-content">
+                <section className="courselanding-section">
                     <h2>📋 Course Content</h2>
-                    <div className="lessons-list">
+                    <div className="courselanding-lessons">
                         {lessons.map((lesson, i) => (
-                            <div key={lesson.id} className={`lesson-item-container ${expandedLesson === lesson.id ? 'expanded' : ''}`}>
+                            <div key={lesson.id} className={`courselanding-lessonitemcontainer ${expandedLesson === lesson.id ? 'expanded' : ''}`}>
                                 <div
-                                    className={`lesson-item ${canViewContent ? 'clickable' : ''}`}
+                                    className={`courselanding-lessonitem ${canViewContent ? 'clickable' : ''}`}
                                     onClick={() => toggleLesson(lesson.id)}
                                 >
-                                    <span className="lesson-num">{i + 1}</span>
-                                    <span className="lesson-title">{lesson.title}</span>
-                                    <span className="lesson-type">
+                                    <span className="courselanding-lessonnum">{i + 1}</span>
+                                    <span className="courselanding-lessontitle">{lesson.title}</span>
+                                    <span className="courselanding-lessontype">
                                         {lesson.content_type === 'video' ? '🎥' : lesson.content_type === 'pdf' ? '📄' : '📝'}
                                     </span>
                                     {canViewContent && (
-                                        <span className="lesson-toggle">
+                                        <span className="courselanding-lessontoggle">
                                             {expandedLesson === lesson.id ? '🔼' : '🔽'}
                                         </span>
                                     )}
                                 </div>
                                 {expandedLesson === lesson.id && canViewContent && (
-                                    <div className="lesson-preview-content fade-in">
+                                    <div className="courselanding-lessonpreview fade-in">
                                         {lesson.content_type === 'video' && lesson.video_url && (
-                                            <div className="video-container">
+                                            <div className="courselanding-videocontainer">
                                                 <iframe src={lesson.video_url} title={lesson.title} allowFullScreen />
                                             </div>
                                         )}
                                         {lesson.content_type === 'pdf' && lesson.pdf_url && (
-                                            <div className="pdf-container">
+                                            <div className="courselanding-pdfcontainer">
                                                 <iframe src={lesson.pdf_url} title={lesson.title} />
                                             </div>
                                         )}
                                         {lesson.content && (
-                                            <div className="text-content">{lesson.content}</div>
+                                            <div className="courselanding-textcontent">{lesson.content}</div>
                                         )}
                                         {lesson.content_type === 'video' && !lesson.video_url && <p className="text-muted">No video URL provided.</p>}
                                         {lesson.content_type === 'pdf' && !lesson.pdf_url && <p className="text-muted">No PDF URL provided.</p>}
@@ -194,7 +198,7 @@ export default function CourseLanding({
                     </div>
                 </section>
 
-                <section className="landing-section">
+                <section className="courselanding-section">
                     <h2 style={{ justifyContent: 'space-between' }}>
                         <span>⭐ Reviews</span>
                         <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{reviews.length} total</span>
@@ -206,14 +210,14 @@ export default function CourseLanding({
                         </div>
                     )}
 
-                    <div className="reviews-grid">
+                    <div className="courselanding-reviewsgrid">
                         {reviews.map(r => (
-                            <div key={r.id} className="review-card">
-                                <div className="review-header">
-                                    <span className="review-author">{r.user?.name || 'User'}</span>
+                            <div key={r.id} className="courselanding-reviewcard">
+                                <div className="courselanding-reviewheader">
+                                    <span className="courselanding-reviewauthor">{r.user?.name || 'User'}</span>
                                     <span style={{ color: '#f59e0b' }}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
                                 </div>
-                                <p className="review-msg">{r.comment}</p>
+                                <p className="courselanding-reviewmsg">{r.comment}</p>
                                 <small className="text-muted">{new Date(r.created_at).toLocaleDateString()}</small>
                             </div>
                         ))}
