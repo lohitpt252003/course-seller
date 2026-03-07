@@ -7,10 +7,12 @@ import './index.css';
 export default function Home() {
     const [featured, setFeatured] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [stats, setStats] = useState({ total_courses: 0, total_students: 0, total_teachers: 0 });
 
     useEffect(() => {
         api.get('/courses/?sort_by=rating').then(r => setFeatured(r.data.slice(0, 6))).catch(() => { });
         api.get('/categories/').then(r => setCategories(r.data)).catch(() => { });
+        api.get('/landing/stats').then(r => setStats(r.data)).catch(() => { });
     }, []);
 
     return (
@@ -28,9 +30,9 @@ export default function Home() {
                         <Link to="/register" className="btn-secondary">Start Teaching</Link>
                     </div>
                     <div className="hero-stats">
-                        <div className="stat"><span className="stat-num">500+</span><span className="stat-label">Courses</span></div>
-                        <div className="stat"><span className="stat-num">50K+</span><span className="stat-label">Students</span></div>
-                        <div className="stat"><span className="stat-num">200+</span><span className="stat-label">Teachers</span></div>
+                        <div className="stat"><span className="stat-num">{stats.total_courses}+</span><span className="stat-label">Courses</span></div>
+                        <div className="stat"><span className="stat-num">{stats.total_students}+</span><span className="stat-label">Students</span></div>
+                        <div className="stat"><span className="stat-num">{stats.total_teachers}+</span><span className="stat-label">Teachers</span></div>
                     </div>
                 </div>
                 <div className="hero-visual">

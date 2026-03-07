@@ -1,0 +1,376 @@
+/* ===== Teacher Apply Page ===== */
+.apply-page {
+    padding: 2rem 1.5rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.apply-hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.apply-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.apply-hero p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+/* Benefits Grid */
+.apply-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.benefit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.25s;
+}
+
+.benefit-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--shadow);
+}
+
+.benefit-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.benefit-card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.benefit-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Form Sections */
+.apply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.apply-form-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.apply-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.apply-section-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.apply-section-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.apply-section-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.apply-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.apply-form .form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.apply-form .form-group input,
+.apply-form .form-group textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1rem;
+    transition: border 0.2s;
+    outline: none;
+    font-family: inherit;
+}
+
+.apply-form .form-group input:focus,
+.apply-form .form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.apply-form .form-group textarea {
+    resize: vertical;
+}
+
+.form-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.apply-submit {
+    padding: 0.9rem 2rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+}
+
+.apply-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Status Card */
+.apply-status-card {
+    text-align: center;
+    max-width: 500px;
+}
+
+.apply-status-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.apply-status-card h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.apply-status-badge {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.apply-status-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.apply-status-details {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.apply-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.apply-status-row:last-child {
+    border-bottom: none;
+}
+
+.apply-status-row a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.apply-status-row a:hover {
+    text-decoration: underline;
+}
+
+.apply-status-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.apply-btn {
+    padding: 0.65rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: transparent;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Loading */
+.apply-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.apply-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.apply-loading p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Become-a-Teacher Banner for Student Dashboard */
+.become-teacher-banner {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.become-teacher-text h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.become-teacher-text p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+.become-teacher-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.apply-card {
+    max-width: 600px;
+}
+
+/* CV Upload Zone */
+.cv-upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cv-upload-zone:hover,
+.cv-upload-zone.drag-over {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.cv-upload-zone.uploaded {
+    border-color: #10b981;
+    border-style: solid;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.cv-upload-zone.uploading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.cv-upload-icon {
+    font-size: 2rem;
+}
+
+.cv-upload-name {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.cv-upload-change {
+    font-size: 0.78rem;
+    color: var(--primary);
+}

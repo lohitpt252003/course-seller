@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import './index.css';
+import '../TeacherApply/index.css';
 
 export default function StudentDashboard() {
     const { user } = useAuth();
@@ -22,6 +23,16 @@ export default function StudentDashboard() {
             <div className="dashboard-header">
                 <h1>Welcome back, {user?.name} 👋</h1>
                 <p>Track your learning progress</p>
+            </div>
+
+            <div className="become-teacher-banner">
+                <div className="become-teacher-text">
+                    <h3>🎓 Want to share your knowledge?</h3>
+                    <p>Apply to become a teacher and create courses on CourseHub</p>
+                </div>
+                <Link to="/apply-teacher" className="btn-primary become-teacher-btn">
+                    Apply to Teach →
+                </Link>
             </div>
             <div className="dash-stats">
                 <div className="dash-stat-card"><span className="dash-stat-num">{enrollments.length}</span><span className="dash-stat-label">Enrolled Courses</span></div>

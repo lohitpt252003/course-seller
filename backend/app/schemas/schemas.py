@@ -220,3 +220,34 @@ class AdminStats(BaseModel):
     total_revenue: float
     total_teachers: int
     total_students: int
+
+
+# --- Teacher Application ---
+class TeacherApplicationCreate(BaseModel):
+    requirements: str
+    cv: str
+    course_description: str
+    course_overview: str
+    expected_lectures: int
+    demo_video_url: str
+    cv_url: Optional[str] = None
+
+
+class TeacherApplicationOut(BaseModel):
+    id: int
+    user_id: int
+    requirements: str
+    cv: str
+    cv_url: Optional[str] = None
+    course_description: str
+    course_overview: str
+    expected_lectures: int
+    demo_video_url: str
+    status: str
+    admin_notes: Optional[str] = None
+    created_at: datetime
+    reviewed_at: Optional[datetime] = None
+    applicant: Optional[UserOut] = None
+
+    class Config:
+        from_attributes = True

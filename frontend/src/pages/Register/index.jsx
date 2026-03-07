@@ -7,7 +7,6 @@ export default function Register() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('student');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { register } = useAuth();
@@ -18,8 +17,8 @@ export default function Register() {
         setError('');
         setLoading(true);
         try {
-            await register(name, email, password, role);
-            navigate(role === 'teacher' ? '/teacher' : '/dashboard');
+            await register(name, email, password, 'student');
+            navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
         } finally {
@@ -48,19 +47,6 @@ export default function Register() {
                         <label>Password</label>
                         <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} />
                     </div>
-                    <div className="form-group">
-                        <label>I want to</label>
-                        <div className="role-selector">
-                            <div className={`role-option ${role === 'student' ? 'active' : ''}`} onClick={() => setRole('student')}>
-                                <div className="role-icon">📖</div>
-                                <div className="role-label">Learn</div>
-                            </div>
-                            <div className={`role-option ${role === 'teacher' ? 'active' : ''}`} onClick={() => setRole('teacher')}>
-                                <div className="role-icon">🎓</div>
-                                <div className="role-label">Teach</div>
-                            </div>
-                        </div>
-                    </div>
                     <button type="submit" className="btn-primary auth-submit" disabled={loading}>
                         {loading ? 'Creating account...' : 'Create Account'}
                     </button>
@@ -68,7 +54,11 @@ export default function Register() {
                 <p className="auth-switch">
                     Already have an account? <Link to="/login">Sign In</Link>
                 </p>
+                <p className="auth-switch" style={{ marginTop: '0.5rem' }}>
+                    🎓 Want to teach? <Link to="/apply-teacher" style={{ fontWeight: 700 }}>Apply to become a Teacher</Link>
+                </p>
             </div>
         </div>
     );
 }
+

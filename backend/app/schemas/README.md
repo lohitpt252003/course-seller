@@ -11,3 +11,4 @@ These schemas ensure data validation for input/output in the API.
 - **`CertificateOut`**: Certificate data.
 - **`CategoryCreate`**, **`CategoryOut`**: Category management.
 - **`KeyStats`**, **`AdminStats`**: Admin analytics structures.
+- **`TeacherApplicationCreate`**, **`TeacherApplicationOut`**: Teacher application submission (requirements, CV, course description, course overview, expected lectures, demo video URL, cv_url) and response with status tracking.

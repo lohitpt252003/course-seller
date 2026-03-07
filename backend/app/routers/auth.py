@@ -16,8 +16,11 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
         if existing:
             return JSONResponse(status_code=400, content={"success": False, "message": "Email already registered"})
 
-        if user_data.role not in ["student", "teacher"]:
-            return JSONResponse(status_code=400, content={"success": False, "message": "Role must be 'student' or 'teacher'"})
+        if user_data.role == "teacher":
+            return JSONResponse(status_code=400, content={"success": False, "message": "To become a teacher, please register as a student first and then submit a teacher application."})
+
+        if user_data.role not in ["student"]:
+            return JSONResponse(status_code=400, content={"success": False, "message": "Role must be 'student'"})
 
         user = User(
             email=user_data.email,

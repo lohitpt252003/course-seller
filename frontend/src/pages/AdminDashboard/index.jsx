@@ -1,12 +1,15 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import '../StudentDashboard/index.css';
+import './index.css';
 
 const TABS = [
     { id: 'overview', label: '📊 Overview' },
     { id: 'users', label: '👥 Users' },
     { id: 'courses', label: '📚 Courses' },
     { id: 'categories', label: '🏷️ Categories' },
+    { id: 'applications', label: '📝 Applications' },
 ];
 
 export default function AdminDashboard() {
@@ -15,6 +18,8 @@ export default function AdminDashboard() {
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [applications, setApplications] = useState([]);
+    const [expandedApp, setExpandedApp] = useState(null);
 
     // Filters & Pagination
     const [userSearch, setUserSearch] = useState('');
@@ -22,6 +27,7 @@ export default function AdminDashboard() {
     const [courseSearch, setCourseSearch] = useState('');
     const [courseStatus, setCourseStatus] = useState('');
     const [categoryName, setCategoryName] = useState('');
+    const [appStatus, setAppStatus] = useState('pending');
 
     const [loading, setLoading] = useState(false);
 
@@ -50,12 +56,23 @@ export default function AdminDashboard() {
         }).catch(() => setLoading(false));
     };
 
+    const fetchApplications = () => {
+        setLoading(true);
+        let url = `/teacher-applications/?limit=50`;
+        if (appStatus) url += `&status=${appStatus}`;
+        api.get(url).then(r => {
+            setApplications(r.data);
+            setLoading(false);
+        }).catch(() => setLoading(false));
+    };
+
     useEffect(() => {
         if (tab === 'overview') fetchStats();
         if (tab === 'users') fetchUsers();
         if (tab === 'courses') fetchCourses();
         if (tab === 'categories') fetchCategories();
-    }, [tab, userSearch, userRole, courseSearch, courseStatus]);
+        if (tab === 'applications') fetchApplications();
+    }, [tab, userSearch, userRole, courseSearch, courseStatus, appStatus]);
 
     const toggleActive = async (userId) => {
         await api.patch(`/admin/users/${userId}/toggle-active`);
@@ -106,6 +123,30 @@ export default function AdminDashboard() {
             fetchCategories();
         } catch (err) {
             alert('Failed to delete');
+        }
+    };
+
+    const approveApplication = async (id) => {
+        if (!window.confirm('Approve this teacher application? The user will be promoted to teacher.')) return;
+        try {
+            await api.patch(`/teacher-applications/${id}/approve`);
+            fetchApplications();
+            alert('Application approved! User has been promoted to teacher.');
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to approve');
+        }
+    };
+
+    const rejectApplication = async (id) => {
+        const notes = window.prompt('Optional: Provide a reason for rejection');
+        try {
+            let url = `/teacher-applications/${id}/reject`;
+            if (notes) url += `?notes=${encodeURIComponent(notes)}`;
+            await api.patch(url);
+            fetchApplications();
+            alert('Application rejected.');
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to reject');
         }
     };
 
@@ -335,6 +376,116 @@ export default function AdminDashboard() {
                                 </div>
                             ))}
                             {categories.length === 0 && <p className="text-muted">No categories yet.</p>}
+                        </div>
+                    </div>
+                )}
+
+                {tab === 'applications' && (
+                    <div className="dash-section">
+                        <div className="table-header-actions">
+                            <h2 style={{ margin: 0 }}>📝 Teacher Applications</h2>
+                            <select
+                                className="filter-select"
+                                value={appStatus}
+                                onChange={e => setAppStatus(e.target.value)}
+                            >
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="">All</option>
+                            </select>
+                        </div>
+
+                        {applications.length === 0 && !loading && (
+                            <div className="empty-state">
+                                <span className="empty-state-icon">📝</span>
+                                No {appStatus || ''} applications found.
+                            </div>
+                        )}
+
+                        <div className="app-cards">
+                            {applications.map(app => (
+                                <div key={app.id} className="app-card">
+                                    <div className="app-card-header">
+                                        <div className="user-cell">
+                                            <div className="avatar-placeholder">{app.applicant?.name?.[0] || '?'}</div>
+                                            <div>
+                                                <div className="font-medium">{app.applicant?.name}</div>
+                                                <div className="text-sm text-muted">{app.applicant?.email}</div>
+                                            </div>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <span className={`dash-badge ${app.status}`}>{app.status}</span>
+                                            <span className="text-sm text-muted">
+                                                {new Date(app.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="app-card-summary">
+                                        <div className="app-info-row">
+                                            <span>🎬 Expected Lectures:</span>
+                                            <strong>{app.expected_lectures}</strong>
+                                        </div>
+                                        <div className="app-info-row">
+                                            <span>🔗 Demo Video:</span>
+                                            <a href={app.demo_video_url} target="_blank" rel="noopener noreferrer" className="app-demo-link">
+                                                Watch Demo ↗
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        className="app-expand-btn"
+                                        onClick={() => setExpandedApp(expandedApp === app.id ? null : app.id)}
+                                    >
+                                        {expandedApp === app.id ? '▲ Hide Details' : '▼ View Full Application'}
+                                    </button>
+
+                                    {expandedApp === app.id && (
+                                        <div className="app-card-details">
+                                            <div className="app-detail-section">
+                                                <h4>📋 Requirements / Motivation</h4>
+                                                <p>{app.requirements}</p>
+                                            </div>
+                                            <div className="app-detail-section">
+                                                <h4>📄 CV / Qualifications</h4>
+                                                <p>{app.cv}</p>
+                                                {app.cv_url && (
+                                                    <a href={app.cv_url} target="_blank" rel="noopener noreferrer" className="app-demo-link" style={{ marginTop: '0.5rem', display: 'inline-block' }}>
+                                                        📎 Download Resume PDF ↗
+                                                    </a>
+                                                )}
+                                            </div>
+                                            <div className="app-detail-section">
+                                                <h4>📚 Course Description</h4>
+                                                <p>{app.course_description}</p>
+                                            </div>
+                                            <div className="app-detail-section">
+                                                <h4>🗂️ Course Overview</h4>
+                                                <p>{app.course_overview}</p>
+                                            </div>
+                                            {app.admin_notes && (
+                                                <div className="app-detail-section">
+                                                    <h4>📌 Admin Notes</h4>
+                                                    <p>{app.admin_notes}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {app.status === 'pending' && (
+                                        <div className="app-card-actions">
+                                            <button className="btn-sm btn-success-outline" onClick={() => approveApplication(app.id)}>
+                                                ✓ Approve
+                                            </button>
+                                            <button className="btn-sm btn-danger-outline" onClick={() => rejectApplication(app.id)}>
+                                                ✕ Reject
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}

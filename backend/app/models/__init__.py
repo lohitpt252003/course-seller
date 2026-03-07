@@ -7,3 +7,4 @@ from app.models.progress import Progress
 from app.models.payment import Payment
 from app.models.review import Review
 from app.models.certificate import Certificate
+from app.models.teacher_application import TeacherApplication

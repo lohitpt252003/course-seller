@@ -15,6 +15,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
+import TeacherApply from './pages/TeacherApply';
 import NotFound from './pages/NotFound';
 import './index.css';
 
@@ -46,6 +47,9 @@ export default function App() {
                 } />
                 <Route path="/admin" element={
                   <ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>
+                } />
+                <Route path="/apply-teacher" element={
+                  <ProtectedRoute><TeacherApply /></ProtectedRoute>
                 } />
                 <Route path="/profile" element={
                   <ProtectedRoute><Profile /></ProtectedRoute>

@@ -11,3 +11,4 @@ These models define the structure of the database tables using SQLAlchemy.
 - **`review.py`**: User reviews for courses.
 - **`certificate.py`**: Certificates issued upon course completion.
 - **`category.py`**: Course categories.
+- **`teacher_application.py`**: Teacher applications with fields for requirements, CV (text + PDF URL), course description, course overview, expected lectures, demo video URL, status (pending/approved/rejected), and admin notes.

@@ -10,6 +10,7 @@ A full-stack course selling platform with user roles (Student, Teacher, Admin), 
 | Backend | FastAPI + SQLAlchemy |
 | Database | PostgreSQL 16 |
 | Auth | JWT (python-jose + bcrypt) |
+| File Storage | MinIO (S3-compatible) |
 | Containerization | Docker + Docker Compose |
 
 ## Quick Start (Docker)
@@ -45,7 +46,9 @@ npm run dev
 
 - **Students**: Browse courses, enroll, track progress, leave reviews, earn certificates
 - **Teachers**: Create & manage courses, add lessons (text/video/PDF), professional analytics dashboard (revenue, enrolled students, reviews)
-- **Admins**: User management, course approval, analytics dashboard, category management
-- **Payments**: Dummy payment system with auto-enrollment
+- **Teacher Application**: Students can apply to become teachers via a multi-step form with PDF CV/resume upload. Admin reviews and approves/rejects applications. Role is auto-upgraded on approval.
+- **Admins**: User management, course approval, teacher application review, analytics dashboard, category management
+- **Payments**: Dummy payment system with multiple methods (Credit Card, Debit Card, UPI, Net Banking, QR Scanner), coupon codes (LEARN50, WELCOME20, FREE100), order summary, and success animation
 - **Themes**: Dark & Light mode with toggle
 - **Responsive**: Mobile-friendly design
+- **Security**: JWT auth, PDF magic-byte validation, file size limits, filename sanitization, path traversal prevention
