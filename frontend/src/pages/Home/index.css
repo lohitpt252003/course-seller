@@ -48,7 +48,7 @@
 }
 
 .home-herohighlight {
-    background: linear-gradient(90deg, #fbbf24, #f59e0b, #ef4444);
+    background: linear-gradient(90deg, #F57799, #e06688);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -127,8 +127,8 @@
 .home-btnsecondary {
     padding: 0.9rem 2.2rem;
     background: transparent;
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--text);
+    border: 2px solid var(--text);
     border-radius: 8px;
     font-weight: 700;
     font-size: 1rem;
@@ -138,8 +138,10 @@
 }
 
 .home-btnsecondary:hover {
-    border-color: white;
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(245, 119, 153, 0.08);
+    /* Primary color low opacity */
 }
 
 /* Stats sidebar */
@@ -345,20 +347,21 @@
 .home-btncta {
     display: inline-block;
     padding: 0.9rem 2.5rem;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    background: var(--surface);
+    color: var(--primary);
     border: none;
     border-radius: 8px;
     font-weight: 700;
     font-size: 1rem;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .home-btncta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    background: white;
 }
 
 .home-ctavisual {

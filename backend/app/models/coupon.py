@@ -9,4 +9,5 @@ class Coupon(Base):
     code = Column(String, unique=True, index=True, nullable=False)
     discount_percentage = Column(Integer, nullable=False)
     is_active = Column(Boolean, default=True)
+    expires_at = Column(DateTime(timezone=True), nullable=True) # Optional expiry
     created_at = Column(DateTime(timezone=True), server_default=func.now())

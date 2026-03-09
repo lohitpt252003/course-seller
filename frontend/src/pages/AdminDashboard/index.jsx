@@ -27,7 +27,7 @@ export default function AdminDashboard() {
     const [expandedApp, setExpandedApp] = useState(null);
 
     // New Coupon Form State
-    const [newCoupon, setNewCoupon] = useState({ code: '', discount_percentage: '' });
+    const [newCoupon, setNewCoupon] = useState({ code: '', discount_percentage: '', expires_at: '' });
 
     // Filters & Pagination
     const [userSearch, setUserSearch] = useState('');
@@ -146,11 +146,16 @@ export default function AdminDashboard() {
     const createCoupon = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/coupons/', {
+            const payload = {
                 code: newCoupon.code,
                 discount_percentage: parseInt(newCoupon.discount_percentage)
-            });
-            setNewCoupon({ code: '', discount_percentage: '' });
+            };
+            if (newCoupon.expires_at) {
+                payload.expires_at = new Date(newCoupon.expires_at).toISOString();
+            }
+
+            await api.post('/coupons/', payload);
+            setNewCoupon({ code: '', discount_percentage: '', expires_at: '' });
             fetchCoupons();
         } catch (err) {
             alert(err.response?.data?.detail || 'Failed to create coupon');
@@ -239,6 +244,14 @@ export default function AdminDashboard() {
                                     className="admindash-input"
                                     style={{ width: '120px' }}
                                 />
+                                <input
+                                    type="datetime-local"
+                                    value={newCoupon.expires_at}
+                                    onChange={e => setNewCoupon({ ...newCoupon, expires_at: e.target.value })}
+                                    className="admindash-input"
+                                    style={{ width: '200px' }}
+                                    title="Optional Expiry Date"
+                                />
                                 <button type="submit" className="admindash-btn">Add Coupon</button>
                             </form>
                         </div>
@@ -250,6 +263,7 @@ export default function AdminDashboard() {
                                         <th>Code</th>
                                         <th>Discount</th>
                                         <th>Created Date</th>
+                                        <th>Expires At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -263,6 +277,9 @@ export default function AdminDashboard() {
                                                 </span>
                                             </td>
                                             <td>{new Date(c.created_at).toLocaleDateString()}</td>
+                                            <td>
+                                                {c.expires_at ? new Date(c.expires_at).toLocaleString() : <span className="admindash-textmuted">Never</span>}
+                                            </td>
                                             <td className="admindash-actionscell">
                                                 <button className="admindash-btnicon" style={{ color: 'var(--danger)' }} title="Delete" onClick={() => deleteCoupon(c.id)}>🗑️</button>
                                             </td>

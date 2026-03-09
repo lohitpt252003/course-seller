@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
+from datetime import datetime, timezone
 from typing import List
 from app.database import get_db
 from app.models.coupon import Coupon
@@ -40,7 +42,8 @@ def create_coupon(
     db_coupon = Coupon(
         code=coupon.code.upper(),
         discount_percentage=coupon.discount_percentage,
-        is_active=coupon.is_active
+        is_active=coupon.is_active,
+        expires_at=coupon.expires_at
     )
     db.add(db_coupon)
     db.commit()
@@ -69,6 +72,10 @@ def validate_coupon(code: str, db: Session = Depends(get_db)):
     coupon = db.query(Coupon).filter(Coupon.code == code.upper(), Coupon.is_active == True).first()
     if not coupon:
         raise HTTPException(status_code=404, detail="Invalid or expired coupon code")
+    
+    # Check expiry
+    if coupon.expires_at and coupon.expires_at < datetime.now(timezone.utc):
+        raise HTTPException(status_code=400, detail="This coupon code has expired")
     
     return {
         "valid": True,

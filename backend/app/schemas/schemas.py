@@ -257,12 +257,14 @@ class CouponCreate(BaseModel):
     code: str
     discount_percentage: int
     is_active: bool = True
+    expires_at: Optional[datetime] = None
 
 class CouponOut(BaseModel):
     id: int
     code: str
     discount_percentage: int
     is_active: bool
+    expires_at: Optional[datetime] = None
     created_at: datetime
 
     class Config:

@@ -1,8 +1,8 @@
 /* Home — Light Theme */
 
 [data-theme="light"] .home-hero {
-    background: linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #3b82f6 100%);
-    color: white;
+    background: linear-gradient(135deg, #FFF7CD 0%, #FDC3A1 100%);
+    color: var(--text);
 }
 
 [data-theme="light"] .home-herosubtitle {
@@ -66,7 +66,7 @@
 }
 
 [data-theme="light"] .home-ctabanner {
-    background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+    background: linear-gradient(135deg, #F57799 0%, #FB9B8F 100%);
     color: white;
 }
 

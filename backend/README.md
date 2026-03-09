@@ -15,7 +15,7 @@ This directory contains the FastAPI backend for the Course Seller application.
 ## Key Features
 
 - **Teacher Application System**: Students apply to become teachers. Applications are reviewed by admins. Includes PDF resume upload with security (magic byte validation, 10MB limit, content-type check). Role auto-upgraded on approval.
-- **Payments**: Dummy payment processing with auto-enrollment.
+- **Payments & Coupons**: Dummy payment processing with auto-enrollment. Admin dashboard supports managing coupons with optional expiry dates.
 - **File Uploads**: MinIO-based file storage with security (blocked executables, filename sanitization, path traversal prevention).
 - **`scripts/`**: Utility scripts (e.g., seeding the database).
 

@@ -1,2 +1,0 @@
-def calculate(x: int) -> int:
-    return x * x
