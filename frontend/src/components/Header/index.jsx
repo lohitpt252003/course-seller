@@ -26,7 +26,12 @@ export default function Header() {
                 </Link>
 
                 <nav className="header-nav">
+                    <Link to="/" className="header-navlink">Home</Link>
                     <Link to="/courses" className="header-navlink">Courses</Link>
+                    <Link to="/students" className="header-navlink">Students</Link>
+                    <Link to="/teachers" className="header-navlink">Teachers</Link>
+                    <Link to="/about" className="header-navlink">About Us</Link>
+                    <Link to="/book-call" className="header-navlink">Book a Call</Link>
                     {user && user.role === 'student' && (
                         <Link to="/dashboard" className="header-navlink">My Learning</Link>
                     )}

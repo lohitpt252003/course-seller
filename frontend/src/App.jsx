@@ -16,6 +16,10 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
 import TeacherApply from './pages/TeacherApply';
+import Students from './pages/Students';
+import Teachers from './pages/Teachers';
+import About from './pages/About';
+import BookCall from './pages/BookCall';
 import NotFound from './pages/NotFound';
 import './index.css';
 
@@ -33,6 +37,10 @@ export default function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/courses/:id" element={<CourseDetail />} />
+                <Route path="/students" element={<Students />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/book-call" element={<BookCall />} />
                 <Route path="/checkout/:courseId" element={
                   <ProtectedRoute><Checkout /></ProtectedRoute>
                 } />

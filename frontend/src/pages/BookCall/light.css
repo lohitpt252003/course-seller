@@ -1,0 +1,9 @@
+[data-theme="light"] .bookcall-title {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .bookcall-placeholder {
+    box-shadow: 0 10px 30px var(--shadow);
+}
