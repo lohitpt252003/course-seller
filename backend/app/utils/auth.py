@@ -80,3 +80,29 @@ def require_role(allowed_roles: list[str]):
             return None
         return current_user
     return role_checker
+
+
+def require_permission(permission_name: str):
+    """
+    Allows access if the user is an 'admin', OR if the user is a 'manager'
+    and has the specific permission set to True in their ManagerPermission record.
+    """
+    def permission_checker(current_user: User = Depends(get_current_user)):
+        if current_user is None:
+            return None
+        
+        if current_user.role == "admin":
+            return current_user
+            
+        if current_user.role == "manager":
+            if not current_user.permissions:
+                return None
+            
+            # Check if the specific boolean flag is True
+            has_permission = getattr(current_user.permissions, permission_name, False)
+            if has_permission:
+                return current_user
+                
+        return None
+        
+    return permission_checker

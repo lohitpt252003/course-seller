@@ -119,3 +119,40 @@
 [data-theme="light"] .home-finalcta p {
     color: var(--text-muted);
 }
+
+[data-theme="light"] .home-testimonialsection {
+    background: #fdf8f0;
+}
+
+[data-theme="light"] .home-testimonialcard {
+    background: white;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .home-testimonialcard:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .home-testimonialplaceholder {
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+}
+
+[data-theme="light"] .home-quotemark {
+    color: #333;
+}
+
+[data-theme="light"] .home-placementsection {
+    background: #f8fafc;
+}
+
+[data-theme="light"] .home-placementcard {
+    background: var(--surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .home-placementcard:hover {
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.2);
+}

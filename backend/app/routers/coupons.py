@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from datetime import datetime, timezone
 from typing import List
 from app.database import get_db
 from app.models.coupon import Coupon
+from app.schemas.schemas import CouponCreate, CouponOut
 from app.schemas.schemas import CouponCreate, CouponOut
 from app.utils.auth import get_current_user, require_role
 
@@ -33,11 +35,11 @@ def create_coupon(
     # Check if code already exists
     existing = db.query(Coupon).filter(Coupon.code == coupon.code.upper()).first()
     if existing:
-        raise HTTPException(status_code=400, detail="Coupon code already exists")
+        return JSONResponse(status_code=400, content={"detail": "Coupon code already exists"})
     
     # Validate discount
     if not (1 <= coupon.discount_percentage <= 100):
-        raise HTTPException(status_code=400, detail="Discount must be between 1 and 100")
+        return JSONResponse(status_code=400, content={"detail": "Discount must be between 1 and 100"})
 
     db_coupon = Coupon(
         code=coupon.code.upper(),
@@ -60,7 +62,7 @@ def delete_coupon(
     """Delete a coupon (Admin only)"""
     coupon = db.query(Coupon).filter(Coupon.id == coupon_id).first()
     if not coupon:
-        raise HTTPException(status_code=404, detail="Coupon not found")
+        return JSONResponse(status_code=404, content={"detail": "Coupon not found"})
     
     db.delete(coupon)
     db.commit()
@@ -71,11 +73,11 @@ def validate_coupon(code: str, db: Session = Depends(get_db)):
     """Validate a coupon code (Public)"""
     coupon = db.query(Coupon).filter(Coupon.code == code.upper(), Coupon.is_active == True).first()
     if not coupon:
-        raise HTTPException(status_code=404, detail="Invalid or expired coupon code")
+        return JSONResponse(status_code=404, content={"detail": "Invalid or expired coupon code"})
     
     # Check expiry
     if coupon.expires_at and coupon.expires_at < datetime.now(timezone.utc):
-        raise HTTPException(status_code=400, detail="This coupon code has expired")
+        return JSONResponse(status_code=400, content={"detail": "This coupon code has expired"})
     
     return {
         "valid": True,

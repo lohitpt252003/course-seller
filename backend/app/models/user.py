@@ -23,3 +23,4 @@ class User(Base):
     payments = relationship("Payment", back_populates="user", cascade="all, delete-orphan")
     reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
     certificates = relationship("Certificate", back_populates="user", cascade="all, delete-orphan")
+    permissions = relationship("ManagerPermission", back_populates="user", uselist=False, cascade="all, delete-orphan")

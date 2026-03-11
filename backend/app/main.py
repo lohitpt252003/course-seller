@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.models import *  # noqa: F401, F403 — imports all models for relationship resolution
-from app.routers import auth, users, courses, lessons, enrollments, payments, reviews, categories, certificates, admin, uploads, land, teacher_applications, coupons
+from app.routers import auth, users, courses, lessons, enrollments, payments, reviews, categories, certificates, admin, uploads, land, teacher_applications, coupons, testimonials, placement_stats
 
 app = FastAPI(
     title="Course Seller API",
@@ -10,7 +10,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS
 # CORS
 app.add_middleware(
     CORSMiddleware,
@@ -64,9 +63,10 @@ app.include_router(admin.router)
 app.include_router(uploads.router)
 app.include_router(land.router)
 app.include_router(teacher_applications.router)
+app.include_router(testimonials.router)
+app.include_router(placement_stats.router)
 
 
 @app.get("/")
 def root():
     return {"message": "Welcome to Course Seller API", "docs": "/docs"}
-

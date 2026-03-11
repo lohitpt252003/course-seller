@@ -7,8 +7,9 @@ from app.models.user import User
 from app.models.course import Course
 from app.models.enrollment import Enrollment
 from app.models.payment import Payment
-from app.schemas.schemas import AdminStats, UserOut, CourseOut
-from app.utils.auth import require_role
+from app.models.permission import ManagerPermission
+from app.schemas.schemas import AdminStats, UserOut, CourseOut, ManagerPermissionOut, ManagerPermissionUpdate
+from app.utils.auth import require_role, require_permission
 
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
@@ -44,10 +45,10 @@ def admin_list_users(
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"]))
+    current_user: User = Depends(require_permission("can_manage_users"))
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         query = db.query(User)
         if search:
@@ -67,10 +68,10 @@ def admin_list_courses(
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"]))
+    current_user: User = Depends(require_permission("can_manage_courses"))
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         query = db.query(Course).options(joinedload(Course.teacher), joinedload(Course.category))
         
@@ -105,8 +106,8 @@ def change_user_role(user_id: int, role: str, db: Session = Depends(get_db), cur
     if current_user is None:
         return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
     try:
-        if role not in ["student", "teacher", "admin"]:
-            return JSONResponse(status_code=400, content={"success": False, "message": "Invalid role. Must be 'student', 'teacher', or 'admin'"})
+        if role not in ["student", "teacher", "manager", "admin"]:
+            return JSONResponse(status_code=400, content={"success": False, "message": "Invalid role. Must be 'student', 'teacher', 'manager', or 'admin'"})
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
             return JSONResponse(status_code=404, content={"success": False, "message": "User not found"})
@@ -164,3 +165,62 @@ def admin_delete_course(course_id: int, db: Session = Depends(get_db), current_u
     except Exception as e:
         db.rollback()
         return JSONResponse(status_code=500, content={"success": False, "message": f"Failed to delete course: {str(e)}"})
+
+
+@router.get("/users/{user_id}/permissions", response_model=ManagerPermissionOut)
+def get_manager_permissions(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"]))
+):
+    """Get permissions for a specific manager (Admin only)"""
+    if current_user is None:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    if user.role != "manager" and user.role != "admin":
+        raise HTTPException(status_code=400, detail="User is not a manager")
+        
+    if not user.permissions:
+        perms = ManagerPermission(user_id=user.id)
+        db.add(perms)
+        db.commit()
+        db.refresh(perms)
+        return perms
+        
+    return user.permissions
+
+
+@router.put("/users/{user_id}/permissions", response_model=ManagerPermissionOut)
+def update_manager_permissions(
+    user_id: int,
+    permissions_data: ManagerPermissionUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(["admin"]))
+):
+    """Update permissions for a specific manager (Admin only)"""
+    if current_user is None:
+         raise HTTPException(status_code=403, detail="Admin access required")
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    if user.role != "manager":
+        raise HTTPException(status_code=400, detail="User is not a manager")
+        
+    perms = user.permissions
+    if not perms:
+        perms = ManagerPermission(user_id=user.id)
+        db.add(perms)
+        
+    update_data = permissions_data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(perms, key, value)
+        
+    db.commit()
+    db.refresh(perms)
+    return perms

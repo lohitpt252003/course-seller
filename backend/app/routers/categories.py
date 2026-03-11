@@ -5,7 +5,8 @@ from app.database import get_db
 from app.models.user import User
 from app.models.category import Category
 from app.schemas.schemas import CategoryCreate, CategoryOut
-from app.utils.auth import require_role
+from app.schemas.schemas import CategoryCreate, CategoryOut
+from app.utils.auth import require_permission
 
 router = APIRouter(prefix="/api/categories", tags=["Categories"])
 
@@ -19,9 +20,9 @@ def list_categories(db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=CategoryOut, status_code=201)
-def create_category(data: CategoryCreate, db: Session = Depends(get_db), current_user: User = Depends(require_role(["admin"]))):
+def create_category(data: CategoryCreate, db: Session = Depends(get_db), current_user: User = Depends(require_permission("can_manage_categories"))):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         existing = db.query(Category).filter(Category.name == data.name).first()
         if existing:
@@ -38,9 +39,9 @@ def create_category(data: CategoryCreate, db: Session = Depends(get_db), current
 
 
 @router.delete("/{category_id}")
-def delete_category(category_id: int, db: Session = Depends(get_db), current_user: User = Depends(require_role(["admin"]))):
+def delete_category(category_id: int, db: Session = Depends(get_db), current_user: User = Depends(require_permission("can_manage_categories"))):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         category = db.query(Category).filter(Category.id == category_id).first()
         if not category:

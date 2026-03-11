@@ -9,3 +9,6 @@ from app.models.review import Review
 from app.models.certificate import Certificate
 from app.models.teacher_application import TeacherApplication
 from app.models.coupon import Coupon
+from app.models.permission import ManagerPermission
+from app.models.testimonial import Testimonial
+from app.models.placement_stat import PlacementStat

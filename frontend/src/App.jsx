@@ -46,7 +46,7 @@ export default function App() {
                   <ProtectedRoute allowedRoles={['teacher']}><TeacherDashboard /></ProtectedRoute>
                 } />
                 <Route path="/admin" element={
-                  <ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>
+                  <ProtectedRoute allowedRoles={['admin', 'manager']}><AdminDashboard /></ProtectedRoute>
                 } />
                 <Route path="/apply-teacher" element={
                   <ProtectedRoute><TeacherApply /></ProtectedRoute>

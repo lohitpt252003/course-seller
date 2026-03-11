@@ -75,4 +75,39 @@
     [data-theme="light"] .home-section {
         padding: 2.5rem 1rem;
     }
+
+    [data-theme="light"] .home-testimonialgrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    [data-theme="light"] .home-testimonialcard {
+        padding: 1.5rem;
+    }
+
+    [data-theme="light"] .home-placementsection {
+        padding: 3rem 1rem;
+    }
+
+    [data-theme="light"] .home-placementheader {
+        margin-bottom: 2rem;
+    }
+
+    [data-theme="light"] .home-placementgrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    [data-theme="light"] .home-placementcard {
+        padding: 1.5rem 1rem;
+    }
+
+    [data-theme="light"] .home-placementvalue {
+        font-size: 2rem;
+    }
+
+    [data-theme="light"] .home-placementlabel {
+        font-size: 0.9rem;
+    }
 }

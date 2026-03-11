@@ -7,17 +7,31 @@ import './dark.css';
 import './mlight.css';
 import './mdark.css';
 
-const TABS = [
-    { id: 'overview', label: '📊 Overview' },
-    { id: 'users', label: '👥 Users' },
-    { id: 'courses', label: '📚 Courses' },
-    { id: 'categories', label: '🏷️ Categories' },
-    { id: 'applications', label: '📝 Applications' },
-    { id: 'coupons', label: '🎟️ Coupons' },
+const ALL_TABS = [
+    { id: 'overview', label: '📊 Overview', perm: null }, // Overview always visible to anyone who can access dashboard
+    { id: 'users', label: '👥 Users', perm: 'can_manage_users' },
+    { id: 'courses', label: '📚 Courses', perm: 'can_manage_courses' },
+    { id: 'categories', label: '🏷️ Categories', perm: 'can_manage_categories' },
+    { id: 'applications', label: '📝 Applications', perm: 'can_manage_applications' },
+    { id: 'coupons', label: '🎟️ Coupons', perm: 'admin_only' },
+    { id: 'alumni', label: '🎓 Alumni', perm: 'can_manage_users' },
+    { id: 'placement', label: '📈 Placements', perm: 'admin_only' },
 ];
 
 export default function AdminDashboard() {
-    const [tab, setTab] = useState('overview');
+    const authUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const isAdmin = authUser.role === 'admin';
+    const permissions = authUser.permissions || {};
+
+    // Filter tabs based on role and permissions
+    const visibleTabs = ALL_TABS.filter(tab => {
+        if (isAdmin) return true; // Admins see all
+        if (tab.perm === 'admin_only') return false; // Coupons are admin only
+        if (!tab.perm) return true; // Overview visible to all managers
+        return permissions[tab.perm] === true;
+    });
+
+    const [tab, setTab] = useState(visibleTabs.length > 0 ? visibleTabs[0].id : 'overview');
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
@@ -29,6 +43,22 @@ export default function AdminDashboard() {
     // New Coupon Form State
     const [newCoupon, setNewCoupon] = useState({ code: '', discount_percentage: '', expires_at: '' });
 
+    // Alumni/Testimonials State
+    const [testimonials, setTestimonials] = useState([]);
+    const [newTestimonial, setNewTestimonial] = useState({ name: '', role: '', quote: '', photo_url: '' });
+    const [placementStats, setPlacementStats] = useState({
+        highest_package: '0 LPA',
+        average_package: '0 LPA',
+        placement_percentage: '0%',
+        total_hiring_partners: 0
+    });
+    const [newPlacementStats, setNewPlacementStats] = useState({
+        highest_package: '0 LPA',
+        average_package: '0 LPA',
+        placement_percentage: '0%',
+        total_hiring_partners: 0
+    });
+
     // Filters & Pagination
     const [userSearch, setUserSearch] = useState('');
     const [userRole, setUserRole] = useState('');
@@ -36,6 +66,10 @@ export default function AdminDashboard() {
     const [courseStatus, setCourseStatus] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [appStatus, setAppStatus] = useState('pending');
+
+    // Manager Permissions State
+    const [editingPermissionsId, setEditingPermissionsId] = useState(null);
+    const [currentPermissions, setCurrentPermissions] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
@@ -48,9 +82,13 @@ export default function AdminDashboard() {
         if (userSearch) url += `&search=${userSearch}`;
         if (userRole) url += `&role=${userRole}`;
         api.get(url).then(r => {
+            console.log('Admin Users Response:', r.data);
             setUsers(r.data);
             setLoading(false);
-        }).catch(() => setLoading(false));
+        }).catch((err) => {
+            console.error('Admin Users Error:', err);
+            setLoading(false);
+        });
     };
 
     const fetchCourses = () => {
@@ -82,14 +120,31 @@ export default function AdminDashboard() {
         }).catch(() => setLoading(false));
     };
 
+    const fetchTestimonials = async () => {
+        try {
+            const res = await api.get('/testimonials/');
+            setTestimonials(res.data);
+        } catch (err) { console.error(err); }
+    };
+
+    const fetchPlacementStats = async () => {
+        try {
+            const res = await api.get('/placement-stats/');
+            setPlacementStats(res.data);
+            setNewPlacementStats(res.data); // Initialize form with current stats
+        } catch (err) { console.error(err); }
+    };
+
     useEffect(() => {
-        if (tab === 'overview') fetchStats();
+        fetchStats();
         if (tab === 'users') fetchUsers();
         if (tab === 'courses') fetchCourses();
         if (tab === 'categories') fetchCategories();
         if (tab === 'applications') fetchApplications();
         if (tab === 'coupons') fetchCoupons();
-    }, [tab, userSearch, userRole, courseSearch, courseStatus, appStatus]);
+        if (tab === 'alumni') fetchTestimonials();
+        if (tab === 'placement') fetchPlacementStats();
+    }, [tab, userRole, userSearch, courseStatus, courseSearch, appStatus]);
 
     const toggleActive = async (userId) => {
         await api.patch(`/admin/users/${userId}/toggle-active`);
@@ -100,6 +155,34 @@ export default function AdminDashboard() {
         if (!window.confirm(`Change role to ${role}?`)) return;
         await api.patch(`/admin/users/${userId}/role?role=${role}`);
         fetchUsers();
+    };
+
+    const openPermissionsManager = async (userId) => {
+        try {
+            const res = await api.get(`/admin/users/${userId}/permissions`);
+            setCurrentPermissions(res.data);
+            setEditingPermissionsId(userId);
+        } catch (err) {
+            alert('Failed to load permissions: ' + (err.response?.data?.message || err.message));
+        }
+    };
+
+    const togglePermission = (permField) => {
+        setCurrentPermissions(prev => ({
+            ...prev,
+            [permField]: !prev[permField]
+        }));
+    };
+
+    const savePermissions = async () => {
+        try {
+            await api.put(`/admin/users/${editingPermissionsId}/permissions`, currentPermissions);
+            alert('Permissions updated successfully!');
+            setEditingPermissionsId(null);
+            setCurrentPermissions(null);
+        } catch (err) {
+            alert('Failed to save permissions: ' + (err.response?.data?.message || err.message));
+        }
     };
 
     const approveCourse = async (courseId) => {
@@ -203,11 +286,11 @@ export default function AdminDashboard() {
                     <h1>Admin Dashboard 🛡️</h1>
                     <p className="admindash-subtitle">Manage users, courses, and platform settings</p>
                 </div>
-                <div className="admindash-userbadge admin">Admin</div>
+                <div className="admindash-userbadge admin">{isAdmin ? 'Admin' : 'Manager'}</div>
             </div>
 
             <div className="admindash-tabs">
-                {TABS.map(t => (
+                {visibleTabs.map(t => (
                     <button
                         key={t.id}
                         className={`admindash-tab ${tab === t.id ? 'active' : ''}`}
@@ -383,8 +466,20 @@ export default function AdminDashboard() {
                                                 >
                                                     <option value="student">Student</option>
                                                     <option value="teacher">Teacher</option>
+                                                    <option value="manager">Manager</option>
                                                     <option value="admin">Admin</option>
                                                 </select>
+                                                {u.role === 'manager' && isAdmin && (
+                                                    <div style={{ marginTop: '0.5rem' }}>
+                                                        <button
+                                                            className="admindash-btnsm admindash-btnprimary"
+                                                            onClick={() => openPermissionsManager(u.id)}
+                                                            style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
+                                                        >
+                                                            ⚙️ Permissions
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </td>
                                             <td>
                                                 <span className={`admindash-statusdot ${u.is_active ? 'online' : 'offline'}`}></span>
@@ -406,6 +501,47 @@ export default function AdminDashboard() {
                                 </tbody>
                             </table>
                         </div>
+
+                        {/* Permissions Modal overlay */}
+                        {editingPermissionsId && currentPermissions && (
+                            <div style={{
+                                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                                background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <div style={{
+                                    background: 'var(--surface)', padding: '2rem', borderRadius: '8px',
+                                    width: '400px', maxWidth: '90vw', border: '1px solid var(--border)'
+                                }}>
+                                    <h3 style={{ marginTop: 0 }}>Manager Permissions</h3>
+                                    <p className="admindash-textmuted" style={{ marginBottom: '1.5rem' }}>Configure what this manager can access.</p>
+
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                            <input type="checkbox" checked={currentPermissions.can_manage_users} onChange={() => togglePermission('can_manage_users')} />
+                                            <span>👥 Can Manage Users</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                            <input type="checkbox" checked={currentPermissions.can_manage_courses} onChange={() => togglePermission('can_manage_courses')} />
+                                            <span>📚 Can Manage Courses</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                            <input type="checkbox" checked={currentPermissions.can_manage_categories} onChange={() => togglePermission('can_manage_categories')} />
+                                            <span>🏷️ Can Manage Categories</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                                            <input type="checkbox" checked={currentPermissions.can_manage_applications} onChange={() => togglePermission('can_manage_applications')} />
+                                            <span>📝 Can Manage Teacher Applications</span>
+                                        </label>
+                                    </div>
+
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                                        <button className="admindash-btnsm danger-outline" onClick={() => { setEditingPermissionsId(null); setCurrentPermissions(null); }}>Cancel</button>
+                                        <button className="admindash-btnsm success-outline" onClick={savePermissions}>Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -611,7 +747,186 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 )}
+
+                {tab === 'alumni' && (
+                    <div className="admindash-section">
+                        <div className="admindash-categoryheader">
+                            <h3>🎓 Manage Alumni Testimonials</h3>
+                        </div>
+
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            try {
+                                const payload = { ...newTestimonial };
+                                if (!payload.photo_url) delete payload.photo_url;
+                                await api.post('/testimonials/', payload);
+                                setNewTestimonial({ name: '', role: '', quote: '', photo_url: '' });
+                                fetchTestimonials();
+                                alert('Testimonial added!');
+                            } catch (err) {
+                                alert(err.response?.data?.detail || 'Failed to add testimonial');
+                            }
+                        }} className="admindash-addform" style={{ flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
+                            <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Alumni Name"
+                                    value={newTestimonial.name}
+                                    onChange={e => setNewTestimonial({ ...newTestimonial, name: e.target.value })}
+                                    required
+                                    className="admindash-input"
+                                    style={{ flex: 1 }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Role (e.g. Software Engineer at Google)"
+                                    value={newTestimonial.role}
+                                    onChange={e => setNewTestimonial({ ...newTestimonial, role: e.target.value })}
+                                    required
+                                    className="admindash-input"
+                                    style={{ flex: 1 }}
+                                />
+                            </div>
+                            <textarea
+                                placeholder="Testimonial quote..."
+                                value={newTestimonial.quote}
+                                onChange={e => setNewTestimonial({ ...newTestimonial, quote: e.target.value })}
+                                required
+                                className="admindash-input"
+                                style={{ width: '100%', minHeight: '80px', resize: 'vertical' }}
+                            />
+                            <div style={{ display: 'flex', gap: '0.75rem', width: '100%', alignItems: 'center' }}>
+                                <input
+                                    type="url"
+                                    placeholder="Photo URL (optional)"
+                                    value={newTestimonial.photo_url}
+                                    onChange={e => setNewTestimonial({ ...newTestimonial, photo_url: e.target.value })}
+                                    className="admindash-input"
+                                    style={{ flex: 1 }}
+                                />
+                                <button type="submit" className="admindash-btn">Add Testimonial</button>
+                            </div>
+                        </form>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                            {testimonials.map(t => (
+                                <div key={t.id} style={{
+                                    background: 'var(--surface)', border: '1px solid var(--border)',
+                                    borderRadius: '12px', padding: '1.5rem', position: 'relative'
+                                }}>
+                                    <button
+                                        className="admindash-btnicon"
+                                        style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', color: 'var(--danger)' }}
+                                        title="Delete"
+                                        onClick={async () => {
+                                            if (!window.confirm('Delete this testimonial?')) return;
+                                            await api.delete(`/testimonials/${t.id}`);
+                                            fetchTestimonials();
+                                        }}
+                                    >🗑️</button>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                        {t.photo_url ? (
+                                            <img src={t.photo_url} alt={t.name} style={{
+                                                width: '56px', height: '56px', borderRadius: '50%',
+                                                objectFit: 'cover', border: '2px solid var(--border)'
+                                            }} />
+                                        ) : (
+                                            <div style={{
+                                                width: '56px', height: '56px', borderRadius: '50%',
+                                                background: 'var(--primary)', color: '#fff',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                fontSize: '1.4rem', fontWeight: 700
+                                            }}>{t.name[0]}</div>
+                                        )}
+                                        <div>
+                                            <div className="admindash-fontmedium">{t.name}</div>
+                                            <div className="admindash-textsm admindash-textmuted">{t.role}</div>
+                                        </div>
+                                    </div>
+                                    <p style={{ fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.6 }}>"{t.quote}"</p>
+                                </div>
+                            ))}
+                            {testimonials.length === 0 && !loading && (
+                                <p className="admindash-textmuted">No testimonials yet. Add your first alumni testimonial above!</p>
+                            )}
+                        </div>
+                    </div>
+                )}
+                {tab === 'placement' && (
+                    <div className="admindash-section fade-in">
+                        <div className="admindash-categoryheader" style={{ marginBottom: '2.5rem' }}>
+                            <h3>📈 Manage Placement Stats</h3>
+                            <p className="admindash-textmuted" style={{ margin: 0 }}>
+                                Update the placement metrics shown on the Home page.
+                            </p>
+                        </div>
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            try {
+                                await api.put('/placement-stats/', placementStats);
+                                alert('Placement stats updated successfully!');
+                            } catch (err) {
+                                alert(err.response?.data?.detail || 'Failed to update stats');
+                            }
+                        }} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '600px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Highest Package</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. 50 LPA"
+                                        value={placementStats.highest_package}
+                                        onChange={e => setPlacementStats({ ...placementStats, highest_package: e.target.value })}
+                                        required
+                                        className="admindash-input"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Average Package</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. 12 LPA"
+                                        value={placementStats.average_package}
+                                        onChange={e => setPlacementStats({ ...placementStats, average_package: e.target.value })}
+                                        required
+                                        className="admindash-input"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Placement %</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. 95%"
+                                        value={placementStats.placement_percentage}
+                                        onChange={e => setPlacementStats({ ...placementStats, placement_percentage: e.target.value })}
+                                        required
+                                        className="admindash-input"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Hiring Partners</label>
+                                    <input
+                                        type="number"
+                                        placeholder="e.g. 500"
+                                        value={placementStats.total_hiring_partners}
+                                        onChange={e => setPlacementStats({ ...placementStats, total_hiring_partners: parseInt(e.target.value) || 0 })}
+                                        required
+                                        min="0"
+                                        className="admindash-input"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                            </div>
+                            <button type="submit" className="admindash-btnprimary" style={{ alignSelf: 'flex-start', padding: '0.75rem 2rem' }}>
+                                Save Placement Stats
+                            </button>
+                        </form>
+                    </div>
+                )}
             </div>
-        </div>
+        </div >
     );
 }

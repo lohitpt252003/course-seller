@@ -33,7 +33,7 @@ export default function Header() {
                     {user && user.role === 'teacher' && (
                         <Link to="/teacher" className="header-navlink">Teacher Panel</Link>
                     )}
-                    {user && user.role === 'admin' && (
+                    {user && ['admin', 'manager'].includes(user.role) && (
                         <Link to="/admin" className="header-navlink">Admin Panel</Link>
                     )}
                 </nav>

@@ -6,7 +6,8 @@ from app.database import get_db
 from app.models.user import User
 from app.models.teacher_application import TeacherApplication
 from app.schemas.schemas import TeacherApplicationCreate, TeacherApplicationOut
-from app.utils.auth import get_current_user, require_role
+from app.schemas.schemas import TeacherApplicationCreate, TeacherApplicationOut
+from app.utils.auth import get_current_user, require_permission
 from app.services.minio_service import upload_file as minio_upload
 
 router = APIRouter(prefix="/api/teacher-applications", tags=["Teacher Applications"])
@@ -142,10 +143,10 @@ def list_applications(
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"])),
+    current_user: User = Depends(require_permission("can_manage_applications")),
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         query = db.query(TeacherApplication).options(joinedload(TeacherApplication.applicant))
         if status:
@@ -159,10 +160,10 @@ def list_applications(
 def get_application(
     application_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"])),
+    current_user: User = Depends(require_permission("can_manage_applications")),
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         app = (
             db.query(TeacherApplication)
@@ -181,10 +182,10 @@ def get_application(
 def approve_application(
     application_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"])),
+    current_user: User = Depends(require_permission("can_manage_applications")),
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         app = db.query(TeacherApplication).filter(TeacherApplication.id == application_id).first()
         if not app:
@@ -213,10 +214,10 @@ def reject_application(
     application_id: int,
     notes: str = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(["admin"])),
+    current_user: User = Depends(require_permission("can_manage_applications")),
 ):
     if current_user is None:
-        return JSONResponse(status_code=403, content={"success": False, "message": "Admin access required"})
+        return JSONResponse(status_code=403, content={"success": False, "message": "Manager/Admin access required"})
     try:
         app = db.query(TeacherApplication).filter(TeacherApplication.id == application_id).first()
         if not app:

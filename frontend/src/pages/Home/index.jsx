@@ -33,11 +33,15 @@ export default function Home() {
     const [categories, setCategories] = useState([]);
     const [stats, setStats] = useState({ total_courses: 0, total_students: 0, total_teachers: 0 });
     const [openFaq, setOpenFaq] = useState(null);
+    const [testimonials, setTestimonials] = useState([]);
+    const [placementStats, setPlacementStats] = useState(null);
 
     useEffect(() => {
         api.get('/courses/?sort_by=rating').then(r => setFeatured(r.data.slice(0, 6))).catch(() => { });
         api.get('/categories/').then(r => setCategories(r.data)).catch(() => { });
         api.get('/landing/stats').then(r => setStats(r.data)).catch(() => { });
+        api.get('/testimonials/').then(r => setTestimonials(r.data)).catch(() => { });
+        api.get('/placement-stats/').then(r => setPlacementStats(r.data)).catch(() => { });
     }, []);
 
     return (
@@ -64,25 +68,25 @@ export default function Home() {
                                 <span key={name} className="home-partnerlogo">{name}</span>
                             ))}
                         </div>
-                        <div className="home-heroactions">
-                            <Link to="/courses" className="home-btnprimary">Explore Courses</Link>
-                            <Link to="/register" className="home-btnsecondary">Start Teaching →</Link>
+                        <div className="home-hero-stats">
+                            <div className="home-statcard">
+                                <span className="home-statnumber">{stats.total_courses}+</span>
+                                <span className="home-stattext">Courses Available</span>
+                            </div>
+                            <div className="home-statcard">
+                                <span className="home-statnumber">{stats.total_students}+</span>
+                                <span className="home-stattext">Active Learners</span>
+                            </div>
+                            <div className="home-statcard">
+                                <span className="home-statnumber">{stats.total_teachers}+</span>
+                                <span className="home-stattext">Expert Teachers</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="home-statssidebar">
-                        <div className="home-statcard">
-                            <span className="home-statnumber">{stats.total_courses}+</span>
-                            <span className="home-stattext">Courses Available</span>
-                        </div>
-                        <div className="home-statcard">
-                            <span className="home-statnumber">{stats.total_students}+</span>
-                            <span className="home-stattext">Active Learners</span>
-                        </div>
-                        <div className="home-statcard">
-                            <span className="home-statnumber">{stats.total_teachers}+</span>
-                            <span className="home-stattext">Expert Teachers</span>
-                        </div>
+                    <div className="home-heroactions-sidebar">
+                        <Link to="/courses" className="home-btnprimary">Explore Courses</Link>
+                        <Link to="/register" className="home-btnsecondary">Start Teaching →</Link>
                     </div>
                 </div>
             </section>
@@ -102,6 +106,36 @@ export default function Home() {
                             {featured.map(course => (
                                 <CourseCard key={course.id} course={course} />
                             ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ===== PLACEMENT STATS ===== */}
+            {placementStats && (
+                <section className="home-section home-placementsection">
+                    <div className="home-sectioninner">
+                        <div className="home-placementheader">
+                            <h2 className="home-sectiontitle">OUTSTANDING CAREER OUTCOMES</h2>
+                            <p className="home-sectionsubtitle">Our graduates work at leading tech companies worldwide.</p>
+                        </div>
+                        <div className="home-placementgrid">
+                            <div className="home-placementcard">
+                                <div className="home-placementvalue">{placementStats.highest_package}</div>
+                                <div className="home-placementlabel">Highest Package</div>
+                            </div>
+                            <div className="home-placementcard">
+                                <div className="home-placementvalue">{placementStats.average_package}</div>
+                                <div className="home-placementlabel">Average Package</div>
+                            </div>
+                            <div className="home-placementcard">
+                                <div className="home-placementvalue">{placementStats.placement_percentage}</div>
+                                <div className="home-placementlabel">Placement Rate</div>
+                            </div>
+                            <div className="home-placementcard">
+                                <div className="home-placementvalue">{placementStats.total_hiring_partners}+</div>
+                                <div className="home-placementlabel">Hiring Partners</div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -163,6 +197,41 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            {/* ===== ALUMNI TESTIMONIALS ===== */}
+            {testimonials.length > 0 && (
+                <section className="home-section home-testimonialsection">
+                    <div className="home-sectioninner">
+                        <h2 className="home-sectiontitle center">What Our Alumni Say</h2>
+                        <p className="home-sectionsubtitle center">
+                            Hear from our graduates who have transformed their careers
+                        </p>
+                        <div className="home-testimonialgrid">
+                            {testimonials.map(t => (
+                                <div key={t.id} className="home-testimonialcard">
+                                    <div className="home-testimonialquote">
+                                        <span className="home-quotemark">“</span>
+                                        <p>{t.quote}</p>
+                                    </div>
+                                    <div className="home-testimonialauthor">
+                                        {t.photo_url ? (
+                                            <img src={t.photo_url} alt={t.name} className="home-testimonialavatar" />
+                                        ) : (
+                                            <div className="home-testimonialavatar home-testimonialplaceholder">
+                                                {t.name[0]}
+                                            </div>
+                                        )}
+                                        <div>
+                                            <div className="home-testimonialname">{t.name}</div>
+                                            <div className="home-testimonialrole">{t.role}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ===== BECOME A TEACHER ===== */}
             <section className="home-section home-teachersection">

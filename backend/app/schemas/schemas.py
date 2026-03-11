@@ -21,7 +21,23 @@ class Token(BaseModel):
     token_type: str = "bearer"
 
 
-# --- User ---
+class ManagerPermissionOut(BaseModel):
+    can_manage_users: bool
+    can_manage_courses: bool
+    can_manage_categories: bool
+    can_manage_applications: bool
+    can_manage_coupons: bool
+
+    class Config:
+        from_attributes = True
+
+class ManagerPermissionUpdate(BaseModel):
+    can_manage_users: Optional[bool] = None
+    can_manage_courses: Optional[bool] = None
+    can_manage_categories: Optional[bool] = None
+    can_manage_applications: Optional[bool] = None
+    can_manage_coupons: Optional[bool] = None
+
 class UserOut(BaseModel):
     id: int
     email: str
@@ -31,6 +47,7 @@ class UserOut(BaseModel):
     bio: Optional[str] = None
     is_active: bool
     created_at: datetime
+    permissions: Optional[ManagerPermissionOut] = None
 
     class Config:
         from_attributes = True
@@ -270,3 +287,39 @@ class CouponOut(BaseModel):
     class Config:
         from_attributes = True
 
+
+# --- Testimonial ---
+class TestimonialCreate(BaseModel):
+    name: str
+    role: str  # e.g. "Software Engineer at Google"
+    quote: str
+    photo_url: Optional[str] = None
+    is_featured: bool = True
+
+class TestimonialOut(BaseModel):
+    id: int
+    name: str
+    role: str
+    quote: str
+    photo_url: Optional[str] = None
+    is_featured: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# --- Placement Stats ---
+class PlacementStatBase(BaseModel):
+    highest_package: str
+    average_package: str
+    placement_percentage: str
+    total_hiring_partners: int
+
+class PlacementStatUpdate(PlacementStatBase):
+    pass
+
+class PlacementStatOut(PlacementStatBase):
+    id: int
+
+    class Config:
+        from_attributes = True
