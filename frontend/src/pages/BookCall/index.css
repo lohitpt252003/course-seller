@@ -13,41 +13,270 @@
     margin: 0 auto;
 }
 
-.bookcall-title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
+.bookcall-header {
     text-align: center;
+    margin-bottom: 4rem;
+}
+
+.bookcall-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .bookcall-desc {
     font-size: 1.2rem;
     color: var(--text-muted);
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.bookcall-placeholder {
-    padding: 60px;
-    border: 2px dashed var(--border);
-    border-radius: 20px;
+/* ===== Step Progress ===== */
+.bookcall-steps {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.bookcall-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.4;
+    transition: all 0.3s;
+}
+
+.bookcall-step.active {
+    opacity: 1;
+}
+
+.bookcall-stepnum {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--surface);
-    transition: all 0.3s ease;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
-.bookcall-placeholder:hover {
+.bookcall-step.active .bookcall-stepnum {
     border-color: var(--primary);
-    transform: translateY(-5px);
+    background: var(--hover-bg);
 }
 
-.bookcall-placeholdertext {
-    font-size: 1.5rem;
-    font-weight: 500;
+.bookcall-steplabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* ===== Mentor Cards ===== */
+.bookcall-mentorgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.bookcall-mentorcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.bookcall-mentorcard:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 40px var(--shadow);
+}
+
+.bookcall-mentorcard.selected {
+    border-color: var(--primary);
+    background: var(--hover-bg);
+}
+
+.bookcall-mentoravatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    border: 3px solid var(--border);
+}
+
+.bookcall-mentorname {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.bookcall-mentorrole {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.bookcall-mentortags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.bookcall-mentortag {
+    background: var(--bg);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     color: var(--text-muted);
+}
+
+/* ===== Form Styles ===== */
+.bookcall-formcontainer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.bookcall-formgroup {
+    margin-bottom: 2rem;
+}
+
+.bookcall-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.bookcall-input,
+.bookcall-textarea,
+.bookcall-select {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.bookcall-input:focus,
+.bookcall-textarea:focus,
+.bookcall-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.bookcall-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.bookcall-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+}
+
+.bookcall-btn {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1rem;
+    border: none;
+}
+
+.bookcall-btn-prev {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.bookcall-btn-prev:hover {
+    background: var(--hover-bg);
+}
+
+.bookcall-btn-next {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.bookcall-btn-next:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+}
+
+.bookcall-btn-next:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== Success State ===== */
+.bookcall-success {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.bookcall-successicon {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.bookcall-successtitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.bookcall-successdesc {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+}
+
+.bookcall-btn-home {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.bookcall-btn-home:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary);
 }

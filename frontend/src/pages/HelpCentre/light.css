@@ -1,0 +1,10 @@
+[data-theme="light"] .privacy-title {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .privacy-placeholder {
+    box-shadow: 0 10px 30px var(--shadow);
+}

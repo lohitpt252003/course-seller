@@ -1,9 +1,12 @@
-[data-theme="dark"] .bookcall-title {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+[data-theme="dark"] .bookcall-formcontainer {
+    background: rgba(19, 19, 26, 0.8);
+    backdrop-filter: blur(20px);
 }
 
-[data-theme="dark"] .bookcall-placeholder {
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+[data-theme="dark"] .bookcall-mentorcard {
+    background: rgba(30, 30, 46, 0.5);
+}
+
+[data-theme="dark"] .bookcall-mentoravatar {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
 }

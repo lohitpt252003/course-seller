@@ -20,6 +20,10 @@ import Students from './pages/Students';
 import Teachers from './pages/Teachers';
 import About from './pages/About';
 import BookCall from './pages/BookCall';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
+import HelpCentre from './pages/HelpCentre';
+import ContactUs from './pages/ContactUs';
 import NotFound from './pages/NotFound';
 import './index.css';
 
@@ -41,6 +45,10 @@ export default function App() {
                 <Route path="/teachers" element={<Teachers />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/book-call" element={<BookCall />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-conditions" element={<TermsConditions />} />
+                <Route path="/help-centre" element={<HelpCentre />} />
+                <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/checkout/:courseId" element={
                   <ProtectedRoute><Checkout /></ProtectedRoute>
                 } />

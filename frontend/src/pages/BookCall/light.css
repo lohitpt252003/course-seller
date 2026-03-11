@@ -1,9 +1,13 @@
-[data-theme="light"] .bookcall-title {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+[data-theme="light"] .bookcall-formcontainer {
+    background: white;
 }
 
-[data-theme="light"] .bookcall-placeholder {
-    box-shadow: 0 10px 30px var(--shadow);
+[data-theme="light"] .bookcall-mentorcard {
+    background: white;
+}
+
+[data-theme="light"] .bookcall-input,
+[data-theme="light"] .bookcall-textarea,
+[data-theme="light"] .bookcall-select {
+    background: #f8fafc;
 }

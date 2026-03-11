@@ -1,0 +1,9 @@
+@media (max-width: 768px) {
+    .privacy-title {
+        font-size: 2rem;
+    }
+
+    .privacy-placeholder {
+        padding: 30px 15px;
+    }
+}

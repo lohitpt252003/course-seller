@@ -1,0 +1,43 @@
+.privacy-root,
+.terms-root,
+.help-root,
+.contact-root {
+    padding: 80px 20px;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.privacy-container,
+.terms-container,
+.help-container,
+.contact-container {
+    max-width: 800px;
+    width: 100%;
+}
+
+.privacy-container h1,
+.terms-container h1,
+.help-container h1,
+.contact-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.privacy-placeholder,
+.terms-placeholder,
+.help-placeholder,
+.contact-placeholder {
+    margin-top: 40px;
+    padding: 40px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
