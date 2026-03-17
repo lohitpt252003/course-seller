@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './index.css';
@@ -11,9 +11,19 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [authMessage, setAuthMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if user was redirected due to expired/missing token
+        const message = sessionStorage.getItem('authMessage');
+        if (message) {
+            setAuthMessage(message);
+            sessionStorage.removeItem('authMessage'); // Clear after displaying
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,6 +48,7 @@ export default function Login() {
                     <h1>Welcome Back 👋</h1>
                     <p>Sign in to continue learning</p>
                 </div>
+                {authMessage && <div className="login-warning">{authMessage}</div>}
                 {error && <div className="login-error">{error}</div>}
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="login-formgroup">

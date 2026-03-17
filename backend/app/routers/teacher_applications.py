@@ -6,7 +6,6 @@ from app.database import get_db
 from app.models.user import User
 from app.models.teacher_application import TeacherApplication
 from app.schemas.schemas import TeacherApplicationCreate, TeacherApplicationOut
-from app.schemas.schemas import TeacherApplicationCreate, TeacherApplicationOut
 from app.utils.auth import get_current_user, require_permission
 from app.services.minio_service import upload_file as minio_upload
 

@@ -13,4 +13,11 @@
     [data-theme="dark"] .login-header h1 {
         font-size: 1.4rem;
     }
+
+    [data-theme="dark"] .login-error,
+    [data-theme="dark"] .login-warning {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.85rem;
+        margin-bottom: 0.75rem;
+    }
 }

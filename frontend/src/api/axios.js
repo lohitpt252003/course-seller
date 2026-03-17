@@ -17,15 +17,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 responses globally
+// Handle 401/403 responses globally (expired or missing token)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    
+    // Handle expired/invalid/missing token
+    if (status === 401 || status === 403) {
+      console.warn('Authentication failed. Clearing credentials and redirecting to login...');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      
+      // Show a message to the user (optional, can be enhanced with a toast)
+      const message = status === 401 
+        ? 'Your session has expired. Please login again.' 
+        : 'You do not have permission to access this resource.';
+      sessionStorage.setItem('authMessage', message);
+      
+      // Redirect to login page
       window.location.href = '/login';
+      
+      // Return early to prevent further processing
+      return Promise.reject(error);
     }
+    
     return Promise.reject(error);
   }
 );

@@ -16,6 +16,12 @@
     color: var(--danger);
 }
 
+[data-theme="dark"] .login-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+}
+
 [data-theme="dark"] .login-formgroup label {
     color: var(--text-muted);
 }

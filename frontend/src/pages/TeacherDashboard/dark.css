@@ -14,6 +14,7 @@
 
 [data-theme="dark"] .teacherdash-tab:hover {
     color: var(--text);
+    cursor: pointer;
 }
 
 [data-theme="dark"] .teacherdash-tab.active {
@@ -78,6 +79,7 @@
 [data-theme="dark"] .teacherdash-actionbtn:hover {
     border-color: var(--primary);
     color: var(--primary);
+    cursor: pointer;
 }
 
 [data-theme="dark"] .teacherdash-actionbtn.danger {
@@ -88,6 +90,7 @@
 [data-theme="dark"] .teacherdash-actionbtn.danger:hover {
     background: var(--danger);
     color: white;
+    cursor: pointer;
 }
 
 [data-theme="dark"] .teacherdash-badge.published {

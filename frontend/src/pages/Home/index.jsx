@@ -86,7 +86,7 @@ export default function Home() {
 
                     <div className="home-heroactions-sidebar">
                         <Link to="/courses" className="home-btnprimary">Explore Courses</Link>
-                        <Link to="/register" className="home-btnsecondary">Start Teaching →</Link>
+                        <Link to="/apply-teacher" className="home-btnsecondary">Start Teaching →</Link>
                     </div>
                 </div>
             </section>
