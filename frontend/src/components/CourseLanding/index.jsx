@@ -5,6 +5,10 @@ import './dark.css';
 import './mlight.css';
 import './mdark.css';
 
+function isDirectVideoUrl(url) {
+    return /\.(mp4|mkv|mov|webm|avi)(\?.*)?$/i.test(url || '');
+}
+
 export default function CourseLanding({
     course,
     lessons = [],
@@ -154,7 +158,31 @@ export default function CourseLanding({
 
             <div className="courselanding-content">
                 <section className="courselanding-section">
+                    {course.demo_video_url && (
+                        <>
+                            <h2>🎬 Demo Lecture</h2>
+                            <div className="courselanding-lessonpreview" style={{ marginBottom: '1.5rem' }}>
+                                {isDirectVideoUrl(course.demo_video_url) ? (
+                                    <video
+                                        controls
+                                        src={course.demo_video_url}
+                                        style={{ width: '100%', borderRadius: '12px', background: '#000' }}
+                                    />
+                                ) : (
+                                    <div className="courselanding-videocontainer">
+                                        <iframe src={course.demo_video_url} title={`${course.title} demo lecture`} allowFullScreen />
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+
                     <h2>📋 Course Content</h2>
+                    {!canViewContent && (
+                        <p className="text-muted" style={{ marginBottom: '1rem' }}>
+                            Preview mode: you can see the lesson names and course structure before buying, but the lesson content stays locked until enrollment.
+                        </p>
+                    )}
                     <div className="courselanding-lessons">
                         {lessons.map((lesson, i) => (
                             <div key={lesson.id} className={`courselanding-lessonitemcontainer ${expandedLesson === lesson.id ? 'expanded' : ''}`}>
@@ -176,9 +204,17 @@ export default function CourseLanding({
                                 {expandedLesson === lesson.id && canViewContent && (
                                     <div className="courselanding-lessonpreview fade-in">
                                         {lesson.content_type === 'video' && lesson.video_url && (
-                                            <div className="courselanding-videocontainer">
-                                                <iframe src={lesson.video_url} title={lesson.title} allowFullScreen />
-                                            </div>
+                                            isDirectVideoUrl(lesson.video_url) ? (
+                                                <video
+                                                    controls
+                                                    src={lesson.video_url}
+                                                    style={{ width: '100%', borderRadius: '12px', background: '#000' }}
+                                                />
+                                            ) : (
+                                                <div className="courselanding-videocontainer">
+                                                    <iframe src={lesson.video_url} title={lesson.title} allowFullScreen />
+                                                </div>
+                                            )
                                         )}
                                         {lesson.content_type === 'pdf' && lesson.pdf_url && (
                                             <div className="courselanding-pdfcontainer">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import CourseLanding from '../../components/CourseLanding';
@@ -13,6 +13,7 @@ import './mdark.css';
 export default function CourseDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { user, loading: authLoading } = useAuth();
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);
@@ -22,7 +23,11 @@ export default function CourseDetail() {
     const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
 
     // Edit Mode State
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(searchParams.get('manage') === '1');
+
+    useEffect(() => {
+        setIsEditing(searchParams.get('manage') === '1');
+    }, [searchParams]);
 
     useEffect(() => {
         fetchCourseData();
@@ -40,7 +45,7 @@ export default function CourseDetail() {
             .then(res => {
                 setLessons(res.data);
                 // Fetch reviews
-                return api.get(`/courses/${id}/reviews`);
+                return api.get(`/reviews/course/${id}`);
             })
             .then(res => {
                 setReviews(res.data);
@@ -126,8 +131,16 @@ export default function CourseDetail() {
     // Edit Handlers
     const handleEditSave = (updatedCourse) => {
         setCourse(updatedCourse);
-        setIsEditing(false);
+        setSearchParams({});
         fetchCourseData(); // Refresh everything including lessons
+    };
+
+    const openManageMode = () => {
+        setSearchParams({ manage: '1' });
+    };
+
+    const closeManageMode = () => {
+        setSearchParams({});
     };
 
     if (authLoading || loading) return <div className="loading-screen" style={{ padding: '4rem', textAlign: 'center' }}>Loading course...</div>;
@@ -136,19 +149,6 @@ export default function CourseDetail() {
     const isAdmin = user?.role === 'admin';
     const isOwner = user?.id === course.teacher_id;
     const isEnrolled = !!enrollment;
-
-    // Render Editor if in edit mode
-    if (isEditing) {
-        return (
-            <div className="coursedetail-page">
-                <CourseEditor
-                    course={course}
-                    onSave={handleEditSave}
-                    onCancel={() => setIsEditing(false)}
-                />
-            </div>
-        );
-    }
 
     // Render Landing Page
     return (
@@ -167,7 +167,7 @@ export default function CourseDetail() {
                 onApprove={handleApprove}
                 onReject={handleReject}
                 onDelete={handleDelete}
-                onEdit={() => setIsEditing(true)}
+                onEdit={openManageMode}
                 reviewForm={
                     isEnrolled && !isOwner && !isAdmin ? (
                         <div className="coursedetail-reviewcontainer">
@@ -197,6 +197,30 @@ export default function CourseDetail() {
                     ) : null
                 }
             />
+
+            {(isOwner || isAdmin) && (
+                <section className="coursedetail-managepanel fade-in">
+                    <div className="coursedetail-manageheader">
+                        <div>
+                            <h2>Course Management</h2>
+                            <p>Manage this course page, curriculum, and lesson content for this specific course.</p>
+                        </div>
+                        {!isEditing && (
+                            <button className="coursedetail-managebtn" onClick={openManageMode}>
+                                Open Course Builder
+                            </button>
+                        )}
+                    </div>
+
+                    {isEditing && (
+                        <CourseEditor
+                            course={course}
+                            onSave={handleEditSave}
+                            onCancel={closeManageMode}
+                        />
+                    )}
+                </section>
+            )}
         </div>
     );
 }

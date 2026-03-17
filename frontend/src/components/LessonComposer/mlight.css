@@ -1,0 +1,5 @@
+@media (max-width: 768px) {
+    [data-theme="light"] .lessoncomposer-grid {
+        grid-template-columns: 1fr;
+    }
+}

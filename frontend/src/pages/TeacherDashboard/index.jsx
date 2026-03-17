@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import { uploadFile } from '../../api/upload';
 import { useAuth } from '../../context/AuthContext';
+import LessonComposer, { INITIAL_LESSON_FORM, buildLessonPayload } from '../../components/LessonComposer';
 import './index.css';
 import './light.css';
 import './dark.css';
@@ -16,6 +17,14 @@ const TABS = [
     { id: 'revenue', label: '💰 Revenue' },
     { id: 'reviews', label: '⭐ Reviews' },
 ];
+
+const INITIAL_COURSE_FORM = {
+    title: '',
+    description: '',
+    category_id: '',
+    thumbnail_url: '',
+    demo_video_url: '',
+};
 
 function timeAgo(dateStr) {
     if (!dateStr) return '';
@@ -35,6 +44,7 @@ function Stars({ rating }) {
 
 export default function TeacherDashboard() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [tab, setTab] = useState('overview');
     const [analytics, setAnalytics] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -42,9 +52,9 @@ export default function TeacherDashboard() {
 
     // Course management state
     const [showForm, setShowForm] = useState(false);
-    const [form, setForm] = useState({ title: '', description: '', price: 0, category_id: '', thumbnail_url: '' });
+    const [form, setForm] = useState(INITIAL_COURSE_FORM);
     const [editingId, setEditingId] = useState(null);
-    const [lessonForm, setLessonForm] = useState({ title: '', content: '', file_url: '', order_index: 0 });
+    const [lessonForm, setLessonForm] = useState(INITIAL_LESSON_FORM);
     const [showLessonForm, setShowLessonForm] = useState(null);
     const [uploading, setUploading] = useState(false);
 
@@ -80,7 +90,7 @@ export default function TeacherDashboard() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = { ...form, price: parseFloat(form.price) || 0, category_id: form.category_id ? parseInt(form.category_id) : null };
+        const data = { ...form, category_id: form.category_id ? parseInt(form.category_id) : null };
         try {
             if (editingId) {
                 await api.put(`/courses/${editingId}`, data);
@@ -89,18 +99,11 @@ export default function TeacherDashboard() {
             }
             setShowForm(false);
             setEditingId(null);
-            setForm({ title: '', description: '', price: 0, category_id: '', thumbnail_url: '' });
+            setForm(INITIAL_COURSE_FORM);
             fetchAnalytics();
         } catch (err) {
             alert(err.response?.data?.message || 'Failed');
         }
-    };
-
-    const handleEdit = (course) => {
-        setForm({ title: course.title, description: course.description || '', price: course.price, category_id: course.category_id || '', thumbnail_url: course.thumbnail_url || '' });
-        setEditingId(course.id);
-        setShowForm(true);
-        setTab('courses');
     };
 
     const handleDelete = async (id) => {
@@ -112,31 +115,10 @@ export default function TeacherDashboard() {
     const handleLessonSubmit = async (e, courseId) => {
         e.preventDefault();
         try {
-            // Auto-detect content_type from what's provided
-            let content_type = 'text';
-            let video_url = null;
-            let pdf_url = null;
-            if (lessonForm.file_url) {
-                const url = lessonForm.file_url.toLowerCase();
-                if (url.match(/\.(mp4|mkv|avi|mov|webm)$/)) {
-                    content_type = 'video';
-                    video_url = lessonForm.file_url;
-                } else {
-                    content_type = 'pdf';
-                    pdf_url = lessonForm.file_url;
-                }
-            }
-            const data = {
-                title: lessonForm.title,
-                content_type,
-                content: lessonForm.content || null,
-                video_url,
-                pdf_url,
-                order_index: parseInt(lessonForm.order_index) || 0,
-            };
+            const data = buildLessonPayload(lessonForm);
             await api.post(`/courses/${courseId}/lessons`, data);
             setShowLessonForm(null);
-            setLessonForm({ title: '', content: '', file_url: '', order_index: 0 });
+            setLessonForm(INITIAL_LESSON_FORM);
             fetchAnalytics();
         } catch (err) {
             alert(err.response?.data?.message || 'Failed');
@@ -267,7 +249,7 @@ export default function TeacherDashboard() {
                 <div className="teacherdash-section">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <h2>Your Courses</h2>
-                        <button className="btn-primary" style={{ padding: '0.6rem 1rem', borderRadius: '8px' }} onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ title: '', description: '', price: 0, category_id: '', thumbnail_url: '' }); }}>
+                        <button className="btn-primary" style={{ padding: '0.6rem 1rem', borderRadius: '8px' }} onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(INITIAL_COURSE_FORM); }}>
                             {showForm ? '✕ Cancel' : '+ New Course'}
                         </button>
                     </div>
@@ -276,8 +258,7 @@ export default function TeacherDashboard() {
                         <form onSubmit={handleSubmit} className="teacherdash-form fade-in">
                             <div className="teacherdash-formgroup"><label>Title</label><input type="text" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></div>
                             <div className="teacherdash-formgroup"><label>Description</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                <div className="teacherdash-formgroup"><label>Price ($)</label><input type="number" step="0.01" min="0" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} /></div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
                                 <div className="teacherdash-formgroup"><label>Category</label>
                                     <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })}>
                                         <option value="">None</option>
@@ -292,6 +273,16 @@ export default function TeacherDashboard() {
                                 </div>
                                 <input type="text" placeholder="Or paste URL manually" value={form.thumbnail_url} onChange={e => setForm({ ...form, thumbnail_url: e.target.value })} style={{ marginTop: '0.4rem', fontSize: '0.85rem' }} />
                                 {form.thumbnail_url && <img src={form.thumbnail_url} alt="preview" style={{ width: 80, height: 50, objectFit: 'cover', borderRadius: 6, marginTop: '0.4rem', border: '1px solid var(--border)' }} />}
+                            </div>
+                            <div className="teacherdash-formgroup"><label>🎬 Demo Lecture</label>
+                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input type="file" accept="video/*" onChange={e => handleFileUpload(e.target.files[0], 'materials', url => setForm({ ...form, demo_video_url: url }))} disabled={uploading} style={{ flex: 1 }} />
+                                    {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
+                                </div>
+                                <input type="text" placeholder="Or paste demo video URL" value={form.demo_video_url} onChange={e => setForm({ ...form, demo_video_url: e.target.value })} style={{ marginTop: '0.4rem', fontSize: '0.85rem' }} />
+                                <p style={{ marginTop: '0.4rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                    This preview is visible before purchase.
+                                </p>
                             </div>
                             <button type="submit" className="btn-primary" style={{ padding: '0.6rem 1.2rem', borderRadius: '8px' }}>{editingId ? '✅ Update' : '🚀 Create'} Course</button>
                         </form>
@@ -328,24 +319,32 @@ export default function TeacherDashboard() {
                                 <span>📝 {course.lesson_count} lessons</span>
                             </div>
                             <div className="teacherdash-courseactions">
-                                <button className="teacherdash-actionbtn" onClick={() => handleEdit(course)}>✏️ Edit</button>
-                                <button className="teacherdash-actionbtn" onClick={() => setShowLessonForm(showLessonForm === course.id ? null : course.id)}>
+                                <button className="teacherdash-actionbtn" onClick={() => navigate(`/courses/${course.id}?manage=1`)}>✏️ Manage</button>
+                                <button
+                                    className="teacherdash-actionbtn"
+                                    onClick={() => {
+                                        const nextValue = showLessonForm === course.id ? null : course.id;
+                                        setShowLessonForm(nextValue);
+                                        if (nextValue) {
+                                            setLessonForm({ ...INITIAL_LESSON_FORM, order_index: (course.lesson_count || 0) + 1 });
+                                        }
+                                    }}
+                                >
                                     {showLessonForm === course.id ? '✕ Close' : '📝 Add Lesson'}
                                 </button>
                                 <button className="teacherdash-actionbtn danger" onClick={() => handleDelete(course.id)}>🗑️ Delete</button>
                             </div>
                             {showLessonForm === course.id && (
-                                <form onSubmit={(e) => handleLessonSubmit(e, course.id)} className="teacherdash-form fade-in" style={{ marginTop: '0.5rem', background: 'var(--hover-bg)' }}>
-                                    <div className="teacherdash-formgroup"><label>Lesson Title</label><input type="text" value={lessonForm.title} onChange={e => setLessonForm({ ...lessonForm, title: e.target.value })} required /></div>
-                                    <div className="teacherdash-formgroup"><label>Order</label><input type="number" value={lessonForm.order_index} onChange={e => setLessonForm({ ...lessonForm, order_index: e.target.value })} /></div>
-                                    <div className="teacherdash-formgroup"><label>📝 Text Content</label><textarea value={lessonForm.content} onChange={e => setLessonForm({ ...lessonForm, content: e.target.value })} placeholder="Write lesson content here (optional)" /></div>
-                                    <div className="teacherdash-formgroup"><label>📎 Upload File</label>
-                                        <input type="file" onChange={e => handleFileUpload(e.target.files[0], 'materials', url => setLessonForm({ ...lessonForm, file_url: url }))} disabled={uploading} />
-                                        <input type="text" placeholder="Or paste file URL" value={lessonForm.file_url} onChange={e => setLessonForm({ ...lessonForm, file_url: e.target.value })} style={{ marginTop: '0.4rem', fontSize: '0.85rem' }} />
-                                        {uploading && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏳ Uploading...</span>}
-                                    </div>
-                                    <button type="submit" className="btn-primary" style={{ padding: '0.6rem 1.2rem', borderRadius: '8px' }}>✅ Add Lesson</button>
-                                </form>
+                                <LessonComposer
+                                    value={lessonForm}
+                                    onChange={setLessonForm}
+                                    onSubmit={(e) => handleLessonSubmit(e, course.id)}
+                                    onFileUpload={handleFileUpload}
+                                    uploading={uploading}
+                                    heading="Add Course Item"
+                                    subheading="Create lessons, DPPs, quizzes, and assignments with type-specific fields."
+                                    submitLabel="Add Item"
+                                />
                             )}
                         </div>
                     ))}

@@ -97,3 +97,11 @@ select,
 textarea {
   font-family: inherit;
 }
+
+.btn-primary {
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+}

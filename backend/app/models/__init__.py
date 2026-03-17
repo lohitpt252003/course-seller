@@ -12,3 +12,4 @@ from app.models.coupon import Coupon
 from app.models.permission import ManagerPermission
 from app.models.testimonial import Testimonial
 from app.models.placement_stat import PlacementStat
+from app.models.lesson_submission import LessonSubmission

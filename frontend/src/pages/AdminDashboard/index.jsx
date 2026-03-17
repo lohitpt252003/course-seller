@@ -64,8 +64,10 @@ export default function AdminDashboard() {
     const [userRole, setUserRole] = useState('');
     const [courseSearch, setCourseSearch] = useState('');
     const [courseStatus, setCourseStatus] = useState('');
+    const [editingCoursePriceId, setEditingCoursePriceId] = useState(null);
+    const [coursePriceDraft, setCoursePriceDraft] = useState('');
     const [categoryName, setCategoryName] = useState('');
-    const [appStatus, setAppStatus] = useState('pending');
+    const [appStatus, setAppStatus] = useState('');  // Empty = all statuses
 
     // Manager Permissions State
     const [editingPermissionsId, setEditingPermissionsId] = useState(null);
@@ -106,10 +108,16 @@ export default function AdminDashboard() {
         setLoading(true);
         let url = `/teacher-applications/?limit=50`;
         if (appStatus) url += `&status=${appStatus}`;
+        console.log('Fetching applications from:', url);
         api.get(url).then(r => {
-            setApplications(r.data);
+            console.log('Applications response:', r.data);
+            setApplications(r.data || []);
             setLoading(false);
-        }).catch(() => setLoading(false));
+        }).catch((err) => {
+            console.error('Failed to fetch applications:', err.response?.data || err.message);
+            setApplications([]);
+            setLoading(false);
+        });
     };
 
     const fetchCoupons = () => {
@@ -203,6 +211,32 @@ export default function AdminDashboard() {
         fetchCourses();
     };
 
+    const startPriceEdit = (course) => {
+        setEditingCoursePriceId(course.id);
+        setCoursePriceDraft(String(course.price ?? 0));
+    };
+
+    const cancelPriceEdit = () => {
+        setEditingCoursePriceId(null);
+        setCoursePriceDraft('');
+    };
+
+    const saveCoursePrice = async (courseId) => {
+        const parsedPrice = parseFloat(coursePriceDraft);
+        if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+            alert('Enter a valid non-negative price.');
+            return;
+        }
+
+        try {
+            await api.put(`/courses/${courseId}`, { price: parsedPrice });
+            cancelPriceEdit();
+            fetchCourses();
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to update price');
+        }
+    };
+
     const addCategory = async (e) => {
         e.preventDefault();
         if (!categoryName.trim()) return;
@@ -268,6 +302,7 @@ export default function AdminDashboard() {
 
     const rejectApplication = async (id) => {
         const notes = window.prompt('Optional: Provide a reason for rejection');
+        if (notes === null) return; // User clicked Cancel
         try {
             let url = `/teacher-applications/${id}/reject`;
             if (notes) url += `?notes=${encodeURIComponent(notes)}`;
@@ -588,7 +623,28 @@ export default function AdminDashboard() {
                                                 <div className="admindash-textsm admindash-textmuted">{c.category?.name || 'Uncategorized'}</div>
                                             </td>
                                             <td>{c.teacher?.name}</td>
-                                            <td>${c.price}</td>
+                                            <td>
+                                                {editingCoursePriceId === c.id ? (
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                                        <input
+                                                            type="number"
+                                                            min="0"
+                                                            step="0.01"
+                                                            value={coursePriceDraft}
+                                                            onChange={e => setCoursePriceDraft(e.target.value)}
+                                                            className="admindash-input"
+                                                            style={{ width: '110px', padding: '0.35rem 0.6rem' }}
+                                                        />
+                                                        <button className="admindash-btnicon" style={{ color: 'var(--success)' }} title="Save price" onClick={() => saveCoursePrice(c.id)}>💾</button>
+                                                        <button className="admindash-btnicon" style={{ color: 'var(--text-muted)' }} title="Cancel" onClick={cancelPriceEdit}>✕</button>
+                                                    </div>
+                                                ) : (
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <span>${Number(c.price ?? 0).toFixed(2)}</span>
+                                                        <button className="admindash-btnicon" style={{ color: 'var(--primary)' }} title="Edit price" onClick={() => startPriceEdit(c)}>✏️</button>
+                                                    </div>
+                                                )}
+                                            </td>
                                             <td>
                                                 <span className={`admindash-statusbadge ${c.status}`}>{c.status}</span>
                                             </td>
@@ -657,7 +713,7 @@ export default function AdminDashboard() {
                         {applications.length === 0 && !loading && (
                             <div className="admindash-emptystate">
                                 <span className="admindash-emptyicon">📝</span>
-                                No {appStatus || ''} applications found.
+                                {appStatus ? `No ${appStatus} applications found.` : 'No applications found. Students can apply to become teachers.'}
                             </div>
                         )}
 

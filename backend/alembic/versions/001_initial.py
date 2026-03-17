@@ -47,6 +47,7 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column("price", sa.Float(), nullable=False, server_default=sa.text("0.0")),
         sa.Column("thumbnail_url", sa.String(500), nullable=True),
+        sa.Column("demo_video_url", sa.String(500), nullable=True),
         sa.Column("teacher_id", sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
         sa.Column("category_id", sa.Integer(), sa.ForeignKey("categories.id"), nullable=True),
         sa.Column("status", sa.String(20), nullable=False, server_default="draft"),

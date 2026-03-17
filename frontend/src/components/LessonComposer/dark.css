@@ -1,0 +1,17 @@
+[data-theme="dark"] .lessoncomposer-root {
+    background: var(--hover-bg);
+    border: 1px dashed var(--border);
+}
+
+[data-theme="dark"] .lessoncomposer-header p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .lessoncomposer-input,
+[data-theme="dark"] .lessoncomposer-textarea {
+    background: rgba(10, 10, 15, 0.72);
+}
+
+[data-theme="dark"] .lessoncomposer-submit:hover {
+    background: var(--primary-hover);
+}

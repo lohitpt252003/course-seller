@@ -47,7 +47,12 @@ def list_lessons(
             for lesson in lessons:
                 lesson.video_url = None
                 lesson.pdf_url = None
+                lesson.ppt_url = None
                 lesson.content = None
+                lesson.code_template = None
+                lesson.quiz_data = None
+                lesson.autograde_tests = None
+                lesson.autograde_language = None
 
         return lessons
     except Exception as e:

@@ -12,6 +12,7 @@ class Course(Base):
     description = Column(Text, nullable=True)
     price = Column(Float, nullable=False, default=0.0)
     thumbnail_url = Column(String(500), nullable=True)
+    demo_video_url = Column(String(500), nullable=True)
     teacher_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
     status = Column(String(20), nullable=False, default="draft")  # draft, published, archived

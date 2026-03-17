@@ -252,7 +252,12 @@ def update_course(course_id: int, course_data: CourseUpdate, db: Session = Depen
         course = db.query(Course).filter(Course.id == course_id).first()
         if not course:
             return JSONResponse(status_code=404, content={"success": False, "message": "Course not found"})
-        if course.teacher_id != current_user.id and current_user.role != "admin":
+        can_manage_as_manager = (
+            current_user.role == "manager"
+            and current_user.permissions
+            and current_user.permissions.can_manage_courses
+        )
+        if course.teacher_id != current_user.id and current_user.role != "admin" and not can_manage_as_manager:
             return JSONResponse(status_code=403, content={"success": False, "message": "Not authorized to update this course"})
 
         update_data = course_data.model_dump(exclude_unset=True)

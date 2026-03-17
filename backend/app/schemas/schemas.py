@@ -80,6 +80,7 @@ class CourseCreate(BaseModel):
     description: Optional[str] = None
     price: float = 0.0
     thumbnail_url: Optional[str] = None
+    demo_video_url: Optional[str] = None
     category_id: Optional[int] = None
 
 
@@ -88,6 +89,7 @@ class CourseUpdate(BaseModel):
     description: Optional[str] = None
     price: Optional[float] = None
     thumbnail_url: Optional[str] = None
+    demo_video_url: Optional[str] = None
     category_id: Optional[int] = None
     status: Optional[str] = None
 
@@ -98,6 +100,7 @@ class CourseOut(BaseModel):
     description: Optional[str] = None
     price: float
     thumbnail_url: Optional[str] = None
+    demo_video_url: Optional[str] = None
     teacher_id: int
     category_id: Optional[int] = None
     status: str
@@ -114,10 +117,15 @@ class CourseOut(BaseModel):
 # --- Lesson ---
 class LessonCreate(BaseModel):
     title: str
-    content_type: str = "text"  # video, text, pdf
+    content_type: str = "text"
     content: Optional[str] = None
     video_url: Optional[str] = None
     pdf_url: Optional[str] = None
+    ppt_url: Optional[str] = None
+    code_template: Optional[str] = None
+    quiz_data: Optional[str] = None
+    autograde_tests: Optional[str] = None
+    autograde_language: Optional[str] = None
     order_index: int = 0
 
 
@@ -127,6 +135,11 @@ class LessonUpdate(BaseModel):
     content: Optional[str] = None
     video_url: Optional[str] = None
     pdf_url: Optional[str] = None
+    ppt_url: Optional[str] = None
+    code_template: Optional[str] = None
+    quiz_data: Optional[str] = None
+    autograde_tests: Optional[str] = None
+    autograde_language: Optional[str] = None
     order_index: Optional[int] = None
 
 
@@ -138,6 +151,11 @@ class LessonOut(BaseModel):
     content: Optional[str] = None
     video_url: Optional[str] = None
     pdf_url: Optional[str] = None
+    ppt_url: Optional[str] = None
+    code_template: Optional[str] = None
+    quiz_data: Optional[str] = None
+    autograde_tests: Optional[str] = None
+    autograde_language: Optional[str] = None
     order_index: int
     created_at: datetime
 
@@ -174,6 +192,31 @@ class ProgressOut(BaseModel):
     lesson_id: int
     completed: bool
     completed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class LessonSubmissionCreate(BaseModel):
+    answer_data: Optional[str] = None
+    submission_text: Optional[str] = None
+    submission_code: Optional[str] = None
+
+
+class LessonSubmissionOut(BaseModel):
+    id: int
+    lesson_id: int
+    user_id: int
+    submission_type: str
+    answer_data: Optional[str] = None
+    submission_text: Optional[str] = None
+    submission_code: Optional[str] = None
+    status: str
+    score: Optional[float] = None
+    max_score: Optional[float] = None
+    feedback: Optional[str] = None
+    created_at: datetime
+    graded_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

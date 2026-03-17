@@ -5,6 +5,42 @@
     width: 100%;
 }
 
+.coursedetail-managepanel {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    padding: 0 2rem 2rem;
+}
+
+.coursedetail-manageheader {
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.coursedetail-manageheader h2 {
+    margin: 0 0 0.3rem;
+    font-size: 1.3rem;
+}
+
+.coursedetail-manageheader p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.coursedetail-managebtn {
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.15rem;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .coursedetail-reviewcontainer {
     padding: 1.5rem;
     border-radius: 12px;
@@ -58,4 +94,15 @@
     cursor: pointer;
     transition: all 0.2s;
     margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .coursedetail-managepanel {
+        padding: 0 1rem 1.5rem;
+    }
+
+    .coursedetail-manageheader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
